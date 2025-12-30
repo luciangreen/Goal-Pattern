@@ -435,9 +435,9 @@ test(time_block_serialization_roundtrip) :-
 
 test(state_entity_storage) :-
     % Test storing entities in state
-    config:config_path(ConfigPath),
-    config:load_config(ConfigPath),
-    state:init_state,
+    config_path(ConfigPath),
+    load_config(ConfigPath),
+    init_state,
     
     % Create and add a goal
     create_goal(
@@ -474,9 +474,9 @@ test(state_entity_storage) :-
 
 test(state_serialization_with_entities) :-
     % Test full state serialization with entities
-    config:config_path(ConfigPath),
-    config:load_config(ConfigPath),
-    state:init_state,
+    config_path(ConfigPath),
+    load_config(ConfigPath),
+    init_state,
     
     % Add entities
     create_goal(goal12, algorithms, 140, _{period: weekly}, strict, _{}, Goal),

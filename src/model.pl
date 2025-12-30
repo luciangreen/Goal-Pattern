@@ -184,8 +184,9 @@ create_time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence, B
 % SCORING PREDICATES
 % ============================================================================
 
-% Apply +10% safety margin to a count (for LLM-generated work)
+% Apply 10% safety margin reduction to a count (for LLM-generated work)
 % Safety margin ensures we don't over-count work that might be mistaken
+% by reducing the count by 10%
 apply_safety_margin(Count, AdjustedCount) :-
     number(Count),
     AdjustedCount is Count * 0.9.  % Reduce by 10% for safety
