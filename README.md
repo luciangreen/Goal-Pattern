@@ -14,6 +14,9 @@ A Prolog-based daemon service that runs continuously to scan, plan, and report o
 - **Calendar integration**: Imports schedule events from ICS files with intelligent tagging
 - **Event tagging**: Automatically tags events based on configurable keyword rules
 - **Duplicate prevention**: Prevents duplicate events on re-import
+- **Progress tracking**: Track weekly progress against goals with backlog computation
+- **Productivity forecasting**: Estimate productivity and forecast catch-up feasibility
+- **Comprehensive reporting**: Generate reports on progress, backlog, and feasibility
 
 ## Requirements
 
@@ -62,6 +65,27 @@ Run the test suite:
 ```bash
 swipl -q -s tests/run_tests.pl -g run_tests
 ```
+
+### Generating Reports
+
+Generate progress and backlog reports:
+```bash
+# View current week's progress
+bin/lucian_report week
+
+# View today's progress (same as week)
+bin/lucian_report today
+
+# View backlog from past weeks
+bin/lucian_report backlog
+```
+
+Reports will show:
+- Weekly progress against goals (algorithms and philosophies)
+- Completion percentages and visual progress bars
+- Backlog accumulation over time
+- Catch-up feasibility forecasts with confidence levels
+- Estimated productivity and required effort
 
 ## Configuration
 
@@ -135,6 +159,9 @@ src/
 ├── api.pl             # Internal API (scan, plan, report)
 ├── model.pl           # Data model (goals, work items, schedule events, time blocks)
 ├── validate.pl        # Model validation
+├── progress.pl        # Weekly progress and backlog tracking
+├── productivity.pl    # Productivity estimation and forecasting
+├── report.pl          # Report generation and formatting
 └── modules/           # Plugin modules directory
     ├── disk_scan.pl       # Local disk scanning for algorithms and essays
     ├── calendar_ics.pl    # ICS calendar file parsing
@@ -144,10 +171,12 @@ tests/
 ├── run_tests.pl           # Test runner
 ├── test_daemon.pl         # Daemon tests
 ├── test_disk_scan.pl      # Disk scan tests
-└── test_calendar_ics.pl   # Calendar ICS tests
+├── test_calendar_ics.pl   # Calendar ICS tests
+└── test_progress.pl       # Progress tracking and forecasting tests
 
 bin/
-└── lucian_planner     # CLI entry point
+├── lucian_planner     # CLI entry point for daemon
+└── lucian_report      # CLI entry point for reports
 
 config/
 ├── config.json        # Main configuration file
@@ -200,6 +229,28 @@ examples/
 - `count_words/2`: Count words in a text file
 - `classify_completion/3`: Classify completion status based on count
 
+#### Progress Tracking Module
+- `current_week/1`: Get current ISO 8601 week number
+- `week_range/3`: Get timestamp range for a given week
+- `weekly_progress/2`: Compute weekly progress against goals
+- `count_completed_work/4`: Count completed work items in a time range
+- `backlog/3`: Compute backlog from one week to another
+- `compute_backlog/4`: Compute backlog for each work type
+
+#### Productivity Module
+- `estimate_productivity/2`: Estimate units per hour for a work type
+- `historical_productivity/3`: Calculate productivity from historical data
+- `available_work_time/3`: Calculate available work time in a week
+- `forecast_achievable_units/4`: Forecast achievable units in future weeks
+- `feasibility_forecast/4`: Determine if catch-up is feasible
+
+#### Report Module
+- `report_today/0`: Generate today's progress report
+- `report_week/0`: Generate current week's progress report
+- `report_week/1`: Generate specific week's progress report
+- `report_backlog/0`: Generate backlog report
+- `report_backlog/2`: Generate backlog report for specific range
+
 ## Usage Examples
 
 ### Importing Calendar Events
@@ -237,6 +288,46 @@ Edit `config/tag_rules.json` to customize how events are tagged:
   }
 }
 ```
+
+### Tracking Progress and Goals
+
+Add goals to track your work progress:
+
+```prolog
+?- use_module(src/model).
+?- use_module(src/state).
+
+% Initialize state
+?- state:init_state.
+
+% Create goals
+?- model:create_goal(weekly_algs, algorithms, 100, week, strict, _{}, AlgGoal),
+   state:add_goal(AlgGoal).
+   
+?- model:create_goal(weekly_phils, philosophies, 7, week, strict, _{}, PhilGoal),
+   state:add_goal(PhilGoal).
+
+% View weekly progress
+?- use_module(src/report).
+?- report:report_week.
+```
+
+Generate progress reports from the command line:
+
+```bash
+# View current week progress
+bin/lucian_report week
+
+# View backlog and catch-up feasibility
+bin/lucian_report backlog
+```
+
+The report will show:
+- Completed work vs. weekly targets
+- Visual progress bars
+- Backlog accumulation
+- Catch-up feasibility with confidence levels
+- Productivity estimates
 
 ## Development
 
