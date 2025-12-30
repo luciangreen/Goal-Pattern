@@ -1,223 +1,217 @@
-% model.pl - Unified data model for goals, work artifacts, schedule, events, and patterns
+% model.pl - Unified data model for goals, work artifacts, schedule, events, patterns
 :- module(model, [
     % Goal predicates
-    goal/6,
     create_goal/7,
-    goal_type/1,
-    goal_strictness/1,
+    validate_goal/1,
     
     % Work item predicates
-    work_item/8,
     create_work_item/9,
-    work_item_type/1,
-    work_item_status/1,
-    status_transition/2,
-    is_complete_status/1,
+    validate_work_item/1,
+    update_work_item_status/2,
     
     % Schedule event predicates
-    schedule_event/8,
     create_schedule_event/9,
+    validate_schedule_event/1,
     
     % Time block predicates
-    time_block/6,
     create_time_block/7,
-    time_block_category/1,
+    validate_time_block/1,
     
-    % Scoring predicates
-    work_item_score/3,
-    apply_safety_margin/2,
-    is_done_with_margin/1
+    % Status transition predicates
+    valid_status_transition/2,
+    next_status/2,
+    
+    % Helper predicates
+    work_item_is_complete/1,
+    apply_safety_margin/2
 ]).
 
-:- dynamic goal/6.
-:- dynamic work_item/8.
-:- dynamic schedule_event/8.
-:- dynamic time_block/6.
+% ============================================================================
+% Goal Management
+% ============================================================================
+
+% goal(ID, Type, TargetCount, TimeWindow, Strictness, Metadata)
+% Type: algorithms | philosophies
+% TargetCount: target number of items
+% TimeWindow: week | month | etc.
+% Strictness: strict | adaptive
+% Metadata: dict with additional info
+
+create_goal(ID, Type, TargetCount, TimeWindow, Strictness, Metadata, 
+            goal(ID, Type, TargetCount, TimeWindow, Strictness, Metadata)) :-
+    atom(ID),
+    member(Type, [algorithms, philosophies]),
+    number(TargetCount),
+    TargetCount >= 0,
+    atom(TimeWindow),
+    member(Strictness, [strict, adaptive]),
+    is_dict(Metadata).
+
+validate_goal(goal(ID, Type, TargetCount, TimeWindow, Strictness, Metadata)) :-
+    atom(ID),
+    member(Type, [algorithms, philosophies]),
+    number(TargetCount),
+    TargetCount >= 0,
+    atom(TimeWindow),
+    member(Strictness, [strict, adaptive]),
+    is_dict(Metadata),
+    !.
 
 % ============================================================================
-% GOAL MODEL
+% Work Item Management
 % ============================================================================
-% goal(Id, Type, TargetCount, TimeWindow, Strictness, Metadata)
-%
-% Id: unique identifier (atom or integer)
-% Type: 'algorithms' or 'philosophies'
-% TargetCount: integer, number of units expected
-% TimeWindow: dict with start/end dates or duration (e.g., 'weekly', 'daily')
-% Strictness: 'strict' | 'adaptive' | 'flexible'
-% Metadata: dict with additional properties
-%
-% Example:
-% goal(g1, algorithms, 140, _{period: weekly}, strict, _{description: "Weekly algorithm target"})
 
-% Valid goal types
-goal_type(algorithms).
-goal_type(philosophies).
-
-% Valid strictness levels
-goal_strictness(strict).
-goal_strictness(adaptive).
-goal_strictness(flexible).
-
-% Create a new goal
-create_goal(Id, Type, TargetCount, TimeWindow, Strictness, Metadata, Goal) :-
-    goal_type(Type),
-    goal_strictness(Strictness),
-    integer(TargetCount),
-    TargetCount > 0,
-    Goal = goal(Id, Type, TargetCount, TimeWindow, Strictness, Metadata).
-
-% ============================================================================
-% WORK ITEM MODEL
-% ============================================================================
-% work_item(Id, Type, Origin, Status, Count, Timestamps, Tags, Confidence)
-%
-% Id: unique identifier
-% Type: 'algorithm_clause' | 'philosophy_essay' | 'draft' | 'spec'
-% Origin: filepath or source identifier (email, etc.)
-% Status: 'draft' | 'partial' | 'complete' | 'submitted'
+% work_item(ID, Type, Origin, Status, Count, Timestamps, Tags, Confidence)
+% Type: algorithm | philosophy
+% Origin: filepath or source identifier
+% Status: draft | partial | complete | submitted
 % Count: wordcount for essays, clause count for algorithms
-% Timestamps: dict with created/modified/completed times
-% Tags: list of context tags (home, friend_house, sauna, etc.)
-% Confidence: float 0.0-1.0 indicating detection confidence
-%
-% Example:
-% work_item(w1, algorithm_clause, '/path/to/file.pl', complete, 15, 
-%           _{created: "2025-01-01T10:00:00", modified: "2025-01-01T12:00:00"},
-%           [home, work], 0.95)
+% Timestamps: dict with created, modified, completed times
+% Tags: list of classification tags
+% Confidence: 0.0 to 1.0
 
-% Valid work item types
-work_item_type(algorithm_clause).
-work_item_type(philosophy_essay).
-work_item_type(draft).
-work_item_type(spec).
-work_item_type(note).
-
-% Valid statuses
-work_item_status(draft).
-work_item_status(partial).
-work_item_status(complete).
-work_item_status(submitted).
-
-% Status transitions (valid state changes)
-status_transition(draft, partial).
-status_transition(partial, complete).
-status_transition(complete, submitted).
-status_transition(draft, complete).  % Direct completion possible
-
-% Check if status is complete
-is_complete_status(complete).
-is_complete_status(submitted).
-
-% Create a new work item
-create_work_item(Id, Type, Origin, Status, Count, Timestamps, Tags, Confidence, WorkItem) :-
-    work_item_type(Type),
-    work_item_status(Status),
-    integer(Count),
+create_work_item(ID, Type, Origin, Status, Count, Timestamps, Tags, Confidence,
+                 work_item(ID, Type, Origin, Status, Count, Timestamps, Tags, Confidence)) :-
+    atom(ID),
+    member(Type, [algorithm, philosophy]),
+    (atom(Origin); string(Origin)),
+    member(Status, [draft, partial, complete, submitted]),
+    number(Count),
     Count >= 0,
+    is_dict(Timestamps),
+    is_list(Tags),
+    number(Confidence),
+    Confidence >= 0.0,
+    Confidence =< 1.0.
+
+validate_work_item(work_item(ID, Type, Origin, Status, Count, Timestamps, Tags, Confidence)) :-
+    atom(ID),
+    member(Type, [algorithm, philosophy]),
+    (atom(Origin); string(Origin)),
+    member(Status, [draft, partial, complete, submitted]),
+    number(Count),
+    Count >= 0,
+    is_dict(Timestamps),
+    is_list(Tags),
     number(Confidence),
     Confidence >= 0.0,
     Confidence =< 1.0,
-    is_list(Tags),
-    WorkItem = work_item(Id, Type, Origin, Status, Count, Timestamps, Tags, Confidence).
+    !.
+
+% Update work item status
+update_work_item_status(work_item(ID, Type, Origin, OldStatus, Count, Timestamps, Tags, Confidence),
+                        work_item(ID, Type, Origin, NewStatus, Count, NewTimestamps, Tags, Confidence)) :-
+    valid_status_transition(OldStatus, NewStatus),
+    get_time(CurrentTime),
+    put_dict(last_status_change, Timestamps, CurrentTime, NewTimestamps).
 
 % ============================================================================
-% SCHEDULE EVENT MODEL
+% Status Transitions
 % ============================================================================
-% schedule_event(Id, Start, End, Title, Location, Tags, Source, AttendanceConfidence)
-%
-% Id: unique identifier
-% Start: timestamp (ISO 8601 or timestamp dict)
-% End: timestamp
-% Title: event title/summary
-% Location: location string or dict
-% Tags: list of tags (travel, sauna, friend_house, seminar, etc.)
-% Source: source of event (calendar, email, manual)
-% AttendanceConfidence: float 0.0-1.0 (likelihood of attendance)
-%
-% Example:
-% schedule_event(e1, "2025-01-01T09:00:00", "2025-01-01T10:00:00",
-%                "Morning workout", "Home", [home, exercise], calendar_ics, 0.95)
 
-% Create a new schedule event
-create_schedule_event(Id, Start, End, Title, Location, Tags, Source, AttendanceConfidence, Event) :-
+% Valid status transitions
+valid_status_transition(draft, partial).
+valid_status_transition(draft, complete).
+valid_status_transition(partial, complete).
+valid_status_transition(complete, submitted).
+
+% Get next logical status
+next_status(draft, partial).
+next_status(partial, complete).
+next_status(complete, submitted).
+
+% Check if work item is complete (excludes items that need safety margin)
+work_item_is_complete(work_item(_, _, _, Status, _, _, _, _)) :-
+    member(Status, [complete, submitted]).
+
+% ============================================================================
+% Schedule Event Management
+% ============================================================================
+
+% schedule_event(ID, Start, End, Title, Location, Tags, Source, AttendanceConfidence)
+% Start, End: timestamps
+% Title: event title
+% Location: location string
+% Tags: list of tags (travel, sauna, friend_house, home, seminar, etc.)
+% Source: ics | gmail | manual
+% AttendanceConfidence: 0.0 to 1.0
+
+create_schedule_event(ID, Start, End, Title, Location, Tags, Source, AttendanceConfidence,
+                      schedule_event(ID, Start, End, Title, Location, Tags, Source, AttendanceConfidence)) :-
+    atom(ID),
+    number(Start),
+    number(End),
+    Start < End,
+    (atom(Title); string(Title)),
+    (atom(Location); string(Location)),
     is_list(Tags),
+    member(Source, [ics, gmail, manual, bridge]),
+    number(AttendanceConfidence),
+    AttendanceConfidence >= 0.0,
+    AttendanceConfidence =< 1.0.
+
+validate_schedule_event(schedule_event(ID, Start, End, Title, Location, Tags, Source, AttendanceConfidence)) :-
+    atom(ID),
+    number(Start),
+    number(End),
+    Start < End,
+    (atom(Title); string(Title)),
+    (atom(Location); string(Location)),
+    is_list(Tags),
+    member(Source, [ics, gmail, manual, bridge]),
     number(AttendanceConfidence),
     AttendanceConfidence >= 0.0,
     AttendanceConfidence =< 1.0,
-    Event = schedule_event(Id, Start, End, Title, Location, Tags, Source, AttendanceConfidence).
+    !.
 
 % ============================================================================
-% TIME BLOCK MODEL
+% Time Block Management
 % ============================================================================
+
 % time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence)
-%
-% Start: timestamp
-% End: timestamp
-% Category: category(Type) where Type is rest|work|play|travel
-% FatigueCost: float representing energy expenditure
-% RecoveryCost: float representing time needed to recover
-% Confidence: float 0.0-1.0
-%
-% Example:
-% time_block("2025-01-01T14:00:00", "2025-01-01T16:00:00",
-%            category(work), 0.7, 0.3, 0.9)
+% Start, End: timestamps
+% Category: rest | work | play | travel
+% FatigueCost: 0.0 to 1.0 (how much fatigue this adds)
+% RecoveryCost: 0.0 to 1.0 (how much recovery time needed)
+% Confidence: 0.0 to 1.0
 
-% Valid time block categories
-time_block_category(category(rest)).
-time_block_category(category(work)).
-time_block_category(category(play)).
-time_block_category(category(travel)).
-
-% Create a new time block
-create_time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence, Block) :-
-    time_block_category(Category),
+create_time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence,
+                  time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence)) :-
+    number(Start),
+    number(End),
+    Start < End,
+    member(Category, [rest, work, play, travel]),
     number(FatigueCost),
     FatigueCost >= 0.0,
+    FatigueCost =< 1.0,
     number(RecoveryCost),
     RecoveryCost >= 0.0,
+    RecoveryCost =< 1.0,
+    number(Confidence),
+    Confidence >= 0.0,
+    Confidence =< 1.0.
+
+validate_time_block(time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence)) :-
+    number(Start),
+    number(End),
+    Start < End,
+    member(Category, [rest, work, play, travel]),
+    number(FatigueCost),
+    FatigueCost >= 0.0,
+    FatigueCost =< 1.0,
+    number(RecoveryCost),
+    RecoveryCost >= 0.0,
+    RecoveryCost =< 1.0,
     number(Confidence),
     Confidence >= 0.0,
     Confidence =< 1.0,
-    Block = time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence).
-
-% ============================================================================
-% SCORING PREDICATES
-% ============================================================================
-
-% Apply 10% safety margin reduction to a count (for LLM-generated work)
-% Safety margin ensures we don't over-count work that might be mistaken
-% by reducing the count by 10%
-apply_safety_margin(Count, AdjustedCount) :-
-    number(Count),
-    AdjustedCount is Count * 0.9.  % Reduce by 10% for safety
-
-% Calculate work item score (considering safety margin for certain sources)
-% work_item_score(+WorkItem, +UseSafetyMargin, -Score)
-work_item_score(work_item(_, _, _, Status, Count, _, _, Confidence), UseSafetyMargin, Score) :-
-    is_complete_status(Status),
-    !,
-    (UseSafetyMargin = true ->
-        apply_safety_margin(Count, AdjustedCount)
-    ;
-        AdjustedCount = Count
-    ),
-    Score is AdjustedCount * Confidence.
-
-work_item_score(work_item(_, _, _, partial, Count, _, _, Confidence), UseSafetyMargin, Score) :-
-    !,
-    (UseSafetyMargin = true ->
-        apply_safety_margin(Count, AdjustedCount)
-    ;
-        AdjustedCount = Count
-    ),
-    % Partial work counts for 50% of its value
-    Score is AdjustedCount * Confidence * 0.5.
-
-work_item_score(work_item(_, _, _, draft, _, _, _, _), _, 0) :-
-    % Drafts don't count toward completion
     !.
 
-% Check if work item is done with safety margin applied
-is_done_with_margin(WorkItem) :-
-    work_item_score(WorkItem, true, Score),
-    Score > 0.
+% ============================================================================
+% Safety Margin Rules (LLM +10% rule)
+% ============================================================================
+
+% Apply 10% safety margin to count
+apply_safety_margin(Count, AdjustedCount) :-
+    number(Count),
+    AdjustedCount is Count * 1.1.

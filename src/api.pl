@@ -7,15 +7,36 @@
 
 :- use_module(log).
 :- use_module(state).
+:- use_module(config).
+
+% Conditionally load disk_scan if available
+:- (exists_source(modules/disk_scan) -> use_module(modules/disk_scan) ; true).
 
 % Scan a source and return items
-% This is a stub implementation that will be expanded in future specs
+% Now with actual disk scanning support
 source_scan(Source, Items) :-
     log_debug('source_scan called'),
     format(atom(Msg), 'Scanning source: ~w', [Source]),
     log_info(Msg),
-    % Return empty list for now
-    Items = [],
+    
+    % Check if disk_scan module is enabled
+    (config:get_config([modules, enabled], EnabledModules) ->
+        (member(disk_scan, EnabledModules) ->
+            catch(
+                disk_scan:scan_directories,
+                Error,
+                (format(atom(ErrMsg), 'Error during disk scan: ~w', [Error]),
+                 log_error(ErrMsg))
+            )
+        ;
+            log_debug('disk_scan module not enabled')
+        )
+    ;
+        log_debug('No modules configured')
+    ),
+    
+    % Return discovered items
+    state:get_work_items(Items),
     !.
 
 % Generate planner recommendations based on state
