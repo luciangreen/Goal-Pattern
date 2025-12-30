@@ -10,6 +10,10 @@ A Prolog-based daemon service that runs continuously to scan, plan, and report o
 - **Structured logging**: Comprehensive logging with multiple levels
 - **Modular architecture**: Plugin system for future integrations
 - **Clean shutdown**: Graceful shutdown with state preservation
+- **Disk scanning**: Scans directories for algorithms (Prolog files) and philosophies (essays)
+- **Calendar integration**: Imports schedule events from ICS files with intelligent tagging
+- **Event tagging**: Automatically tags events based on configurable keyword rules
+- **Duplicate prevention**: Prevents duplicate events on re-import
 
 ## Requirements
 
@@ -93,6 +97,31 @@ Edit `config/config.json` to customize daemon behavior:
 - `log.console_output`: Whether to also log to console (default: `true`)
 - `modules.enabled`: List of enabled plugin modules (default: `[]`)
 
+### Calendar Configuration
+
+The calendar module supports importing schedule events from ICS files:
+
+```json
+{
+  "calendar": {
+    "ics_files": ["path/to/calendar.ics"],
+    "tag_rules_file": "config/tag_rules.json",
+    "bridge_helper": ""
+  }
+}
+```
+
+- `ics_files`: List of ICS file paths to import events from
+- `tag_rules_file`: Path to JSON file containing tagging rules (default: `config/tag_rules.json`)
+- `bridge_helper`: Path to native calendar bridge helper (Phase B, optional)
+
+### Disk Scan Configuration
+
+The disk scan module scans directories for algorithms and philosophy files:
+
+- `disk_scan.paths`: List of directories to scan with type (algorithms/philosophies)
+- `disk_scan.thresholds`: Completion thresholds for different work types
+
 ## Architecture
 
 ### Module Structure
@@ -104,17 +133,28 @@ src/
 ├── state.pl           # Persistent state management
 ├── log.pl             # Structured logging
 ├── api.pl             # Internal API (scan, plan, report)
+├── model.pl           # Data model (goals, work items, schedule events, time blocks)
+├── validate.pl        # Model validation
 └── modules/           # Plugin modules directory
+    ├── disk_scan.pl       # Local disk scanning for algorithms and essays
+    ├── calendar_ics.pl    # ICS calendar file parsing
+    └── calendar_bridge.pl # Native calendar integration stub (Phase B)
 
 tests/
-├── run_tests.pl       # Test runner
-└── test_daemon.pl     # Daemon tests
+├── run_tests.pl           # Test runner
+├── test_daemon.pl         # Daemon tests
+├── test_disk_scan.pl      # Disk scan tests
+└── test_calendar_ics.pl   # Calendar ICS tests
 
 bin/
 └── lucian_planner     # CLI entry point
 
 config/
-└── config.json        # Configuration file
+├── config.json        # Main configuration file
+└── tag_rules.json     # Event tagging rules
+
+examples/
+└── sample_calendar.ics  # Sample ICS file for testing
 ```
 
 ### Key Functions
@@ -145,6 +185,58 @@ config/
 - `source_scan/2`: Scan a source for items
 - `planner_recommendations/2`: Generate planning recommendations
 - `generate_report/1`: Generate a report
+
+#### Calendar Module
+- `import_ics_file/1`: Import events from an ICS file
+- `import_events/0`: Import all configured ICS files
+- `parse_ics_file/2`: Parse ICS file and extract events
+- `apply_event_tags/3`: Apply tags to events based on keyword rules
+- `determine_attendance_confidence/2`: Determine attendance confidence from event status
+
+#### Disk Scan Module
+- `scan_directories/0`: Scan all configured directories
+- `scan_directory/1`: Scan a single directory
+- `count_prolog_clauses/2`: Count clauses in a Prolog file
+- `count_words/2`: Count words in a text file
+- `classify_completion/3`: Classify completion status based on count
+
+## Usage Examples
+
+### Importing Calendar Events
+
+To import events from an ICS file, add the file path to your config:
+
+```json
+{
+  "calendar": {
+    "ics_files": ["examples/sample_calendar.ics"]
+  }
+}
+```
+
+Then run:
+```prolog
+?- calendar_ics:import_events.
+```
+
+Events will be automatically tagged based on keywords in the title and location. For example:
+- "Weekly Sauna Session" → tagged with `sauna`
+- "AI Seminar" → tagged with `seminar`
+- "Travel to Home" → tagged with `travel`, `home`
+
+### Customizing Event Tags
+
+Edit `config/tag_rules.json` to customize how events are tagged:
+
+```json
+{
+  "event_tags": {
+    "sauna": ["sauna", "spa"],
+    "work": ["work", "office", "meeting"],
+    "rest": ["rest", "vacation", "break"]
+  }
+}
+```
 
 ## Development
 
