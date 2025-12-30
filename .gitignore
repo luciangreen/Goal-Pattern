@@ -1,0 +1,22 @@
+# State and data files
+data/
+*.json.bak
+
+# Log files
+logs/
+*.log
+
+# Compiled Prolog files
+*.qlf
+
+# System files
+.DS_Store
+*~
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+/tmp/
+*.tmp

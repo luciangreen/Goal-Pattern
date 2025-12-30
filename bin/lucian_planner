@@ -1,0 +1,12 @@
+#!/bin/bash
+# bin/lucian_planner - CLI entry point for the daemon
+
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
+
+# Change to project directory
+cd "$PROJECT_DIR"
+
+# Run SWI-Prolog with daemon
+swipl -q -s src/daemon.pl -g daemon_start
