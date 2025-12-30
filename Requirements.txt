@@ -1,0 +1,400 @@
+Spec 01 — Repo scaffolding + always-on daemon (Terminal runner)
+
+Objective
+Create a Prolog-based service that can run continuously in a Terminal window (and optionally via macOS launchd) and exposes a stable internal API for scanning, planning, and reporting.
+
+Context / Requirements
+	•	Primary runtime: SWI-Prolog.
+	•	Must support:
+	•	“Run forever” loop with periodic ticks (e.g., every 60s)
+	•	Clean shutdown + state persistence
+	•	Config file loading
+	•	Pluggable modules for sources and analytics
+	•	No external integrations yet (stub interfaces only).
+
+Tasks
+	1.	Create repo structure:
+	•	src/daemon.pl main loop
+	•	src/config.pl config load/validate
+	•	src/state.pl persistent state (JSON or Prolog facts saved to disk)
+	•	src/log.pl structured logs
+	•	src/api.pl internal predicates for “scan, plan, report”
+	•	src/modules/ for future integrations
+	2.	Implement daemon loop:
+	•	daemon_start/0, daemon_stop/0, daemon_tick/0
+	•	tick schedule configurable (default 60 seconds)
+	3.	Persistence:
+	•	State snapshot every N minutes and on shutdown
+	4.	CLI entry:
+	•	bin/lucian_planner (shell script) runs swipl -q -s src/daemon.pl -g daemon_start
+	5.	Tests:
+	•	tests/test_daemon.pl verifies loop calls tick, saves state, and respects config.
+
+Files to create
+	•	README.md (how to run, how to stop, config example)
+	•	config/config.json (or .pl)
+	•	src/*.pl, tests/*.pl, bin/*
+
+Acceptance Criteria
+	•	Running bin/lucian_planner starts a loop and logs tick events.
+	•	daemon_stop/0 exits cleanly and writes state to disk.
+	•	Tests pass with swipl -q -s tests/run_tests.pl -g run_tests.
+
+Notes
+	•	Keep module interfaces stable: source_scan(Source, Items) and planner_recommendations(State, Recs).
+
+⸻
+
+Spec 02 — Unified data model (goals, work artifacts, schedule, events, patterns)
+
+Objective
+Define a canonical internal model for: goals, work done, schedules, places, fatigue/rest/play/work blocks, and correlations.
+
+Context / Requirements
+You want two main work types:
+	•	Algorithms: Prolog clauses/units (80–140/week)
+	•	Philosophies: essays (5–7/week), target length (e.g., “16×5 sentences”)
+
+The system must also track:
+	•	Work artifacts found on disk/email
+	•	Schedule events by minute (granularity)
+	•	Context tags: home, friend’s house, country, sauna, travel, seminar, etc.
+
+Tasks
+	1.	Create src/model.pl defining facts/structures, e.g.:
+	•	goal/6 (id, type, target_count, time_window, strictness, metadata)
+	•	work_item/8 (id, type, filepath/origin, status, wordcount/clauses, timestamps, tags, confidence)
+	•	schedule_event/8 (id, start, end, title, location, tags, source, attendance_confidence)
+	•	time_block/6 (start, end, category(rest/work/play/travel), fatigue_cost, recovery_cost, confidence)
+	2.	Define “status” transitions:
+	•	draft → partial → complete → submitted
+	3.	Define scoring:
+	•	“done” includes chatbot work but requires +10% safety margin rule
+	4.	Build validation predicates for model integrity (time ranges, nonnegative counts, etc.).
+
+Files to change/create
+	•	src/model.pl
+	•	src/validate.pl
+	•	Update src/state.pl serialization format to store these entities.
+
+Acceptance Criteria
+	•	You can assert example goals + work items + schedule events and serialize/deserialize them.
+	•	Validation catches malformed timestamps and negative counts.
+
+⸻
+
+Spec 03 — Local disk scanning (algorithms + essays) with partial completion detection
+
+Objective
+Scan specified directories for partially completed and completed work, detect patterns and progress, and store in the unified model.
+
+Context / Requirements
+	•	Must find:
+	•	Prolog files (.pl) and count new/changed clauses
+	•	Essay drafts (.md, .txt, .docx, .pdf only indexed as metadata for now)
+	•	Must detect partial completion and “work sessions” based on file modification bursts.
+	•	Must tag artifacts by heuristics (repo path, folder names, keywords).
+
+Tasks
+	1.	Implement src/modules/disk_scan.pl
+	•	Configurable paths (e.g., repo directories, essays folder)
+	•	File indexing: name, path, size, mtime, type
+	2.	Prolog clause counting:
+	•	Parse .pl files using read_term/3 loop
+	•	Count clauses; store per-file counts and deltas since last scan
+	3.	Essay progress:
+	•	Word count for text/markdown
+	•	For .docx, extract text (either via external helper or simple docx parsing library—choose one approach and document it)
+	4.	Partial completion classification:
+	•	“draft/partial/complete” by thresholds (configurable)
+	5.	Write results into state:
+	•	Add or update work_item/… with confidence scores
+
+Files
+	•	src/modules/disk_scan.pl
+	•	src/helpers/ optional helper scripts (if needed)
+	•	Update config schema to include scan paths and file type rules.
+
+Acceptance Criteria
+	•	After a scan, state includes discovered work items with counts/wordcounts.
+	•	Re-scan updates deltas without duplicating items.
+	•	Unit tests cover: clause counting, word counting, partial classification.
+
+⸻
+
+Spec 04 — Schedule ingestion (Apple Calendar via exported ICS first, then native integration)
+
+Objective
+Ingest schedule data in “any format” starting with ICS files, then add native Apple Calendar integration.
+
+Context / Requirements
+	•	Phase A (easy, reliable): read .ics exports / subscribed calendars downloaded locally.
+	•	Phase B (native): macOS integration (e.g., EventKit via a small Swift/Node/Python bridge that outputs JSON to Prolog).
+	•	Must tag events: travel, sauna, friend’s house, home, seminar, haircut, work, rest.
+
+Tasks
+	1.	Implement src/modules/calendar_ics.pl
+	•	Parse ICS (VEVENT start/end, summary, location)
+	•	Convert to schedule_event/…
+	2.	Tagging:
+	•	Keyword rules in config (e.g., “sauna”, “haircut”, “seminar”, suburb names, “Zoom”)
+	3.	Add attendance inference stubs:
+	•	attendance_confidence default 0.5 unless evidence exists
+	4.	Create bridge interface contract for Phase B:
+	•	calendar_bridge_fetch(Start, End, JsonPath) (external command)
+	•	Prolog reads JSON and converts to events (but you can ship Phase B later)
+
+Files
+	•	src/modules/calendar_ics.pl
+	•	src/modules/calendar_bridge.pl (stub)
+	•	config/tag_rules.json
+
+Acceptance Criteria
+	•	Given an ICS file path, events are imported into state with timestamps.
+	•	Tags applied via rules.
+	•	Duplicate events aren’t re-added; updates reflect changes.
+
+⸻
+
+Spec 05 — Gmail “sent mail” ingestion (metadata-first) + work evidence extraction
+
+Objective
+Pull sent emails from Gmail (to a specified address) and infer work completion evidence and schedule changes.
+
+Context / Requirements
+	•	Emails may contain:
+	•	algorithm specs
+	•	schedule notes
+	•	“submitted / completed” confirmations
+	•	Start metadata-first:
+	•	subject, to, date, thread id, snippet
+	•	Then extract structured signals:
+	•	“completed X”, “submitted essay Y”, “cancelled seminar”, etc.
+
+Tasks
+	1.	Create src/modules/gmail.pl with external helper contract:
+	•	A helper script authenticates via Gmail API and writes JSON.
+	•	Prolog reads JSON and maps to work_item evidence + schedule_event updates.
+	2.	Evidence extraction rules:
+	•	Regex patterns configurable in config/evidence_rules.json
+	3.	Store provenance:
+	•	Link extracted items to source gmail(sent) with message id.
+	4.	Safety:
+	•	No storing full email bodies by default; store minimal necessary fields unless user opts in.
+
+Files
+	•	src/modules/gmail.pl
+	•	src/helpers/gmail_fetch.py (or node)
+	•	config/evidence_rules.json
+
+Acceptance Criteria
+	•	Running fetch produces JSON; Prolog imports it.
+	•	At least 5 evidence patterns recognized via config.
+	•	State shows work tally increments attributable to email evidence.
+
+⸻
+
+Spec 06 — Work tallying vs goals + “catch-up feasibility” forecasting
+
+Objective
+Compute progress against weekly goals, detect missed deadlines, and forecast whether catch-up is feasible in future weeks.
+
+Context / Requirements
+	•	Weekly targets (algorithms + essays) with optional “strict push” mode:
+	•	Example strict: 140 algorithms + 7 essays/week at 100%
+	•	Must show:
+	•	current week progress
+	•	backlog from missed weeks
+	•	feasibility estimate based on available time blocks and historical productivity
+
+Tasks
+	1.	Implement src/progress.pl
+	•	weekly_progress(Week, Summary)
+	•	backlog(FromWeek, ToWeek, BacklogSummary)
+	2.	Productivity model:
+	•	Estimate “units/hour” separately for algorithms and essays
+	•	Learn from historical file deltas + schedule contexts (home vs friend vs sauna etc.)
+	3.	Feasibility:
+	•	Compute remaining workable minutes in future week(s)
+	•	Predict achievable units
+	•	Output: “can catch up by week W?” with confidence
+	4.	Reporting:
+	•	CLI command: bin/lucian_report today|week|backlog
+
+Files
+	•	src/progress.pl
+	•	src/productivity.pl
+	•	src/report.pl
+	•	CLI additions in bin/
+
+Acceptance Criteria
+	•	Given sample state, system produces correct weekly progress and backlog.
+	•	Feasibility output includes: required units, predicted units, confidence band.
+
+⸻
+
+Spec 07 — Correlative statistical analysis of schedule patterns vs goal completion
+
+Objective
+Compute correlations between schedule patterns (by minute-level blocks) and successful work outcomes.
+
+Context / Requirements
+You want: “correlative statistical analysis of how patterns in schedules affect the goals,” including contexts like:
+	•	friend’s house vs home vs country
+	•	travel time + tiredness/recovery
+	•	sauna + related tasks
+	•	cancelled/attended seminars (ask if attended if uncertain; or infer from logs like Zoom)
+
+Tasks
+	1.	Build minute-level timeline:
+	•	src/timeline.pl: convert schedule events into per-minute categories + tags
+	2.	Work outcome labeling:
+	•	Identify productive windows preceding file delta bursts / email evidence
+	3.	Correlation metrics:
+	•	Start with simple, interpretable measures:
+	•	Pearson/point-biserial (where applicable)
+	•	contingency tables + chi-square
+	•	lag analysis (e.g., sauna → decreased work probability in next 4h?)
+	4.	Output insights:
+	•	“Top 10 positive predictors” and “Top 10 negative predictors”
+	•	Include “avoid patterns” suggestions when priorities are compromised
+	5.	Uncertainty handling:
+	•	Attendance unknown → either prompt user or treat as probabilistic feature
+
+Files
+	•	src/timeline.pl
+	•	src/stats.pl
+	•	src/insights.pl
+
+Acceptance Criteria
+	•	With synthetic data, analysis identifies known planted correlations.
+	•	Outputs are human-readable and include confidence indicators.
+
+⸻
+
+Spec 08 — Planner + reminder engine (optimal moments, travel/prep/recovery, user choice)
+
+Objective
+Provide a planning function that recommends best times to work (or do rest/play/travel) and can display/modify the day’s schedule.
+
+Context / Requirements
+	•	Secondary function as planner:
+	•	choose best times for tasks with preparation + travel + fatigue + recovery
+	•	considers enjoyment + rest needs
+	•	Must support:
+	•	displaying today’s schedule
+	•	suggesting work blocks
+	•	reminders at ideal moments
+	•	user overrides
+
+Tasks
+	1.	Implement src/planner.pl
+	•	Inputs: current schedule, backlog/goals, fatigue model, preferences
+	•	Output: proposed time blocks (work/rest/play) with reasons
+	2.	Reminder engine:
+	•	src/remind.pl triggers notifications (start with Terminal prompts; later add macOS notifications bridge)
+	3.	Schedule modification:
+	•	Allow “what-if” edits: move/cancel blocks, add new blocks
+	4.	Preference system:
+	•	“strict push mode” vs “adaptive goals”
+	•	quiet hours, minimum rest, maximum work streak, etc.
+
+Files
+	•	src/planner.pl, src/remind.pl, src/preferences.pl
+	•	CLI: bin/lucian_plan today, bin/lucian_edit_schedule
+
+Acceptance Criteria
+	•	Running planner outputs a day plan with ≥3 suggested work blocks (if feasible).
+	•	User overrides persist and affect future recommendations.
+
+⸻
+
+Spec 09 — LLM integration (Gemini/ChatGPT) with +10% safety margin and verification
+
+Objective
+Use LLMs to analyze texts (notes/specs/drafts) and propose completions, while enforcing an extra 10% work buffer because the chatbot might be mistaken.
+
+Context / Requirements
+	•	LLMs: ChatGPT/Gemini/other, via external helper that returns JSON results.
+	•	Must never mark something “done” purely from LLM output.
+	•	“+10%” rule:
+	•	If LLM suggests X units done/generated, system requires user-verified extra work or independent checks equivalent to 10% of X.
+
+Tasks
+	1.	Implement src/modules/llm.pl with external contract:
+	•	Input pack builder: selected files/snippets + goals + workflow settings
+	•	Output JSON: suggestions, draft text, confidence, citations to source snippets
+	2.	Verification workflow:
+	•	Track “needs review” tasks
+	•	Enforce “10% extra” requirement before promoting status to complete
+	3.	Customizable workflow modes:
+	•	“draft then user grammar-check and paraphrase”
+	•	“outline only”
+	•	“complete but requires checklist”
+	4.	Audit logging:
+	•	Store prompt hashes, model name, timestamps, and output ids (not necessarily full prompts unless opted-in)
+
+Files
+	•	src/modules/llm.pl
+	•	src/review.pl
+	•	config/workflows.json
+
+Acceptance Criteria
+	•	LLM suggestions appear as tasks with “needs_review”.
+	•	Completion requires user confirmation + 10% buffer rule recorded in state.
+
+⸻
+
+Spec 10 — Automation hooks: file2phil.pl + GitHub Copilot Agent actions
+
+Objective
+Allow the system to trigger your existing automation (e.g., file2phil.pl) and optionally orchestrate Copilot Agent to write algorithms in the correct repo based on recommendations.
+
+Context / Requirements
+	•	This spec is about hooks and orchestration, not replacing your tools.
+	•	Must be safe: dry-run mode, explicit allowlist of commands, logged actions.
+
+Tasks
+	1.	Implement src/automate.pl
+	•	run_file2phil(Path, Options)
+	•	run_repo_task(Repo, TaskSpec) (stub for Copilot orchestration)
+	2.	Command safety:
+	•	allowlist commands in config
+	•	no arbitrary shell by default
+	3.	Integration with planner:
+	•	recommended block “Run file2phil now” if it improves goals
+	4.	Record outcomes:
+	•	store “automation ran” events with success/failure and produced files
+
+Files
+	•	src/automate.pl
+	•	config/automation_allowlist.json
+
+Acceptance Criteria
+	•	In dry-run, prints intended commands only.
+	•	In live mode, executes allowlisted command and logs result.
+
+⸻
+
+Cross-cutting Non-Functional Requirements (apply to all specs)
+
+Privacy & Security
+	•	Store credentials outside repo (Keychain, env vars, or encrypted local config).
+	•	Default to minimal retention (metadata over full content).
+	•	Provide an “offline mode” where no external calls are made.
+
+Reliability
+	•	Must recover from crashes with state replay.
+	•	All source ingestion is idempotent (no duplicates).
+
+Explainability
+	•	Recommendations must include “why”: pattern evidence + constraints + confidence.
+
+Performance
+	•	Scans must be incremental and avoid re-parsing everything on every tick.
+
+⸻
+
+What to paste into Copilot Agent first
+
+Start with Spec 01, then proceed in order. If you want the fastest path to usefulness: 01 → 02 → 03 → 04 → 06 → 08, then add 05/07/09/10.
