@@ -77,13 +77,13 @@ print_progress_summary(weekly_progress(Week, AlgsProgress, PhilsProgress)) :-
     
     % Algorithms
     AlgsProgress = algorithms(AlgsDone, AlgsTarget),
-    AlgsPercent is (AlgsTarget > 0 -> (AlgsDone / AlgsTarget) * 100 ; 0),
+    (AlgsTarget > 0 -> AlgsPercent is (AlgsDone / AlgsTarget) * 100 ; AlgsPercent = 0),
     format('  Algorithms: ~w / ~w (~1f%)~n', [AlgsDone, AlgsTarget, AlgsPercent]),
     print_status_bar(AlgsDone, AlgsTarget),
     
     % Philosophies
     PhilsProgress = philosophies(PhilsDone, PhilsTarget),
-    PhilsPercent is (PhilsTarget > 0 -> (PhilsDone / PhilsTarget) * 100 : 0),
+    (PhilsTarget > 0 -> PhilsPercent is (PhilsDone / PhilsTarget) * 100 ; PhilsPercent = 0),
     format('  Philosophies: ~w / ~w (~1f%)~n', [PhilsDone, PhilsTarget, PhilsPercent]),
     print_status_bar(PhilsDone, PhilsTarget).
 
@@ -106,7 +106,8 @@ print_feasibility(Type, feasible(CatchUpWeek, Confidence)) :-
            [CatchUpWeek, ConfidencePercent]),
     
     % Show additional details
-    forecast_achievable_units(Type, _, CatchUpWeek, Achievable),
+    current_week(CurrentWeek),
+    forecast_achievable_units(Type, CurrentWeek, CatchUpWeek, Achievable),
     estimate_productivity(Type, productivity(Type, UnitsPerHour, _)),
     format('  - Predicted achievable units: ~w~n', [Achievable]),
     format('  - Estimated productivity: ~2f units/hour~n', [UnitsPerHour]).

@@ -15,22 +15,13 @@ cat > "$TEMP_SCRIPT" <<'EOF'
 % Temporary report script
 :- initialization(main).
 
-% Load modules
-:- use_module(library(filesex)).
-:- set_prolog_flag(verbose, silent).
-:- set_prolog_flag(verbose_load, false).
-
-% Add src directory to path
-:- assert(user:file_search_path(library, 'src')).
-:- assert(user:file_search_path(library, 'src/modules')).
-
-% Load required modules
-:- use_module(config).
-:- use_module(state).
-:- use_module(log).
-:- use_module(progress).
-:- use_module(productivity).
-:- use_module(report).
+% Load modules with full paths
+:- use_module('PROJECT_ROOT_PLACEHOLDER/src/config').
+:- use_module('PROJECT_ROOT_PLACEHOLDER/src/state').
+:- use_module('PROJECT_ROOT_PLACEHOLDER/src/log').
+:- use_module('PROJECT_ROOT_PLACEHOLDER/src/progress').
+:- use_module('PROJECT_ROOT_PLACEHOLDER/src/productivity').
+:- use_module('PROJECT_ROOT_PLACEHOLDER/src/report').
 
 main :-
     % Change to project directory
