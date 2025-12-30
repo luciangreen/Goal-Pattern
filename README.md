@@ -1,5 +1,5 @@
 # Goal-Pattern
-Scans, Analyses, Scheduled and Automatically Completes Work
+Scans, Analyses, Schedules and Automatically Completes Work
 
 A Prolog-based daemon service that runs continuously to scan, plan, and report on work patterns and goals.
 
