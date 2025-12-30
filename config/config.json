@@ -1,0 +1,17 @@
+{
+  "daemon": {
+    "tick_interval_seconds": 60,
+    "state_save_interval_ticks": 5,
+    "log_level": "info"
+  },
+  "state": {
+    "file_path": "data/state.json"
+  },
+  "log": {
+    "file_path": "logs/daemon.log",
+    "console_output": true
+  },
+  "modules": {
+    "enabled": []
+  }
+}
