@@ -174,6 +174,23 @@ test(malformed_ics_handling, [setup(setup_test), cleanup(cleanup_test)]) :-
     
     delete_file('test_malformed.ics').
 
+% Test event without location field
+test(event_without_location, [setup(setup_test), cleanup(cleanup_test)]) :-
+    ICSContent = "BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nUID:no-loc-001\nDTSTART:20231215T140000Z\nDTEND:20231215T150000Z\nSUMMARY:No Location Event\nEND:VEVENT\nEND:VCALENDAR",
+    write_test_ics_file('test_no_location.ics', ICSContent),
+    
+    % Parse should work even without location
+    parse_ics_file('test_no_location.ics', Events),
+    assertion(Events \= []),
+    assertion(length(Events, 1)),
+    
+    % Check that event was parsed
+    Events = [Event|_],
+    assertion(get_dict(uid, Event, _)),
+    assertion(get_dict(summary, Event, "No Location Event")),
+    
+    delete_file('test_no_location.ics').
+
 % ============================================================================
 % Test Helpers
 % ============================================================================
@@ -187,7 +204,8 @@ cleanup_test :-
     % Clean up any test files
     (exists_file('test_calendar.ics') -> delete_file('test_calendar.ics') ; true),
     (exists_file('test_multi.ics') -> delete_file('test_multi.ics') ; true),
-    (exists_file('test_malformed.ics') -> delete_file('test_malformed.ics') ; true).
+    (exists_file('test_malformed.ics') -> delete_file('test_malformed.ics') ; true),
+    (exists_file('test_no_location.ics') -> delete_file('test_no_location.ics') ; true).
 
 % Helper to write test ICS file
 write_test_ics_file(Filename, Content) :-

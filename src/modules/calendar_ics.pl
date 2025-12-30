@@ -61,7 +61,7 @@ process_single_event(Event, _Source) :-
     get_dict(summary, Event, Summary),
     get_dict(start, Event, Start),
     get_dict(end, Event, End),
-    get_dict(location, Event, Location),
+    get_dict(location, Event, Location, ""),  % Default to empty string if no location
     
     % Apply tags based on rules
     apply_event_tags(Summary, Location, Tags),
