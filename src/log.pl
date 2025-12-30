@@ -18,7 +18,7 @@ init_log :-
     retractall(log_level(_)),
     
     % Set default log level
-    (get_config([daemon, log_level], Level) -> true ; Level = info),
+    (get_config([daemon, log_level], LevelStr) -> atom_string(Level, LevelStr) ; Level = info),
     assertz(log_level(Level)),
     
     % Get log file path
@@ -74,9 +74,8 @@ log_message(Level, LevelStr, Message) :-
     % Log to console if enabled
     (get_config([log, console_output], true) ->
         format('[~w] [~w] ~w~n', [Timestamp, LevelStr, Message])
-    ; true).
-
-log_message(_, _, _).
+    ; true),
+    !.
 
 % Check if message should be logged based on level
 should_log(error) :- !.

@@ -12,14 +12,14 @@
 :- dynamic current_config/1.
 
 % Default config path
-config_path('config/config.json').
+config_path('config/config.json') :- !.
 
 % Load configuration from file
 load_config(FilePath) :-
     exists_file(FilePath),
     !,
     open(FilePath, read, Stream),
-    json_read_dict(Stream, Config),
+    json:json_read_dict(Stream, Config),
     close(Stream),
     retractall(current_config(_)),
     assertz(current_config(Config)),
@@ -32,7 +32,8 @@ load_config(FilePath) :-
 % Get configuration value by path
 get_config(Path, Value) :-
     current_config(Config),
-    get_config_value(Path, Config, Value).
+    get_config_value(Path, Config, Value),
+    !.
 
 get_config_value([Key], Dict, Value) :-
     get_dict(Key, Dict, Value).
@@ -60,7 +61,8 @@ validate_config(Config) :-
     % Check modules configuration
     get_dict(modules, Config, Modules),
     get_dict(enabled, Modules, EnabledList),
-    is_list(EnabledList).
+    is_list(EnabledList),
+    !.
 
 validate_config(Config) :-
     format('Invalid configuration: ~w~n', [Config]),

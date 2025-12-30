@@ -6,7 +6,8 @@
     get_state/2,
     set_state/2,
     update_state/2,
-    cleanup_state/0
+    cleanup_state/0,
+    clear_state/0
 ]).
 
 :- use_module(library(http/json)).
@@ -22,7 +23,7 @@ init_state :-
     
     % Try to load existing state
     (catch(load_state, _, fail) -> 
-        log_info('State loaded from disk')
+        true  % State loaded from disk
     ;
         % Initialize with empty state
         EmptyState = _{
@@ -31,8 +32,7 @@ init_state :-
             start_time: null,
             modules: _{}
         },
-        assertz(daemon_state(EmptyState)),
-        log_info('New state initialized')
+        assertz(daemon_state(EmptyState))
     ).
 
 % Load state from disk
@@ -41,7 +41,7 @@ load_state :-
     exists_file(StatePath),
     !,
     open(StatePath, read, Stream),
-    json_read_dict(Stream, State),
+    json:json_read_dict(Stream, State),
     close(Stream),
     retractall(daemon_state(_)),
     assertz(daemon_state(State)).
@@ -61,25 +61,23 @@ save_state :-
     
     % Write state to file
     open(StatePath, write, Stream),
-    json_write_dict(Stream, State, [width(0)]),
+    json:json_write_dict(Stream, State, [width(0)]),
     close(Stream),
-    log_debug('State saved to disk').
-
-save_state :-
-    log_error('Failed to save state'),
-    fail.
+    !.
 
 % Get state value
 get_state(Key, Value) :-
     daemon_state(State),
-    get_dict(Key, State, Value).
+    get_dict(Key, State, Value),
+    !.
 
 % Set state value
 set_state(Key, Value) :-
     daemon_state(State),
     put_dict(Key, State, Value, NewState),
     retractall(daemon_state(_)),
-    assertz(daemon_state(NewState)).
+    assertz(daemon_state(NewState)),
+    !.
 
 % Update state with a dict
 update_state(Updates, NewState) :-
@@ -92,11 +90,15 @@ update_state(Updates, NewState) :-
 merge_dicts(Updates, State, Result) :-
     dict_pairs(Updates, _, UpdatePairs),
     dict_pairs(State, Tag, StatePairs),
-    append(UpdatePairs, StatePairs, AllPairs),
+    append(StatePairs, UpdatePairs, AllPairs),
     list_to_set(AllPairs, UniquePairs),
     dict_pairs(Result, Tag, UniquePairs).
 
 % Cleanup state
 cleanup_state :-
     save_state,
+    retractall(daemon_state(_)).
+
+% Clear state (for testing)
+clear_state :-
     retractall(daemon_state(_)).

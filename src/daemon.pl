@@ -35,6 +35,7 @@ daemon_start :-
     
     % Initialize state
     init_state,
+    log_info('State initialized'),
     
     % Record start time
     get_time(StartTime),
@@ -98,12 +99,12 @@ daemon_loop :-
 daemon_tick :-
     % Increment tick counter
     (tick_counter(Count) ->
-        NewCount is Count + 1,
-        retractall(tick_counter(_)),
-        assertz(tick_counter(NewCount))
+        (NewCount is Count + 1,
+         retractall(tick_counter(_)),
+         assertz(tick_counter(NewCount)))
     ;
-        NewCount = 1,
-        assertz(tick_counter(NewCount))
+        (NewCount = 1,
+         assertz(tick_counter(NewCount)))
     ),
     
     % Update state
@@ -121,7 +122,8 @@ daemon_tick :-
     get_config([daemon, state_save_interval_ticks], SaveInterval),
     (NewTickCount mod SaveInterval =:= 0 ->
         (save_state,
-         log_info('Periodic state save completed'))
+         log_info('Periodic state save completed'),
+         !)
     ;
         true
     ),
@@ -131,7 +133,8 @@ daemon_tick :-
     state:get_state(tick_count, TickState),
     api:planner_recommendations(TickState, _Recs),
     
-    format('Tick #~w completed~n', [NewTickCount]).
+    format('Tick #~w completed~n', [NewTickCount]),
+    !.
 
 % Handle Ctrl+C gracefully
 :- on_signal(int, _, daemon_stop).

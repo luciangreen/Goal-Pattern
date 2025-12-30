@@ -30,7 +30,7 @@ test(state_initialization) :-
     config:load_config(ConfigPath),
     config:get_config([state, file_path], StatePath),
     (exists_file(StatePath) -> delete_file(StatePath) ; true),
-    retractall(state:daemon_state(_)),
+    state:clear_state,
     
     % Now initialize fresh state
     state:init_state,
@@ -45,7 +45,7 @@ test(state_persistence) :-
     state:save_state,
     
     % Clear state and reload
-    retractall(state:daemon_state(_)),
+    state:clear_state,
     state:load_state,
     state:get_state(tick_count, Count),
     assertion(Count =:= 42),

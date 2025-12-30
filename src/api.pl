@@ -15,7 +15,8 @@ source_scan(Source, Items) :-
     format(atom(Msg), 'Scanning source: ~w', [Source]),
     log_info(Msg),
     % Return empty list for now
-    Items = [].
+    Items = [],
+    !.
 
 % Generate planner recommendations based on state
 % This is a stub implementation that will be expanded in future specs
@@ -24,7 +25,8 @@ planner_recommendations(State, Recommendations) :-
     format(atom(Msg), 'Generating recommendations for state: ~w', [State]),
     log_info(Msg),
     % Return empty list for now
-    Recommendations = [].
+    Recommendations = [],
+    !.
 
 % Generate a report
 % This is a stub implementation that will be expanded in future specs
@@ -33,4 +35,4 @@ generate_report(ReportType) :-
     format(atom(Msg), 'Generating report of type: ~w', [ReportType]),
     log_info(Msg),
     % Just log for now
-    true.
+    !.
