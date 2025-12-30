@@ -62,6 +62,7 @@ log_debug(Message) :-
 % Internal logging predicate
 log_message(Level, LevelStr, Message) :-
     should_log(Level),
+    !,
     get_time(Time),
     format_time(atom(Timestamp), '%Y-%m-%d %H:%M:%S', Time),
     
@@ -74,7 +75,10 @@ log_message(Level, LevelStr, Message) :-
     % Log to console if enabled
     (get_config([log, console_output], true) ->
         format('[~w] [~w] ~w~n', [Timestamp, LevelStr, Message])
-    ; true),
+    ; true).
+
+log_message(_, _, _) :-
+    % Always succeed even if we don't log
     !.
 
 % Check if message should be logged based on level
