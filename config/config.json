@@ -12,7 +12,7 @@
     "console_output": true
   },
   "modules": {
-    "enabled": ["disk_scan"]
+    "enabled": ["disk_scan", "calendar_ics"]
   },
   "disk_scan": {
     "paths": [
@@ -33,5 +33,10 @@
       "philosophy_partial": 200,
       "philosophy_complete": 500
     }
+  },
+  "calendar": {
+    "ics_files": [],
+    "tag_rules_file": "config/tag_rules.json",
+    "bridge_helper": ""
   }
 }

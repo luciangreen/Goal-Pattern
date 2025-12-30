@@ -18,7 +18,8 @@
     get_goals/1,
     % Schedule event management
     add_schedule_event/1,
-    get_schedule_events/1
+    get_schedule_events/1,
+    update_schedule_event/2
 ]).
 
 :- use_module(library(http/json)).
@@ -249,3 +250,18 @@ get_schedule_events(Events) :-
     !.
 
 get_schedule_events([]).
+
+% Update a schedule event (replace by ID)
+update_schedule_event(ID, NewEvent) :-
+    model:validate_schedule_event(NewEvent),
+    NewEvent = schedule_event(ID, _, _, _, _, _, _, _),
+    daemon_state(State),
+    get_dict(schedule_events, State, Events),
+    schedule_event_to_dict(NewEvent, NewDict),
+    % Replace the event with matching ID
+    exclude(is_item_with_id(ID), Events, FilteredEvents),
+    append(FilteredEvents, [NewDict], UpdatedEvents),
+    put_dict(schedule_events, State, UpdatedEvents, NewState),
+    retractall(daemon_state(_)),
+    assertz(daemon_state(NewState)),
+    !.

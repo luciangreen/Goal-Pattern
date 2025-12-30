@@ -1,0 +1,26 @@
+{
+  "event_tags": {
+    "travel": ["travel", "flight", "train", "bus", "drive", "trip", "journey"],
+    "sauna": ["sauna", "spa"],
+    "friend_house": ["friend", "visit", "gathering"],
+    "home": ["home", "house"],
+    "seminar": ["seminar", "conference", "workshop", "lecture", "presentation", "meeting", "webinar"],
+    "haircut": ["haircut", "barber", "hairdresser", "salon"],
+    "work": ["work", "office", "project", "deadline", "task"],
+    "rest": ["rest", "relax", "vacation", "break", "sleep", "nap"],
+    "zoom": ["zoom", "video call", "online meeting", "virtual"],
+    "exercise": ["gym", "exercise", "workout", "run", "jog", "yoga", "fitness"],
+    "food": ["lunch", "dinner", "breakfast", "meal", "restaurant", "cafe"]
+  },
+  "location_tags": {
+    "home": ["home"],
+    "friend_house": ["friend's", "friend"],
+    "country": ["country", "countryside", "rural"],
+    "travel": ["airport", "station", "highway", "road"]
+  },
+  "attendance_keywords": {
+    "high_confidence": ["confirmed", "attending", "accepted", "rsvp yes"],
+    "low_confidence": ["maybe", "tentative", "pending"],
+    "not_attending": ["declined", "cancelled", "canceled"]
+  }
+}
