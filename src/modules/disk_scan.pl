@@ -23,25 +23,30 @@
 scan_directories :-
     log_info('Starting disk scan...'),
     (config:get_config([disk_scan, paths], Paths) ->
-        maplist(scan_directory, Paths)
+        (maplist(scan_directory, Paths),
+         log_info('Disk scan completed'))
     ;
         log_warn('No disk scan paths configured')
     ),
-    log_info('Disk scan completed'),
-    !.
-
-scan_directories :-
-    log_warn('No disk scan paths configured'),
     !.
 
 % Scan a single directory
 scan_directory(PathConfig) :-
+    format(atom(TraceMsg1), 'scan_directory called with: ~w', [PathConfig]),
+    log_info(TraceMsg1),
     get_dict(path, PathConfig, Path),
+    format(atom(TraceMsg2), '  path extracted: ~w', [Path]),
+    log_info(TraceMsg2),
     get_dict(type, PathConfig, Type),
+    format(atom(TraceMsg3), '  type extracted: ~w', [Type]),
+    log_info(TraceMsg3),
     (exists_directory(Path) ->
         (format(atom(Msg), 'Scanning ~w directory: ~w', [Type, Path]),
          log_info(Msg),
-         scan_directory_recursive(Path, Type))
+         format(atom(TraceMsg4), '  calling scan_directory_recursive(~w, ~w)', [Path, Type]),
+         log_info(TraceMsg4),
+         scan_directory_recursive(Path, Type),
+         log_info('  scan_directory_recursive completed'))
     ;
         (format(atom(Msg), 'Directory not found: ~w', [Path]),
          log_warn(Msg))
@@ -51,23 +56,36 @@ scan_directory(PathConfig) :-
 % Recursively scan directory
 scan_directory_recursive(Dir, Type) :-
     directory_files(Dir, Files),
-    forall(
-        (member(File, Files),
-         File \= '.',
-         File \= '..'),
-        process_file_or_dir(Dir, File, Type)
-    ).
+    process_all_files(Files, Dir, Type),
+    !.
+
+% Process all files in a list
+process_all_files([], _, _) :- !.
+process_all_files([File|Rest], Dir, Type) :-
+    (File = '.' ; File = '..') ->
+        process_all_files(Rest, Dir, Type)
+    ;
+        (process_file_or_dir(Dir, File, Type) ->
+            true
+        ;
+            true  % Continue even if one file fails
+        ),
+        process_all_files(Rest, Dir, Type).
 
 % Process file or subdirectory
 process_file_or_dir(Dir, Name, Type) :-
     atomic_list_concat([Dir, '/', Name], FullPath),
+    format(atom(DbgMsg), 'Processing: ~w (type=~w)', [FullPath, Type]),
+    log_info(DbgMsg),
     (exists_directory(FullPath) ->
-        scan_directory_recursive(FullPath, Type)
+        (log_info('  -> is directory'),
+         scan_directory_recursive(FullPath, Type))
     ;
         (is_scannable_file(FullPath, Type) ->
-            scan_file(FullPath, Type)
+            (log_info('  -> is scannable file'),
+             scan_file(FullPath, Type))
         ;
-            true
+            log_info('  -> skipping (not scannable)')
         )
     ).
 
@@ -76,14 +94,25 @@ process_file_or_dir(Dir, Name, Type) :-
 % ============================================================================
 
 % Check if file should be scanned based on type
-is_scannable_file(Path, algorithms) :-
+is_scannable_file(Path, Type) :-
+    is_algorithm_type(Type),
     file_name_extension(_, pl, Path),
     !.
 
-is_scannable_file(Path, philosophies) :-
+is_scannable_file(Path, Type) :-
+    is_philosophy_type(Type),
     file_name_extension(_, Ext, Path),
     member(Ext, [md, txt, text]),
     !.
+
+% Helper predicates to match type (handles various representations)
+is_algorithm_type(algorithms).
+is_algorithm_type('algorithms').
+is_algorithm_type(X) :- atom(X), atom_string(X, "algorithms").
+
+is_philosophy_type(philosophies).
+is_philosophy_type('philosophies').
+is_philosophy_type(X) :- atom(X), atom_string(X, "philosophies").
 
 % ============================================================================
 % File Scanning

@@ -9,6 +9,9 @@
 :- use_module(state).
 :- use_module(config).
 
+% Conditionally load disk_scan if available
+:- (exists_source(modules/disk_scan) -> use_module(modules/disk_scan) ; true).
+
 % Scan a source and return items
 % Now with actual disk scanning support
 source_scan(Source, Items) :-
@@ -19,13 +22,12 @@ source_scan(Source, Items) :-
     % Check if disk_scan module is enabled
     (config:get_config([modules, enabled], EnabledModules) ->
         (member(disk_scan, EnabledModules) ->
-            (use_module(modules/disk_scan),
-             catch(
-                 disk_scan:scan_directories,
-                 Error,
-                 (format(atom(ErrMsg), 'Error during disk scan: ~w', [Error]),
-                  log_error(ErrMsg))
-             ))
+            catch(
+                disk_scan:scan_directories,
+                Error,
+                (format(atom(ErrMsg), 'Error during disk scan: ~w', [Error]),
+                 log_error(ErrMsg))
+            )
         ;
             log_debug('disk_scan module not enabled')
         )
