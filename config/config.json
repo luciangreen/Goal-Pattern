@@ -12,6 +12,26 @@
     "console_output": true
   },
   "modules": {
-    "enabled": []
+    "enabled": ["disk_scan"]
+  },
+  "disk_scan": {
+    "paths": [
+      {
+        "path": "src",
+        "type": "algorithms"
+      },
+      {
+        "path": "tests",
+        "type": "algorithms"
+      }
+    ],
+    "thresholds": {
+      "algorithm_draft": 10,
+      "algorithm_partial": 30,
+      "algorithm_complete": 80,
+      "philosophy_draft": 50,
+      "philosophy_partial": 200,
+      "philosophy_complete": 500
+    }
   }
 }

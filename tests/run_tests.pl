@@ -3,10 +3,11 @@
 
 % Load test files
 :- consult('test_daemon.pl').
+:- consult('test_disk_scan.pl').
 
 % Run all tests
 run_tests :-
-    run_tests([daemon]),
+    run_tests([daemon, disk_scan]),
     halt(0).
 
 % Run tests on load if called with -g run_tests
