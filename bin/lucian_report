@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# lucian_report - CLI for generating progress and backlog reports
+
+# Script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+# Default report type
+REPORT_TYPE="${1:-week}"
+
+# Create a temporary Prolog script
+TEMP_SCRIPT=$(mktemp /tmp/lucian_report.XXXXXX.pl)
+
+cat > "$TEMP_SCRIPT" <<'EOF'
+% Temporary report script
+:- initialization(main).
+
+% Load modules
+:- use_module(library(filesex)).
+:- set_prolog_flag(verbose, silent).
+:- set_prolog_flag(verbose_load, false).
+
+% Add src directory to path
+:- assert(user:file_search_path(library, 'src')).
+:- assert(user:file_search_path(library, 'src/modules')).
+
+% Load required modules
+:- use_module(config).
+:- use_module(state).
+:- use_module(log).
+:- use_module(progress).
+:- use_module(productivity).
+:- use_module(report).
+
+main :-
+    % Change to project directory
+    working_directory(_, 'PROJECT_ROOT_PLACEHOLDER'),
+    
+    % Load config
+    catch(config:load_config('config/config.json'), _, true),
+    
+    % Initialize state
+    catch(state:init_state, _, true),
+    
+    % Get report type from argument
+    current_prolog_flag(argv, Argv),
+    (Argv = [ReportType|_] -> true ; ReportType = 'week'),
+    
+    % Generate report
+    (   ReportType = 'today' -> report:report_today
+    ;   ReportType = 'week' -> report:report_week
+    ;   ReportType = 'backlog' -> report:report_backlog
+    ;   (format('Unknown report type: ~w~n', [ReportType]),
+         format('Usage: lucian_report [today|week|backlog]~n', []),
+         halt(1))
+    ),
+    
+    % Exit
+    halt(0).
+
+main :-
+    format('Error generating report~n', []),
+    halt(1).
+EOF
+
+# Replace PROJECT_ROOT_PLACEHOLDER with actual path
+sed -i "s|PROJECT_ROOT_PLACEHOLDER|$PROJECT_ROOT|g" "$TEMP_SCRIPT"
+
+# Run the Prolog script
+cd "$PROJECT_ROOT" || exit 1
+swipl -q -s "$TEMP_SCRIPT" -- "$REPORT_TYPE"
+
+# Clean up
+rm -f "$TEMP_SCRIPT"
