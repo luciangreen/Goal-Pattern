@@ -36,6 +36,10 @@ test(state_initialization) :-
     state:init_state,
     state:get_state(tick_count, Count),
     assertion(Count =:= 0),
+    
+    % Cleanup
+    (exists_file(StatePath) -> delete_file(StatePath) ; true),
+    state:clear_state,
     !.
 
 test(state_persistence) :-
@@ -49,6 +53,11 @@ test(state_persistence) :-
     state:load_state,
     state:get_state(tick_count, Count),
     assertion(Count =:= 42),
+    
+    % Clean up state file for next tests
+    config:get_config([state, file_path], StatePath),
+    (exists_file(StatePath) -> delete_file(StatePath) ; true),
+    state:clear_state,
     !.
 
 test(tick_execution) :-
@@ -70,6 +79,9 @@ test(tick_execution) :-
     
     % Cleanup
     log:close_log,
+    config:get_config([state, file_path], StatePath),
+    (exists_file(StatePath) -> delete_file(StatePath) ; true),
+    state:clear_state,
     !.
 
 test(state_periodic_save) :-
@@ -91,6 +103,8 @@ test(state_periodic_save) :-
     
     % Cleanup
     log:close_log,
+    (exists_file(StatePath) -> delete_file(StatePath) ; true),
+    state:clear_state,
     !.
 
 :- end_tests(daemon).
