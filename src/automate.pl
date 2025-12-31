@@ -12,6 +12,7 @@
 :- use_module(library(process)).
 :- use_module(library(http/json)).
 :- use_module(library(readutil)).
+:- use_module(library(time)).
 :- use_module(config).
 :- use_module(log).
 :- use_module(state).
@@ -77,7 +78,8 @@ validate_command(CommandType) :-
 
 % Run file2phil.pl on a given file
 % run_file2phil(+FilePath, +Options)
-% Options: options(script_path(Path), timeout(Seconds), additional_args(Args))
+% Options: List with optional script_path(Path) and additional_args(Args)
+% Note: timeout is controlled by config, not options
 run_file2phil(FilePath, Options) :-
     log:log_info('Starting file2phil automation...'),
     
@@ -207,46 +209,63 @@ execute_file2phil(FilePath, Command, Args, F2PConfig) :-
     get_dict(timeout_seconds, F2PConfig, Timeout),
     
     % Create process
-    format(atom(LogMsg), 'Executing: ~w ~w', [Command, Args]),
+    format(atom(LogMsg), 'Executing: ~w ~w (timeout: ~w seconds)', [Command, Args, Timeout]),
     log:log_info(LogMsg),
     
-    get_time(StartTime),
-    
-    % Execute with timeout
+    % Execute with timeout using call_with_time_limit
     catch(
-        (
-            process_create(path(Command), Args, [
-                stdout(pipe(Out)),
-                stderr(pipe(Err)),
-                process(PID)
-            ]),
-            
-            % Read output
-            read_string(Out, _, OutputStr),
-            read_string(Err, _, ErrorStr),
-            
-            % Wait for process
-            process_wait(PID, Status),
-            
-            % Record event
-            (Status = exit(0) ->
-                EventStatus = success
-            ;
-                EventStatus = failed
-            ),
-            
-            record_automation_event(file2phil, Command, Args, EventStatus, OutputStr, ErrorStr),
-            
-            % Log results
-            (EventStatus = success ->
-                format(atom(SuccMsg), 'file2phil completed successfully for ~w', [FilePath]),
-                log:log_info(SuccMsg),
-                log:log_info(OutputStr)
-            ;
-                format(atom(ErrMsg), 'file2phil failed for ~w: ~w', [FilePath, ErrorStr]),
-                log:log_error(ErrMsg)
-            )
+        call_with_time_limit(
+            Timeout,
+            execute_file2phil_process(FilePath, Command, Args)
         ),
+        time_limit_exceeded,
+        (
+            format(atom(TimeoutMsg), 'file2phil execution timed out after ~w seconds for ~w', [Timeout, FilePath]),
+            log:log_error(TimeoutMsg),
+            record_automation_event(file2phil, Command, Args, timeout, '', 'Time limit exceeded'),
+            fail
+        )
+    ).
+
+% Helper predicate to execute the actual process
+execute_file2phil_process(FilePath, Command, Args) :-
+    process_create(path(Command), Args, [
+        stdout(pipe(Out)),
+        stderr(pipe(Err)),
+        process(PID)
+    ]),
+    
+    % Read output
+    read_string(Out, _, OutputStr),
+    read_string(Err, _, ErrorStr),
+    
+    % Wait for process
+    process_wait(PID, Status),
+    
+    % Record event
+    (Status = exit(0) ->
+        EventStatus = success
+    ;
+        EventStatus = failed
+    ),
+    
+    record_automation_event(file2phil, Command, Args, EventStatus, OutputStr, ErrorStr),
+    
+    % Log results
+    (EventStatus = success ->
+        format(atom(SuccMsg), 'file2phil completed successfully for ~w', [FilePath]),
+        log:log_info(SuccMsg),
+        log:log_info(OutputStr)
+    ;
+        format(atom(ErrMsg), 'file2phil failed for ~w: ~w', [FilePath, ErrorStr]),
+        log:log_error(ErrMsg)
+    ),
+    !.
+
+% Catch other exceptions during execution
+execute_file2phil(FilePath, Command, Args, _) :-
+    catch(
+        fail,
         Error,
         (
             format(atom(ExMsg), 'Exception during file2phil execution: ~w', [Error]),
