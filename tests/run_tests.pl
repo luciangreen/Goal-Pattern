@@ -9,13 +9,17 @@
 :- consult('test_progress.pl').
 :- consult('test_planner.pl').
 :- consult('test_gmail.pl').
+:- consult('test_timeline.pl').
+:- consult('test_stats.pl').
+:- consult('test_insights.pl').
 
 % Run all tests
 run_tests :-
     run_tests([model_goal, model_work_item, model_status_transitions, model_schedule_event, 
                model_time_block, model_safety_margin, validate_predicates, model_serialization,
                daemon, disk_scan, calendar_ics, progress, productivity, report_output,
-               preferences, reminders, planner, planner_integration, gmail]),
+               preferences, reminders, planner, planner_integration, gmail,
+               timeline, stats, insights]),
     halt(0).
 
 % Run tests on load if called with -g run_tests
