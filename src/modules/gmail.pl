@@ -171,20 +171,26 @@ extract_schedule_changes(Subject, Snippet, Changes) :-
 apply_evidence_rules(_Text, [], []).
 apply_evidence_rules(Text, [Pattern|Rest], Evidence) :-
     get_dict(pattern, Pattern, RegexPattern),
-    get_dict(name, Pattern, Name),
-    get_dict(type, Pattern, Type),
+    get_dict(name, Pattern, NameRaw),
+    get_dict(type, Pattern, TypeRaw),
     get_dict(confidence, Pattern, Confidence),
+    
+    % Convert name and type to atoms if they are strings
+    (atom(NameRaw) -> Name = NameRaw ; atom_string(Name, NameRaw)),
+    (atom(TypeRaw) -> Type = TypeRaw ; atom_string(Type, TypeRaw)),
     
     % Try to match pattern using PCRE library
     (catch(re_matchsub(RegexPattern, Text, Match, []), _, fail) ->
         % Extract count if present
         (get_dict('1', Match, CountMatch) ->
-            % Convert to atom/number
-            (atom(CountMatch) -> atom_number(CountMatch, Count) ; 
+            % Convert to atom/number, handle empty strings
+            ((CountMatch = '' ; CountMatch = "") -> Count = 1 ;
+             atom(CountMatch) -> atom_number(CountMatch, Count) ; 
              string(CountMatch) -> atom_string(CountAtom, CountMatch), atom_number(CountAtom, Count) ;
              Count = CountMatch)
         ; get_dict(1, Match, CountMatch) ->
-            (atom(CountMatch) -> atom_number(CountMatch, Count) ;
+            ((CountMatch = '' ; CountMatch = "") -> Count = 1 ;
+             atom(CountMatch) -> atom_number(CountMatch, Count) ;
              string(CountMatch) -> atom_string(CountAtom, CountMatch), atom_number(CountAtom, Count) ;
              Count = CountMatch)
         ;
@@ -214,8 +220,9 @@ normalize_work_type(TypeStr, NormalizedType) :-
     % Convert to atom if string
     (atom(TypeStr) -> TypeAtom = TypeStr ; atom_string(TypeAtom, TypeStr)),
     downcase_atom(TypeAtom, LowerType),
-    (get_dict(LowerType, Mapping, NormalizedType) ->
-        true
+    (get_dict(LowerType, Mapping, MappedType) ->
+        % Ensure result is atom
+        (atom(MappedType) -> NormalizedType = MappedType ; atom_string(NormalizedType, MappedType))
     ;
         NormalizedType = unknown
     ).

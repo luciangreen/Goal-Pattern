@@ -10,10 +10,12 @@
 % Test setup
 setup_test_state :-
     config:load_config('config/config.json'),
+    log:init_log,
     state:clear_state,
     state:init_state.
 
 teardown_test_state :-
+    log:close_log,
     state:clear_state.
 
 % ============================================================================
@@ -50,8 +52,10 @@ test(extract_work_evidence_completed_algorithms, [setup(setup_test_state), clean
     gmail:extract_work_evidence(Subject, Snippet, Evidence),
     length(Evidence, L),
     L > 0,
-    member(evidence(_, completion, Count, algorithm, Confidence, _), Evidence),
+    member(evidence(_Name, Type, Count, WorkType, Confidence, _Match), Evidence),
+    Type = completion,
     Count = 15,
+    WorkType = algorithm,
     Confidence >= 0.7.
 
 test(extract_work_evidence_submitted_essay, [setup(setup_test_state), cleanup(teardown_test_state)]) :-
@@ -60,7 +64,9 @@ test(extract_work_evidence_submitted_essay, [setup(setup_test_state), cleanup(te
     gmail:extract_work_evidence(Subject, Snippet, Evidence),
     length(Evidence, L),
     L > 0,
-    member(evidence(_, submission, _, philosophy, Confidence, _), Evidence),
+    member(evidence(_Name, Type, _Count, WorkType, Confidence, _Match), Evidence),
+    Type = submission,
+    WorkType = philosophy,
     Confidence >= 0.7.
 
 test(extract_work_evidence_multiple_patterns, [setup(setup_test_state), cleanup(teardown_test_state)]) :-
@@ -76,8 +82,10 @@ test(extract_work_evidence_wrote_clauses, [setup(setup_test_state), cleanup(tear
     gmail:extract_work_evidence(Subject, Snippet, Evidence),
     length(Evidence, L),
     L > 0,
-    member(evidence(_, completion, Count, algorithm, _, _), Evidence),
-    Count = 25.
+    member(evidence(_Name, Type, Count, WorkType, _Confidence, _Match), Evidence),
+    Type = completion,
+    Count = 25,
+    WorkType = algorithm.
 
 test(extract_work_evidence_no_match, [setup(setup_test_state), cleanup(teardown_test_state)]) :-
     Subject = 'Random Email',
@@ -95,7 +103,8 @@ test(extract_schedule_changes_cancelled, [setup(setup_test_state), cleanup(teard
     gmail:extract_schedule_changes(Subject, Snippet, Changes),
     length(Changes, L),
     L > 0,
-    member(evidence(_, cancellation, _, _, Confidence, _), Changes),
+    member(evidence(_Name, Type, _Count, _WorkType, Confidence, _Match), Changes),
+    Type = cancellation,
     Confidence >= 0.7.
 
 test(extract_schedule_changes_rescheduled, [setup(setup_test_state), cleanup(teardown_test_state)]) :-
@@ -104,7 +113,8 @@ test(extract_schedule_changes_rescheduled, [setup(setup_test_state), cleanup(tea
     gmail:extract_schedule_changes(Subject, Snippet, Changes),
     length(Changes, L),
     L > 0,
-    member(evidence(_, reschedule, _, _, _, _), Changes).
+    member(evidence(_Name, Type, _Count, _WorkType, _Confidence, _Match), Changes),
+    Type = reschedule.
 
 test(extract_schedule_changes_new_event, [setup(setup_test_state), cleanup(teardown_test_state)]) :-
     Subject = 'New Appointment',
@@ -112,7 +122,8 @@ test(extract_schedule_changes_new_event, [setup(setup_test_state), cleanup(teard
     gmail:extract_schedule_changes(Subject, Snippet, Changes),
     length(Changes, L),
     L > 0,
-    member(evidence(_, addition, _, _, _, _), Changes).
+    member(evidence(_Name, Type, _Count, _WorkType, _Confidence, _Match), Changes),
+    Type = addition.
 
 % ============================================================================
 % Work Type Normalization Tests
