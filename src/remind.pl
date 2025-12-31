@@ -6,7 +6,10 @@
     get_due_reminders/2,
     cancel_reminder/1,
     clear_old_reminders/1,
-    reminder_history/2
+    reminder_history/2,
+    process_due_reminders/0,
+    work_block_reminder_time/2,
+    event_prep_reminder_time/2
 ]).
 
 :- use_module(library(aggregate)).
