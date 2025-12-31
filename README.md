@@ -12,8 +12,10 @@ A Prolog-based daemon service that runs continuously to scan, plan, and report o
 - **Clean shutdown**: Graceful shutdown with state preservation
 - **Disk scanning**: Scans directories for algorithms (Prolog files) and philosophies (essays)
 - **Calendar integration**: Imports schedule events from ICS files with intelligent tagging
+- **Gmail integration**: Extracts work completion evidence and schedule changes from sent emails
 - **Event tagging**: Automatically tags events based on configurable keyword rules
-- **Duplicate prevention**: Prevents duplicate events on re-import
+- **Evidence extraction**: Automatically detects work completion statements using configurable regex patterns
+- **Duplicate prevention**: Prevents duplicate events and work items on re-import
 - **Progress tracking**: Track weekly progress against goals with backlog computation
 - **Productivity forecasting**: Estimate productivity and forecast catch-up feasibility
 - **Comprehensive reporting**: Generate reports on progress, backlog, and feasibility
@@ -179,6 +181,97 @@ The calendar module supports importing schedule events from ICS files:
 - `tag_rules_file`: Path to JSON file containing tagging rules (default: `config/tag_rules.json`)
 - `bridge_helper`: Path to native calendar bridge helper (Phase B, optional)
 
+### Gmail Configuration
+
+The Gmail module extracts work completion evidence and schedule changes from sent emails:
+
+```json
+{
+  "gmail": {
+    "helper_script": "src/helpers/gmail_fetch.py",
+    "to_address": "recipient@example.com",
+    "days_back": 7,
+    "max_results": 100,
+    "evidence_rules_file": "config/evidence_rules.json",
+    "dry_run": false
+  }
+}
+```
+
+- `helper_script`: Path to Python helper script for Gmail API authentication
+- `to_address`: Filter emails by recipient address (optional, leave empty for all sent emails)
+- `days_back`: Number of days back to fetch emails (default: 7)
+- `max_results`: Maximum number of emails to fetch (default: 100)
+- `evidence_rules_file`: Path to JSON file containing evidence extraction patterns
+- `dry_run`: Set to `true` to test with sample data without calling Gmail API
+
+#### Gmail API Setup
+
+To use the Gmail integration:
+
+1. **Enable Gmail API** in Google Cloud Console:
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select an existing one
+   - Enable the Gmail API for your project
+   - Create OAuth 2.0 credentials (Desktop application type)
+   - Download the credentials JSON file
+
+2. **Install Python dependencies**:
+   ```bash
+   pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client
+   ```
+
+3. **Configure credentials**:
+   - Save the downloaded credentials as `config/gmail_credentials.json`
+   - First run will prompt for authentication via browser
+   - Token will be saved to `config/gmail_token.json` for future use
+
+4. **Test the integration**:
+   ```bash
+   # Test with dry-run mode (uses sample data)
+   python3 src/helpers/gmail_fetch.py --dry-run
+   
+   # Fetch actual emails
+   python3 src/helpers/gmail_fetch.py --days=7 --max=50
+   ```
+
+#### Evidence Extraction Rules
+
+The `config/evidence_rules.json` file defines patterns for extracting work completion and schedule change evidence from email text. The system includes:
+
+**Work Completion Patterns** (5+ patterns):
+- Detects "completed X algorithms/philosophies" statements
+- Detects "submitted X algorithms/essays" statements
+- Detects "finished X algorithms" statements
+- Detects "wrote X Prolog clauses" statements
+- Detects "delivered/sent X algorithms" statements
+
+**Schedule Change Patterns** (4 patterns):
+- Detects event cancellations
+- Detects event rescheduling
+- Detects "moved X to Y" statements
+- Detects new event scheduling
+
+Each pattern includes:
+- `name`: Unique identifier for the pattern
+- `pattern`: Regular expression for matching
+- `type`: Type of evidence (completion, submission, cancellation, reschedule, addition)
+- `confidence`: Confidence score (0.0 to 1.0)
+- `description`: Human-readable description
+
+Example pattern:
+```json
+{
+  "name": "completed_work",
+  "pattern": "(?i)completed\\s+(?:(\\d+)\\s+)?(?:.*?\\s+)?(algorithm|philosophy|essay|clause)s?",
+  "type": "completion",
+  "confidence": 0.9,
+  "description": "Detects 'completed X algorithms/philosophies' statements"
+}
+```
+
+You can customize these patterns to match your email writing style.
+
 ### Disk Scan Configuration
 
 The disk scan module scans directories for algorithms and philosophy files:
@@ -244,7 +337,8 @@ src/
 └── modules/           # Plugin modules directory
     ├── disk_scan.pl       # Local disk scanning for algorithms and essays
     ├── calendar_ics.pl    # ICS calendar file parsing
-    └── calendar_bridge.pl # Native calendar integration stub (Phase B)
+    ├── calendar_bridge.pl # Native calendar integration stub (Phase B)
+    └── gmail.pl           # Gmail sent mail ingestion and evidence extraction
 
 tests/
 ├── run_tests.pl           # Test runner
@@ -253,7 +347,8 @@ tests/
 ├── test_disk_scan.pl      # Disk scan tests
 ├── test_calendar_ics.pl   # Calendar ICS tests
 ├── test_progress.pl       # Progress tracking and forecasting tests
-└── test_planner.pl        # Planner, preferences, and reminder tests
+├── test_planner.pl        # Planner, preferences, and reminder tests
+└── test_gmail.pl          # Gmail integration tests
 
 bin/
 ├── lucian_planner     # CLI entry point for daemon
@@ -261,9 +356,13 @@ bin/
 ├── lucian_plan        # CLI entry point for day planning
 └── lucian_edit_schedule  # CLI entry point for schedule editing
 
+src/helpers/
+└── gmail_fetch.py     # Gmail API authentication and fetching helper
+
 config/
 ├── config.json        # Main configuration file
-└── tag_rules.json     # Event tagging rules
+├── tag_rules.json     # Event tagging rules
+└── evidence_rules.json # Work evidence extraction patterns
 
 examples/
 └── sample_calendar.ics  # Sample ICS file for testing
@@ -311,6 +410,16 @@ examples/
 - `count_prolog_clauses/2`: Count clauses in a Prolog file
 - `count_words/2`: Count words in a text file
 - `classify_completion/3`: Classify completion status based on count
+
+#### Gmail Module
+- `import_gmail_data/0`: Import Gmail data using configured settings
+- `fetch_gmail_messages/0`: Fetch Gmail messages using default configuration
+- `fetch_gmail_messages/1`: Fetch Gmail messages with custom options
+- `parse_gmail_json/2`: Parse Gmail JSON output from helper script
+- `extract_work_evidence/3`: Extract work completion evidence from email text
+- `extract_schedule_changes/3`: Extract schedule change evidence from email text
+- `apply_evidence_rules/3`: Apply configured evidence rules to text
+- `normalize_work_type/2`: Normalize work type names to standard types
 
 #### Progress Tracking Module
 - `current_week/1`: Get current ISO 8601 week number
