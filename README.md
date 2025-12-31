@@ -23,6 +23,9 @@ A Prolog-based daemon service that runs continuously to scan, plan, and report o
 - **Preference system**: Customizable preferences for goal modes, work hours, and fatigue thresholds
 - **Reminder engine**: Terminal-based notifications for work blocks and events
 - **Schedule editing**: Add, remove, or move time blocks with user overrides
+- **Statistical pattern analysis**: Correlate schedule patterns with goal completion using minute-level timeline analysis
+- **Insight generation**: Identify positive and negative predictors of productivity with confidence scores
+- **Pattern recommendations**: Generate avoidance suggestions for behaviors that hinder goal completion
 
 ## Requirements
 
@@ -468,6 +471,29 @@ examples/
 - `cancel_reminder/1`: Cancel a scheduled reminder
 - `reminder_history/2`: Get history of triggered reminders
 
+#### Timeline Module (Spec 7)
+- `build_timeline/3`: Build minute-level timeline from schedule events
+- `timeline_at_minute/3`: Get timeline data at a specific minute
+- `get_minute_categories/4`: Get categories active during a time range
+- `work_outcome_windows/3`: Find productive windows preceding work completion
+- `event_to_minutes/2`: Convert an event to list of minute timestamps
+
+#### Stats Module (Spec 7)
+- `pearson_correlation/3`: Calculate Pearson correlation coefficient
+- `chi_square_test/3`: Chi-square test for independence
+- `contingency_table/3`: Build contingency table for tag vs work outcome
+- `lag_correlation/4`: Calculate correlation with time lag
+- `tag_work_correlation/4`: Analyze correlation between tag and work outcomes
+- `category_work_correlation/4`: Analyze correlation between category and work
+
+#### Insights Module (Spec 7)
+- `analyze_patterns/4`: Analyze all patterns and their correlations with goals
+- `top_positive_predictors/3`: Get top N positive predictors of goal completion
+- `top_negative_predictors/3`: Get top N negative predictors of goal completion
+- `pattern_avoidance_suggestions/3`: Generate pattern avoidance suggestions
+- `generate_insights_report/2`: Generate comprehensive insights report
+- `format_insight/2`: Format an insight for display
+
 ## Usage Examples
 
 ### Importing Calendar Events
@@ -537,6 +563,57 @@ bin/lucian_report week
 
 # View backlog and catch-up feasibility
 bin/lucian_report backlog
+```
+
+### Analyzing Schedule Patterns and Insights (Spec 7)
+
+Analyze how schedule patterns correlate with goal completion:
+
+```prolog
+?- use_module(src/timeline).
+?- use_module(src/stats).
+?- use_module(src/insights).
+
+% Build timeline for analysis period
+?- get_time(Now),
+   Start is Now - (7 * 24 * 3600),  % Last week
+   End is Now,
+   timeline:build_timeline(Start, End, Timeline).
+
+% Analyze patterns and generate insights
+?- insights:analyze_patterns(Start, End, Insights, Confidence).
+
+% Get top positive predictors
+?- insights:top_positive_predictors(Insights, 10, TopPositive).
+
+% Get top negative predictors  
+?- insights:top_negative_predictors(Insights, 10, TopNegative).
+
+% Generate comprehensive insights report
+?- insights:generate_insights_report(Insights, Report),
+   insights:print_insights_report(Report).
+
+% Get specific tag correlation
+?- state:get_work_items(WorkItems),
+   stats:tag_work_correlation(home, Timeline, WorkItems, Correlation).
+```
+
+Example insights output:
+```
+=== PATTERN ANALYSIS INSIGHTS ===
+Overall Confidence: 75%
+
+TOP POSITIVE PREDICTORS (behaviors that help goal completion):
+  • home: strong positive correlation (0.72), confidence: 85%
+  • work: moderate positive correlation (0.45), confidence: 80%
+  • seminar: moderate positive correlation (0.38), confidence: 70%
+
+TOP NEGATIVE PREDICTORS (behaviors that hinder goal completion):
+  • travel: moderate negative correlation (-0.55), confidence: 82%
+  • late_night: weak negative correlation (-0.28), confidence: 65%
+
+PATTERN AVOIDANCE SUGGESTIONS:
+  • AVOID "travel" (correlation: -0.55, confidence: 82%): Pattern "travel" shows negative correlation with goal completion. Consider reducing time spent in this context.
 ```
 
 The report will show:
