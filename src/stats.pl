@@ -8,7 +8,8 @@
     stddev/2,
     covariance/3,
     tag_work_correlation/4,
-    category_work_correlation/4
+    category_work_correlation/4,
+    phi_coefficient/2
 ]).
 
 :- use_module(library(lists)).

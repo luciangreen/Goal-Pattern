@@ -5,7 +5,10 @@
     top_negative_predictors/3,
     pattern_avoidance_suggestions/3,
     generate_insights_report/2,
-    format_insight/2
+    format_insight/2,
+    calculate_overall_confidence/3,
+    print_insights_report/1,
+    format_suggestion/2
 ]).
 
 :- use_module(library(lists)).
