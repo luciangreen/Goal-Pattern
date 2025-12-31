@@ -9,6 +9,11 @@ logs/
 # Compiled Prolog files
 *.qlf
 
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
 # System files
 .DS_Store
 *~
