@@ -12,7 +12,7 @@
     "console_output": true
   },
   "modules": {
-    "enabled": ["disk_scan", "calendar_ics", "gmail"]
+    "enabled": ["disk_scan", "calendar_ics", "gmail", "llm"]
   },
   "disk_scan": {
     "paths": [
@@ -65,5 +65,29 @@
     "notification_lead_minutes": 5,
     "work_block_min_duration": 30,
     "work_block_preferred_duration": 90
+  },
+  "llm": {
+    "helper_script": "src/helpers/llm_helper.py",
+    "provider": "gemini",
+    "model": "gemini-2.0-flash-exp",
+    "store_full_prompts": false,
+    "default_workflow": "draft_then_user_check",
+    "workflows": {
+      "draft_then_user_check": {
+        "instructions": "Generate a draft completion. User will grammar-check and paraphrase.",
+        "requires_user_edit": true
+      },
+      "outline_only": {
+        "instructions": "Generate only an outline or structure, not complete text.",
+        "requires_user_edit": true
+      },
+      "complete_with_checklist": {
+        "instructions": "Generate complete text but include a verification checklist.",
+        "requires_user_edit": true
+      }
+    },
+    "safety_margin_percent": 10,
+    "max_retries": 3,
+    "timeout_seconds": 30
   }
 }

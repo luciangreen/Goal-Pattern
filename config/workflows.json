@@ -1,0 +1,57 @@
+{
+  "draft_then_user_check": {
+    "description": "LLM generates draft, user performs grammar check and paraphrase",
+    "instructions": "Generate a draft completion. User will grammar-check and paraphrase afterward.",
+    "requires_user_edit": true,
+    "safety_margin_percent": 10,
+    "verification_steps": [
+      "grammar_check",
+      "paraphrase",
+      "fact_verification"
+    ]
+  },
+  "outline_only": {
+    "description": "LLM generates outline only, user expands to full content",
+    "instructions": "Generate only an outline or structure, not complete text.",
+    "requires_user_edit": true,
+    "safety_margin_percent": 10,
+    "verification_steps": [
+      "expand_outline",
+      "add_details",
+      "verification"
+    ]
+  },
+  "complete_with_checklist": {
+    "description": "LLM generates complete text with verification checklist",
+    "instructions": "Generate complete text but include a verification checklist for the user.",
+    "requires_user_edit": true,
+    "safety_margin_percent": 10,
+    "verification_steps": [
+      "checklist_review",
+      "accuracy_verification",
+      "completeness_check"
+    ]
+  },
+  "iterative_refinement": {
+    "description": "Multiple rounds of LLM suggestions with user feedback",
+    "instructions": "Generate suggestions that will be iteratively refined with user feedback.",
+    "requires_user_edit": true,
+    "safety_margin_percent": 10,
+    "verification_steps": [
+      "initial_review",
+      "provide_feedback",
+      "verify_refinement"
+    ]
+  },
+  "research_synthesis": {
+    "description": "LLM synthesizes research notes into structured content",
+    "instructions": "Synthesize provided research notes into coherent structured content.",
+    "requires_user_edit": true,
+    "safety_margin_percent": 10,
+    "verification_steps": [
+      "source_verification",
+      "citation_check",
+      "synthesis_review"
+    ]
+  }
+}

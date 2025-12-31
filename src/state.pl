@@ -11,6 +11,7 @@
     % Work item management
     add_work_item/1,
     get_work_items/1,
+    get_work_item/2,
     update_work_item/2,
     find_work_item/2,
     % Goal management
@@ -19,7 +20,15 @@
     % Schedule event management
     add_schedule_event/1,
     get_schedule_events/1,
-    update_schedule_event/2
+    update_schedule_event/2,
+    % Review task management (Spec 9)
+    add_review_task/1,
+    get_review_tasks/1,
+    get_review_task/2,
+    update_review_task/2,
+    % LLM audit management (Spec 9)
+    add_llm_audit_record/1,
+    get_llm_audit_records/1
 ]).
 
 :- use_module(library(http/json)).
@@ -46,7 +55,9 @@ init_state :-
             modules: _{},
             work_items: [],
             goals: [],
-            schedule_events: []
+            schedule_events: [],
+            review_tasks: [],
+            llm_audit_records: []
         },
         assertz(daemon_state(EmptyState))
     ).
@@ -154,11 +165,16 @@ get_work_items(WorkItems) :-
 
 get_work_items([]).
 
-% Find a work item by ID
-find_work_item(ID, WorkItem) :-
+% Get a single work item by ID
+get_work_item(ID, WorkItem) :-
     get_work_items(Items),
-    member(work_item(ID, _, _, _, _, _, _, _) = WorkItem, Items),
+    member(WorkItem, Items),
+    WorkItem = work_item(ID, _, _, _, _, _, _, _),
     !.
+
+% Find a work item by ID (alias for get_work_item)
+find_work_item(ID, WorkItem) :-
+    get_work_item(ID, WorkItem).
 
 % Update a work item (replace by ID)
 update_work_item(ID, NewWorkItem) :-
@@ -265,3 +281,74 @@ update_schedule_event(ID, NewEvent) :-
     retractall(daemon_state(_)),
     assertz(daemon_state(NewState)),
     !.
+
+% ============================================================================
+% Review Task Management (Spec 9)
+% ============================================================================
+
+% Add a review task to state
+add_review_task(Task) :-
+    is_dict(Task),
+    daemon_state(State),
+    (get_dict(review_tasks, State, Tasks) -> true ; Tasks = []),
+    append(Tasks, [Task], NewTasks),
+    put_dict(review_tasks, State, NewTasks, NewState),
+    retractall(daemon_state(_)),
+    assertz(daemon_state(NewState)),
+    !.
+
+% Get all review tasks
+get_review_tasks(Tasks) :-
+    daemon_state(State),
+    (get_dict(review_tasks, State, Tasks) -> true ; Tasks = []),
+    !.
+
+get_review_tasks([]).
+
+% Get a single review task by ID
+get_review_task(TaskID, Task) :-
+    get_review_tasks(Tasks),
+    member(Task, Tasks),
+    get_dict(task_id, Task, TaskID),
+    !.
+
+% Update a review task (replace by task_id)
+update_review_task(TaskID, NewTask) :-
+    is_dict(NewTask),
+    get_dict(task_id, NewTask, TaskID),
+    daemon_state(State),
+    get_dict(review_tasks, State, Tasks),
+    % Replace the task with matching ID
+    exclude(has_task_id(TaskID), Tasks, FilteredTasks),
+    append(FilteredTasks, [NewTask], UpdatedTasks),
+    put_dict(review_tasks, State, UpdatedTasks, NewState),
+    retractall(daemon_state(_)),
+    assertz(daemon_state(NewState)),
+    !.
+
+% Helper to check if task has given ID
+has_task_id(TaskID, Task) :-
+    get_dict(task_id, Task, TaskID).
+
+% ============================================================================
+% LLM Audit Management (Spec 9)
+% ============================================================================
+
+% Add an LLM audit record to state
+add_llm_audit_record(Record) :-
+    is_dict(Record),
+    daemon_state(State),
+    (get_dict(llm_audit_records, State, Records) -> true ; Records = []),
+    append(Records, [Record], NewRecords),
+    put_dict(llm_audit_records, State, NewRecords, NewState),
+    retractall(daemon_state(_)),
+    assertz(daemon_state(NewState)),
+    !.
+
+% Get all LLM audit records
+get_llm_audit_records(Records) :-
+    daemon_state(State),
+    (get_dict(llm_audit_records, State, Records) -> true ; Records = []),
+    !.
+
+get_llm_audit_records([]).
