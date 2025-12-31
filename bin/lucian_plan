@@ -26,7 +26,7 @@ cat > /tmp/lucian_plan_$$.pl << 'EOF'
 
 main(Args) :-
     % Initialize
-    config:load_config,
+    config:load_config('config/config.json'),
     state:init_state,
     preferences:load_preferences,
     
@@ -99,7 +99,8 @@ display_plan(plan(_, WorkBlocks, Fatigue, Reasons)) :-
 % Display current schedule events
 display_current_schedule :-
     get_time(Now),
-    DayStart is Now - (Now mod 86400),
+    NowInt is floor(Now),
+    DayStart is NowInt - (NowInt mod 86400),
     DayEnd is DayStart + 86400,
     
     state:get_schedule_events(AllEvents),
