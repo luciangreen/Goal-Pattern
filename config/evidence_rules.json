@@ -1,0 +1,89 @@
+{
+  "work_completion_patterns": [
+    {
+      "name": "completed_work",
+      "pattern": "(?i)completed\\s+(?:(\\d+)\\s+)?(?:.*?\\s+)?(algorithm|philosophy|essay|clause)s?",
+      "type": "completion",
+      "confidence": 0.9,
+      "description": "Detects 'completed X algorithms/philosophies' statements"
+    },
+    {
+      "name": "submitted_work",
+      "pattern": "(?i)submitted\\s+(?:(\\d+)\\s+)?(?:.*?\\s+)?(algorithm|philosophy|essay|paper)s?",
+      "type": "submission",
+      "confidence": 0.95,
+      "description": "Detects 'submitted X algorithms/essays' statements"
+    },
+    {
+      "name": "finished_work",
+      "pattern": "(?i)finished\\s+(?:(\\d+)\\s+)?(?:.*?\\s+)?(algorithm|philosophy|essay|clause)s?",
+      "type": "completion",
+      "confidence": 0.85,
+      "description": "Detects 'finished X algorithms' statements"
+    },
+    {
+      "name": "wrote_clauses",
+      "pattern": "(?i)wrote\\s+(\\d+)\\s+(?:prolog\\s+)?(clause|predicate)s?",
+      "type": "completion",
+      "confidence": 0.9,
+      "description": "Detects 'wrote X Prolog clauses' statements"
+    },
+    {
+      "name": "delivered_work",
+      "pattern": "(?i)(?:delivered|sent)\\s+(?:(\\d+)\\s+)?(?:.*?\\s+)?(algorithm|philosophy|essay)s?",
+      "type": "submission",
+      "confidence": 0.9,
+      "description": "Detects 'delivered/sent X algorithms' statements"
+    }
+  ],
+  "schedule_change_patterns": [
+    {
+      "name": "cancelled_event",
+      "pattern": "(?i)(seminar|meeting|session|appointment).*?cancel(led)?",
+      "type": "cancellation",
+      "confidence": 0.95,
+      "description": "Detects event cancellations"
+    },
+    {
+      "name": "rescheduled_event",
+      "pattern": "(?i)(seminar|meeting|session|appointment).*?rescheduled?",
+      "type": "reschedule",
+      "confidence": 0.9,
+      "description": "Detects event rescheduling"
+    },
+    {
+      "name": "moved_event",
+      "pattern": "(?i)(seminar|meeting|session|appointment).*?moved?\\s+to",
+      "type": "reschedule",
+      "confidence": 0.9,
+      "description": "Detects 'moved X to Y' statements"
+    },
+    {
+      "name": "new_event",
+      "pattern": "(?i)(scheduled|booked|arranged).*?(seminar|meeting|session|appointment)",
+      "type": "addition",
+      "confidence": 0.85,
+      "description": "Detects new event scheduling"
+    }
+  ],
+  "work_type_mapping": {
+    "algorithm": "algorithm",
+    "algorithms": "algorithm",
+    "clause": "algorithm",
+    "clauses": "algorithm",
+    "predicate": "algorithm",
+    "predicates": "algorithm",
+    "philosophy": "philosophy",
+    "philosophies": "philosophy",
+    "essay": "philosophy",
+    "essays": "philosophy",
+    "paper": "philosophy",
+    "papers": "philosophy"
+  },
+  "extraction_settings": {
+    "min_confidence": 0.7,
+    "default_count": 1,
+    "require_explicit_count": false,
+    "max_snippet_length": 500
+  }
+}
