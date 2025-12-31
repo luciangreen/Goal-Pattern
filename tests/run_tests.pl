@@ -14,6 +14,7 @@
 :- consult('test_insights.pl').
 :- consult('test_llm.pl').
 :- consult('test_review.pl').
+:- consult('test_automate.pl').
 
 % Run all tests
 run_tests :-
@@ -24,7 +25,7 @@ run_tests :-
                timeline, stats, insights,
                llm_input_pack, llm_response_parsing, llm_workflow_rules, llm_audit, llm_suggestion_management,
                review_task_creation, safety_margin_calculation, verification_workflow, 
-               review_completion, review_status_queries]),
+               review_completion, review_status_queries, automate]),
     halt(0).
 
 % Run tests on load if called with -g run_tests
