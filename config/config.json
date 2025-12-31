@@ -12,7 +12,7 @@
     "console_output": true
   },
   "modules": {
-    "enabled": ["disk_scan", "calendar_ics", "gmail", "llm"]
+    "enabled": ["disk_scan", "calendar_ics", "gmail", "llm", "automate"]
   },
   "disk_scan": {
     "paths": [

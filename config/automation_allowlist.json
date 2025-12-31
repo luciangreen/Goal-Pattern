@@ -1,0 +1,39 @@
+{
+  "automation": {
+    "enabled": true,
+    "dry_run": true,
+    "log_all_commands": true,
+    "max_concurrent_tasks": 1
+  },
+  "allowlist": {
+    "file2phil": {
+      "enabled": true,
+      "command": "swipl",
+      "args_template": ["-q", "-s", "{script_path}", "-g", "main({file_path})", "-t", "halt"],
+      "script_path_default": "file2phil.pl",
+      "allowed_file_extensions": [".pl", ".txt", ".md"],
+      "timeout_seconds": 300,
+      "description": "Convert files using file2phil.pl automation"
+    },
+    "repo_task": {
+      "enabled": false,
+      "command": "gh",
+      "args_template": ["copilot", "run", "--repo", "{repo}", "--task", "{task_spec}"],
+      "allowed_repos": [],
+      "timeout_seconds": 600,
+      "description": "GitHub Copilot Agent orchestration (stub)"
+    }
+  },
+  "safety": {
+    "require_confirmation": false,
+    "block_destructive_operations": true,
+    "max_retries": 3,
+    "sandbox_mode": true
+  },
+  "recording": {
+    "store_commands": true,
+    "store_outputs": true,
+    "store_errors": true,
+    "max_output_length": 10000
+  }
+}
