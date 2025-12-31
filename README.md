@@ -26,6 +26,11 @@ A Prolog-based daemon service that runs continuously to scan, plan, and report o
 - **Statistical pattern analysis**: Correlate schedule patterns with goal completion using minute-level timeline analysis
 - **Insight generation**: Identify positive and negative predictors of productivity with confidence scores
 - **Pattern recommendations**: Generate avoidance suggestions for behaviors that hinder goal completion
+- **LLM integration**: Use ChatGPT or Gemini to analyze texts and suggest completions with configurable workflows
+- **Safety margin enforcement**: Requires 10% additional user work beyond LLM output before marking complete
+- **Review workflow**: Tracks LLM-generated work through verification stages with audit trail
+- **Multiple workflow modes**: Draft+grammar-check, outline-only, complete+checklist, and more
+- **Privacy-conscious audit logging**: Records LLM interactions with prompt hashing (optional full storage)
 
 ## Requirements
 
@@ -317,6 +322,100 @@ Key preference options:
 - `fatigue_threshold`: Fatigue level (0.0-1.0) when rest is recommended
 - `work_block_min_duration`: Minimum work block duration in minutes
 - `work_block_preferred_duration`: Preferred work block duration in minutes
+
+### LLM Configuration (Spec 9)
+
+The LLM module integrates ChatGPT and Gemini for text analysis and completion suggestions with safety margins:
+
+```json
+{
+  "llm": {
+    "helper_script": "src/helpers/llm_helper.py",
+    "provider": "gemini",
+    "model": "gemini-2.0-flash-exp",
+    "store_full_prompts": false,
+    "default_workflow": "draft_then_user_check",
+    "workflows": {
+      "draft_then_user_check": {
+        "instructions": "Generate a draft completion. User will grammar-check and paraphrase.",
+        "requires_user_edit": true
+      },
+      "outline_only": {
+        "instructions": "Generate only an outline or structure, not complete text.",
+        "requires_user_edit": true
+      },
+      "complete_with_checklist": {
+        "instructions": "Generate complete text but include a verification checklist.",
+        "requires_user_edit": true
+      }
+    },
+    "safety_margin_percent": 10,
+    "max_retries": 3,
+    "timeout_seconds": 30
+  }
+}
+```
+
+Key LLM options:
+- `provider`: LLM provider - `gemini` or `chatgpt`
+- `model`: Model name (e.g., `gemini-2.0-flash-exp` or `gpt-4`)
+- `store_full_prompts`: Whether to store full prompts (default: `false` for privacy)
+- `default_workflow`: Default workflow mode to use
+- `safety_margin_percent`: Required extra work beyond LLM output (default: 10%)
+
+#### Available Workflows
+
+1. **draft_then_user_check**: LLM generates draft, user performs grammar check and paraphrase
+2. **outline_only**: LLM provides structure, user expands each section
+3. **complete_with_checklist**: LLM generates full content with verification checklist
+4. **iterative_refinement**: Multiple LLM rounds with user feedback
+5. **research_synthesis**: LLM synthesizes research notes into structured content
+
+All workflows enforce the **10% safety margin rule**: work cannot be marked complete until the user has verified and added at least 10% additional content beyond the LLM output.
+
+#### LLM API Setup
+
+**For Gemini**:
+1. Get API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Set environment variable: `export GEMINI_API_KEY=your_key_here`
+3. Or add to `chatgpt_qa_key.pl`: `chatgpt_key("your_key_here").`
+
+**For ChatGPT**:
+1. Get API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+2. Set environment variable: `export OPENAI_API_KEY=your_key_here`
+3. Install Python library: `pip install openai`
+
+**Install Gemini library** (optional):
+```bash
+pip install google-generativeai
+```
+
+Without API keys or libraries, the helper returns mock responses suitable for testing.
+
+#### LLM Usage Example
+
+```prolog
+% Analyze text with LLM
+?- use_module(src/modules/llm).
+?- Text = "Partial algorithm implementation...",
+   Context = _{type: algorithm, current_count: 50},
+   llm:llm_analyze_text(Text, Context, Suggestions).
+
+% Apply suggestion (creates review task)
+?- Suggestions = [First|_],
+   llm:apply_llm_suggestion(work_item_id, First).
+
+% Verify additional work (10% safety margin)
+?- use_module(src/review).
+?- VerificationData = _{extra_work_count: 5, verification_notes: "Added 5 clauses"},
+   review:verify_work(task_id, VerificationData).
+
+% Complete review (only if safety margin met)
+?- CompletionData = _{completion_notes: "All verified"},
+   review:complete_review(task_id, CompletionData).
+```
+
+See [SPEC09_IMPLEMENTATION.md](SPEC09_IMPLEMENTATION.md) for complete documentation.
 
 ## Architecture
 
