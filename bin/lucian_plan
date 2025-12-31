@@ -1,0 +1,213 @@
+#!/bin/bash
+# bin/lucian_plan - CLI for day planning and work block suggestions
+
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
+
+# Change to project directory
+cd "$PROJECT_DIR"
+
+# Determine what to display (default: today)
+COMMAND="${1:-today}"
+
+# Create a temporary Prolog script to execute the plan command
+cat > /tmp/lucian_plan_$$.pl << 'EOF'
+% Temporary script for lucian_plan CLI
+:- use_module('src/config').
+:- use_module('src/state').
+:- use_module('src/log').
+:- use_module('src/model').
+:- use_module('src/preferences').
+:- use_module('src/planner').
+:- use_module('src/progress').
+
+:- initialization(main, main).
+
+main(Args) :-
+    % Initialize
+    config:load_config('config/config.json'),
+    state:init_state,
+    preferences:load_preferences,
+    
+    % Determine command
+    (Args = [Command|_] -> true ; Command = 'today'),
+    
+    % Execute command
+    (Command = 'today' ->
+        display_today_plan
+    ; Command = 'help' ->
+        display_help
+    ;
+        format('Unknown command: ~w~n', [Command]),
+        display_help
+    ),
+    
+    halt(0).
+
+main(_) :-
+    format('Error running planner~n', []),
+    halt(1).
+
+% Display today's plan
+display_today_plan :-
+    format('~n=== Today\'s Plan ===~n~n', []),
+    
+    % Get current date
+    get_time(Now),
+    stamp_date_time(Now, DateTime, local),
+    date_time_value(date, DateTime, Date),
+    date_time_value(year, DateTime, Year),
+    date_time_value(month, DateTime, Month),
+    date_time_value(day, DateTime, Day),
+    
+    format('Date: ~w-~|~`0t~d~2+-~|~`0t~d~2+~n~n', [Year, Month, Day]),
+    
+    % Get plan
+    (catch(planner:plan_today(Plan), Error, handle_plan_error(Error)) ->
+        display_plan(Plan)
+    ;
+        format('Unable to generate plan~n', [])
+    ).
+
+% Display the plan
+display_plan(plan(_, WorkBlocks, Fatigue, Reasons)) :-
+    % Display existing schedule
+    format('--- Current Schedule ---~n', []),
+    display_current_schedule,
+    format('~n', []),
+    
+    % Display suggested work blocks
+    format('--- Suggested Work Blocks ---~n', []),
+    (WorkBlocks = [] ->
+        format('No work blocks suggested (goals may be met or no available time)~n', [])
+    ;
+        display_work_blocks(WorkBlocks)
+    ),
+    format('~n', []),
+    
+    % Display reasons
+    format('--- Planning Rationale ---~n', []),
+    display_reasons(Reasons),
+    format('~n', []),
+    
+    % Display fatigue model
+    format('--- Fatigue Estimate ---~n', []),
+    display_fatigue(Fatigue),
+    format('~n', []).
+
+% Display current schedule events
+display_current_schedule :-
+    get_time(Now),
+    NowInt is floor(Now),
+    DayStart is NowInt - (NowInt mod 86400),
+    DayEnd is DayStart + 86400,
+    
+    state:get_schedule_events(AllEvents),
+    include(event_today(DayStart, DayEnd), AllEvents, TodayEvents),
+    
+    (TodayEvents = [] ->
+        format('  No scheduled events~n', [])
+    ;
+        maplist(display_event, TodayEvents)
+    ).
+
+event_today(DayStart, DayEnd, schedule_event(_, Start, End, _, _, _, _, _)) :-
+    Start < DayEnd,
+    End > DayStart.
+
+display_event(schedule_event(_, Start, End, Title, Location, Tags, _, _)) :-
+    stamp_date_time(Start, StartDT, local),
+    stamp_date_time(End, EndDT, local),
+    format_time(string(StartStr), '%H:%M', StartDT),
+    format_time(string(EndStr), '%H:%M', EndDT),
+    
+    format('  ~w - ~w: ~w', [StartStr, EndStr, Title]),
+    (Location \= '' ->
+        format(' @ ~w', [Location])
+    ;
+        true
+    ),
+    (Tags \= [] ->
+        format(' [~w]', [Tags])
+    ;
+        true
+    ),
+    format('~n', []).
+
+% Display work blocks
+display_work_blocks([]).
+display_work_blocks([Block|Rest]) :-
+    display_work_block(Block),
+    display_work_blocks(Rest).
+
+display_work_block(work_block(Start, End, Type, Duration, Score, Status)) :-
+    stamp_date_time(Start, StartDT, local),
+    stamp_date_time(End, EndDT, local),
+    format_time(string(StartStr), '%H:%M', StartDT),
+    format_time(string(EndStr), '%H:%M', EndDT),
+    
+    format('  ~w - ~w: ~w (~w min) [Score: ~2f, Status: ~w]~n', 
+           [StartStr, EndStr, Type, Duration, Score, Status]).
+
+% Display reasons
+display_reasons([]).
+display_reasons([Reason|Rest]) :-
+    display_reason(Reason),
+    display_reasons(Rest).
+
+display_reason(reason(work_blocks_suggested, Count)) :-
+    format('  • Suggested ~w work blocks based on available time and goals~n', [Count]).
+
+display_reason(reason(algorithms_needed, Count)) :-
+    (Count > 0 ->
+        format('  • ~w algorithms needed to meet weekly goals~n', [Count])
+    ;
+        format('  • Algorithm goals met for this week~n', [])
+    ).
+
+display_reason(reason(philosophies_needed, Count)) :-
+    (Count > 0 ->
+        format('  • ~w philosophies needed to meet weekly goals~n', [Count])
+    ;
+        format('  • Philosophy goals met for this week~n', [])
+    ).
+
+display_reason(reason(Key, Value)) :-
+    format('  • ~w: ~w~n', [Key, Value]).
+
+% Display fatigue model
+display_fatigue(Fatigue) :-
+    get_dict(start_fatigue, Fatigue, StartFatigue),
+    get_dict(threshold, Fatigue, Threshold),
+    
+    format('  Starting fatigue: ~2f~n', [StartFatigue]),
+    format('  Fatigue threshold: ~2f~n', [Threshold]),
+    
+    (StartFatigue >= Threshold ->
+        format('  ⚠ Warning: High fatigue level - consider rest~n', [])
+    ;
+        format('  ✓ Fatigue level is acceptable~n', [])
+    ).
+
+% Error handling
+handle_plan_error(Error) :-
+    format('Error generating plan: ~w~n', [Error]),
+    fail.
+
+% Display help
+display_help :-
+    format('~nUsage: lucian_plan [COMMAND]~n~n', []),
+    format('Commands:~n', []),
+    format('  today     Display today\'s plan (default)~n', []),
+    format('  help      Show this help message~n', []),
+    format('~n', []).
+EOF
+
+# Run the Prolog script
+swipl -q -l /tmp/lucian_plan_$$.pl -g "main(['$COMMAND'])" 2>&1
+
+# Clean up
+rm -f /tmp/lucian_plan_$$.pl
+
+exit 0

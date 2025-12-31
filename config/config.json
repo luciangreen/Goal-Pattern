@@ -38,5 +38,24 @@
     "ics_files": [],
     "tag_rules_file": "config/tag_rules.json",
     "bridge_helper": ""
+  },
+  "preferences": {
+    "goal_mode": "adaptive",
+    "quiet_hours_start": 22,
+    "quiet_hours_end": 7,
+    "minimum_rest_minutes": 15,
+    "maximum_work_streak_minutes": 120,
+    "minimum_sleep_hours": 7,
+    "work_day_start": 8,
+    "work_day_end": 20,
+    "fatigue_threshold": 0.7,
+    "recovery_rate": 0.5,
+    "enjoyment_weight": 0.3,
+    "travel_prep_buffer_minutes": 30,
+    "post_travel_recovery_minutes": 15,
+    "notifications_enabled": true,
+    "notification_lead_minutes": 5,
+    "work_block_min_duration": 30,
+    "work_block_preferred_duration": 90
   }
 }

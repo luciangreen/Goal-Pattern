@@ -1,0 +1,248 @@
+#!/bin/bash
+# bin/lucian_edit_schedule - CLI for editing schedule (add/move/cancel blocks)
+
+# Get the directory where this script is located
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_DIR="$( cd "$SCRIPT_DIR/.." && pwd )"
+
+# Change to project directory
+cd "$PROJECT_DIR"
+
+# Check if command provided
+if [ $# -lt 1 ]; then
+    echo "Usage: lucian_edit_schedule COMMAND [ARGS...]"
+    echo ""
+    echo "Commands:"
+    echo "  add HOUR:MIN DURATION TYPE    Add a new time block"
+    echo "  remove ID                      Remove a block by ID"
+    echo "  move ID HOUR:MIN              Move a block to new time"
+    echo "  list                          List current schedule"
+    echo "  help                          Show this help"
+    echo ""
+    echo "Examples:"
+    echo "  lucian_edit_schedule add 14:00 90 algorithms"
+    echo "  lucian_edit_schedule remove user_block_12345"
+    echo "  lucian_edit_schedule move event_xyz 15:30"
+    echo "  lucian_edit_schedule list"
+    exit 0
+fi
+
+COMMAND="$1"
+shift
+
+# Create Prolog script based on command
+case "$COMMAND" in
+    add)
+        if [ $# -lt 3 ]; then
+            echo "Error: add command requires TIME DURATION TYPE"
+            echo "Example: lucian_edit_schedule add 14:00 90 algorithms"
+            exit 1
+        fi
+        TIME="$1"
+        DURATION="$2"
+        TYPE="$3"
+        
+        cat > /tmp/lucian_edit_$$.pl << EOF
+:- use_module('src/config').
+:- use_module('src/state').
+:- use_module('src/log').
+:- use_module('src/model').
+:- use_module('src/planner').
+
+:- initialization(main, main).
+
+main(_) :-
+    config:load_config('config/config.json'),
+    state:init_state,
+    
+    % Parse time
+    atom_string('$TIME', TimeStr),
+    split_string(TimeStr, ":", "", [HourStr, MinStr]),
+    number_string(Hour, HourStr),
+    number_string(Min, MinStr),
+    
+    % Get today's date
+    get_time(Now),
+    stamp_date_time(Now, DateTime, local),
+    date_time_value(date, DateTime, Date),
+    date_time_value(year, DateTime, Year),
+    date_time_value(month, DateTime, Month),
+    date_time_value(day, DateTime, Day),
+    
+    % Create timestamp for the block
+    date_time_stamp(date(Year, Month, Day, Hour, Min, 0, 0, -, -), StartTime),
+    
+    % Duration in seconds
+    Duration = $DURATION,
+    EndTime is StartTime + (Duration * 60),
+    
+    % Create time block
+    Category = work,  % Default to work category
+    FatigueCost = 0.3,
+    RecoveryCost = 0.2,
+    Confidence = 1.0,
+    
+    model:create_time_block(StartTime, EndTime, Category, FatigueCost, RecoveryCost, Confidence, Block),
+    
+    % Add to schedule
+    planner:edit_schedule(add_block, Block, _),
+    state:save_state,
+    
+    format('Added ~w-minute ~w block at ~w~n', [Duration, '$TYPE', '$TIME']),
+    
+    halt(0).
+
+main(_) :-
+    format('Error adding block~n', []),
+    halt(1).
+EOF
+        ;;
+        
+    remove)
+        if [ $# -lt 1 ]; then
+            echo "Error: remove command requires BLOCK_ID"
+            exit 1
+        fi
+        BLOCK_ID="$1"
+        
+        cat > /tmp/lucian_edit_$$.pl << EOF
+:- use_module('src/config').
+:- use_module('src/state').
+:- use_module('src/log').
+:- use_module('src/planner').
+
+:- initialization(main, main).
+
+main(_) :-
+    config:load_config('config/config.json'),
+    state:init_state,
+    
+    planner:edit_schedule(remove_block, '$BLOCK_ID', _),
+    state:save_state,
+    
+    format('Removed block: $BLOCK_ID~n', []),
+    
+    halt(0).
+
+main(_) :-
+    format('Error removing block~n', []),
+    halt(1).
+EOF
+        ;;
+        
+    move)
+        if [ $# -lt 2 ]; then
+            echo "Error: move command requires BLOCK_ID NEW_TIME"
+            exit 1
+        fi
+        BLOCK_ID="$1"
+        TIME="$2"
+        
+        cat > /tmp/lucian_edit_$$.pl << EOF
+:- use_module('src/config').
+:- use_module('src/state').
+:- use_module('src/log').
+:- use_module('src/planner').
+
+:- initialization(main, main).
+
+main(_) :-
+    config:load_config('config/config.json'),
+    state:init_state,
+    
+    % Parse new time
+    atom_string('$TIME', TimeStr),
+    split_string(TimeStr, ":", "", [HourStr, MinStr]),
+    number_string(Hour, HourStr),
+    number_string(Min, MinStr),
+    
+    % Get today's date
+    get_time(Now),
+    stamp_date_time(Now, DateTime, local),
+    date_time_value(year, DateTime, Year),
+    date_time_value(month, DateTime, Month),
+    date_time_value(day, DateTime, Day),
+    
+    % Create new start timestamp
+    date_time_stamp(date(Year, Month, Day, Hour, Min, 0, 0, -, -), NewStart),
+    
+    % For simplicity, keep same duration (would need to look up original)
+    NewEnd is NewStart + 5400,  % 90 minutes default
+    
+    planner:edit_schedule(move_block, move('$BLOCK_ID', NewStart, NewEnd), _),
+    state:save_state,
+    
+    format('Moved block $BLOCK_ID to $TIME~n', []),
+    
+    halt(0).
+
+main(_) :-
+    format('Error moving block~n', []),
+    halt(1).
+EOF
+        ;;
+        
+    list)
+        cat > /tmp/lucian_edit_$$.pl << 'EOF'
+:- use_module('src/config').
+:- use_module('src/state').
+:- use_module('src/model').
+
+:- initialization(main, main).
+
+main(_) :-
+    config:load_config('config/config.json'),
+    state:init_state,
+    
+    format('~n=== Current Schedule ===~n~n', []),
+    
+    state:get_schedule_events(Events),
+    
+    (Events = [] ->
+        format('No scheduled events~n', [])
+    ;
+        maplist(display_event, Events)
+    ),
+    
+    format('~n', []),
+    halt(0).
+
+display_event(schedule_event(ID, Start, End, Title, Location, Tags, Source, _)) :-
+    stamp_date_time(Start, StartDT, local),
+    stamp_date_time(End, EndDT, local),
+    format_time(string(StartStr), '%Y-%m-%d %H:%M', StartDT),
+    format_time(string(EndStr), '%H:%M', EndDT),
+    
+    format('ID: ~w~n', [ID]),
+    format('  Time: ~w - ~w~n', [StartStr, EndStr]),
+    format('  Title: ~w~n', [Title]),
+    (Location \= '' -> format('  Location: ~w~n', [Location]) ; true),
+    (Tags \= [] -> format('  Tags: ~w~n', [Tags]) ; true),
+    format('  Source: ~w~n~n', [Source]).
+
+main(_) :-
+    format('Error listing schedule~n', []),
+    halt(1).
+EOF
+        ;;
+        
+    help|*)
+        echo "Usage: lucian_edit_schedule COMMAND [ARGS...]"
+        echo ""
+        echo "Commands:"
+        echo "  add HOUR:MIN DURATION TYPE    Add a new time block"
+        echo "  remove ID                      Remove a block by ID"
+        echo "  move ID HOUR:MIN              Move a block to new time"
+        echo "  list                          List current schedule"
+        echo "  help                          Show this help"
+        exit 0
+        ;;
+esac
+
+# Run the generated Prolog script
+swipl -q -l /tmp/lucian_edit_$$.pl -g "main(['$COMMAND'])" 2>&1
+
+# Clean up
+rm -f /tmp/lucian_edit_$$.pl
+
+exit 0

@@ -17,6 +17,10 @@ A Prolog-based daemon service that runs continuously to scan, plan, and report o
 - **Progress tracking**: Track weekly progress against goals with backlog computation
 - **Productivity forecasting**: Estimate productivity and forecast catch-up feasibility
 - **Comprehensive reporting**: Generate reports on progress, backlog, and feasibility
+- **Intelligent planner**: Recommends optimal work blocks based on schedule, fatigue, and goals
+- **Preference system**: Customizable preferences for goal modes, work hours, and fatigue thresholds
+- **Reminder engine**: Terminal-based notifications for work blocks and events
+- **Schedule editing**: Add, remove, or move time blocks with user overrides
 
 ## Requirements
 
@@ -87,6 +91,42 @@ Reports will show:
 - Catch-up feasibility forecasts with confidence levels
 - Estimated productivity and required effort
 
+### Planning and Scheduling
+
+View today's optimal work schedule:
+```bash
+# Display today's plan with suggested work blocks
+bin/lucian_plan today
+
+# Show help
+bin/lucian_plan help
+```
+
+The planner will:
+- Display current schedule events
+- Suggest optimal work blocks based on available time
+- Consider fatigue levels and preferences
+- Provide reasoning for each suggestion
+- Show work needed to meet weekly goals
+
+Edit your schedule:
+```bash
+# List current schedule
+bin/lucian_edit_schedule list
+
+# Add a new work block (time, duration in minutes, type)
+bin/lucian_edit_schedule add 14:00 90 algorithms
+
+# Remove a block by ID
+bin/lucian_edit_schedule remove user_block_12345
+
+# Move a block to a new time
+bin/lucian_edit_schedule move event_xyz 15:30
+
+# Show help
+bin/lucian_edit_schedule help
+```
+
 ## Configuration
 
 Edit `config/config.json` to customize daemon behavior:
@@ -146,6 +186,42 @@ The disk scan module scans directories for algorithms and philosophy files:
 - `disk_scan.paths`: List of directories to scan with type (algorithms/philosophies)
 - `disk_scan.thresholds`: Completion thresholds for different work types
 
+### Preferences Configuration
+
+Customize planning and scheduling behavior:
+
+```json
+{
+  "preferences": {
+    "goal_mode": "adaptive",
+    "quiet_hours_start": 22,
+    "quiet_hours_end": 7,
+    "minimum_rest_minutes": 15,
+    "maximum_work_streak_minutes": 120,
+    "minimum_sleep_hours": 7,
+    "work_day_start": 8,
+    "work_day_end": 20,
+    "fatigue_threshold": 0.7,
+    "recovery_rate": 0.5,
+    "enjoyment_weight": 0.3,
+    "travel_prep_buffer_minutes": 30,
+    "post_travel_recovery_minutes": 15,
+    "notifications_enabled": true,
+    "notification_lead_minutes": 5,
+    "work_block_min_duration": 30,
+    "work_block_preferred_duration": 90
+  }
+}
+```
+
+Key preference options:
+- `goal_mode`: `strict` (push to meet 100% of goals) or `adaptive` (flexible goal adjustment)
+- `quiet_hours_start/end`: Hours when no notifications should be sent (24-hour format)
+- `work_day_start/end`: Preferred work hours (24-hour format)
+- `fatigue_threshold`: Fatigue level (0.0-1.0) when rest is recommended
+- `work_block_min_duration`: Minimum work block duration in minutes
+- `work_block_preferred_duration`: Preferred work block duration in minutes
+
 ## Architecture
 
 ### Module Structure
@@ -162,6 +238,9 @@ src/
 ├── progress.pl        # Weekly progress and backlog tracking
 ├── productivity.pl    # Productivity estimation and forecasting
 ├── report.pl          # Report generation and formatting
+├── planner.pl         # Intelligent planning and scheduling engine
+├── preferences.pl     # User preference system
+├── remind.pl          # Reminder and notification engine
 └── modules/           # Plugin modules directory
     ├── disk_scan.pl       # Local disk scanning for algorithms and essays
     ├── calendar_ics.pl    # ICS calendar file parsing
@@ -170,13 +249,17 @@ src/
 tests/
 ├── run_tests.pl           # Test runner
 ├── test_daemon.pl         # Daemon tests
+├── test_model.pl          # Model tests
 ├── test_disk_scan.pl      # Disk scan tests
 ├── test_calendar_ics.pl   # Calendar ICS tests
-└── test_progress.pl       # Progress tracking and forecasting tests
+├── test_progress.pl       # Progress tracking and forecasting tests
+└── test_planner.pl        # Planner, preferences, and reminder tests
 
 bin/
 ├── lucian_planner     # CLI entry point for daemon
-└── lucian_report      # CLI entry point for reports
+├── lucian_report      # CLI entry point for reports
+├── lucian_plan        # CLI entry point for day planning
+└── lucian_edit_schedule  # CLI entry point for schedule editing
 
 config/
 ├── config.json        # Main configuration file
@@ -250,6 +333,31 @@ examples/
 - `report_week/1`: Generate specific week's progress report
 - `report_backlog/0`: Generate backlog report
 - `report_backlog/2`: Generate backlog report for specific range
+
+#### Planner Module
+- `plan_today/1`: Generate today's plan with work block suggestions
+- `plan_day/2`: Plan a specific day
+- `suggest_work_blocks/3`: Suggest optimal work blocks based on available time
+- `find_available_slots/3`: Find available time slots in schedule
+- `score_time_slot/4`: Score a time slot based on fatigue and preferences
+- `calculate_fatigue/3`: Calculate fatigue model for a day
+- `edit_schedule/3`: Add, remove, or move schedule blocks
+
+#### Preferences Module
+- `get_preference/2`: Get a user preference value
+- `set_preference/2`: Set a user preference
+- `load_preferences/0`: Load preferences from configuration
+- `validate_preference/2`: Validate a preference value
+- `in_quiet_hours/1`: Check if timestamp is in quiet hours
+- `in_work_day/1`: Check if timestamp is within work day
+
+#### Reminder Module
+- `schedule_reminder/4`: Schedule a reminder for future time
+- `trigger_reminder/1`: Trigger a scheduled reminder
+- `get_pending_reminders/1`: Get all pending reminders
+- `get_due_reminders/2`: Get reminders due before specified time
+- `cancel_reminder/1`: Cancel a scheduled reminder
+- `reminder_history/2`: Get history of triggered reminders
 
 ## Usage Examples
 
