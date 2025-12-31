@@ -183,12 +183,24 @@ substitute_placeholders([Arg|Rest], ScriptPath, FilePath, [SubArg|SubRest]) :-
 substitute_atom(Arg, ScriptPath, FilePath, SubArg) :-
     atom_string(Arg, ArgStr),
     % Replace {script_path}
-    re_replace('{script_path}'/g, ScriptPath, ArgStr, TmpStr1),
+    replace_placeholder(ArgStr, '{script_path}', ScriptPath, TmpStr1),
     % Replace {file_path}
-    re_replace('{file_path}'/g, FilePath, TmpStr1, SubStr),
+    replace_placeholder(TmpStr1, '{file_path}', FilePath, SubStr),
     atom_string(SubArg, SubStr),
     !.
 substitute_atom(Arg, _, _, Arg).  % No substitution needed
+
+% Helper to replace a placeholder in a string
+replace_placeholder(Input, Placeholder, Replacement, Output) :-
+    atom_string(Replacement, ReplacementStr),
+    split_string(Input, Placeholder, "", Parts),
+    (Parts = [Input] ->
+        % No placeholder found
+        Output = Input
+    ;
+        % Placeholder found, join with replacement
+        atomics_to_string(Parts, ReplacementStr, Output)
+    ).
 
 % Execute file2phil command
 execute_file2phil(FilePath, Command, Args, F2PConfig) :-
@@ -303,15 +315,15 @@ substitute_repo_placeholders([Arg|Rest], Repo, TaskSpec, [SubArg|SubRest]) :-
     ),
     substitute_repo_placeholders(Rest, Repo, TaskSpec, SubRest).
 
-% Substitute placeholders in repo task atom
+% Substitute placeholders for repo task atom
 substitute_repo_atom(Arg, Repo, TaskSpec, SubArg) :-
     atom_string(Arg, ArgStr),
-    % Replace {repo}
     atom_string(Repo, RepoStr),
-    re_replace('{repo}'/g, RepoStr, ArgStr, TmpStr1),
-    % Replace {task_spec}
     atom_string(TaskSpec, TaskStr),
-    re_replace('{task_spec}'/g, TaskStr, TmpStr1, SubStr),
+    % Replace {repo}
+    replace_placeholder(ArgStr, '{repo}', RepoStr, TmpStr1),
+    % Replace {task_spec}
+    replace_placeholder(TmpStr1, '{task_spec}', TaskStr, SubStr),
     atom_string(SubArg, SubStr),
     !.
 substitute_repo_atom(Arg, _, _, Arg).  % No substitution needed
@@ -393,14 +405,4 @@ should_recommend_file2phil(FilePath, Reason) :-
 % Utility Predicates
 % ============================================================================
 
-% Simple regex replacement using atom_string and string operations
-re_replace(Pattern/_, Replacement, Input, Output) :-
-    % Extract pattern without flags
-    atom_string(Pattern, PatternStr),
-    atom_string(Replacement, ReplStr),
-    
-    % Simple replacement - just replace all occurrences
-    split_string(Input, PatternStr, "", Parts),
-    atomics_to_string(Parts, ReplStr, Output),
-    !.
-re_replace(_, _, Input, Input).  % Fallback - no replacement
+% (Utility predicates are integrated into the module above)
