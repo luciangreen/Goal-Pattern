@@ -17,6 +17,16 @@
 :- use_module(model).
 
 % ============================================================================
+% Constants
+% ============================================================================
+
+% Minimum sample size for reliable correlation (30 data points is common statistical threshold)
+min_reliable_sample_size(30.0).
+
+% Minimum expected frequency for chi-square test validity
+min_expected_frequency(0.001).
+
+% ============================================================================
 % Basic Statistical Functions
 % ============================================================================
 
@@ -105,10 +115,12 @@ chi_square_test(Observed, Expected, ChiSquare) :-
 
 % Calculate single chi-square term
 chi_square_term(O, E, Term) :-
-    E > 0 ->
+    min_expected_frequency(MinE),
+    (E >= MinE ->
         Term is ((O - E) ** 2) / E
     ;
-        Term = 0.0.
+        Term = 0.0
+    ).
 
 % ============================================================================
 % Contingency Tables
@@ -203,7 +215,8 @@ tag_work_correlation(Tag, Timeline, WorkItems, correlation(Tag, R, Confidence)) 
     
     % Confidence based on sample size
     length(Windows, N),
-    Confidence is min(1.0, N / 30.0).  % More windows = higher confidence
+    min_reliable_sample_size(MinSize),
+    Confidence is min(1.0, N / MinSize).
 
 % Calculate phi coefficient from 2x2 contingency table
 phi_coefficient([[A, B], [C, D]], Phi) :-
@@ -242,7 +255,8 @@ category_work_correlation(Category, Timeline, WorkItems, correlation(Category, R
     ),
     
     % Confidence based on sample size and variance
-    Confidence is min(1.0, N / 30.0).
+    min_reliable_sample_size(MinSize),
+    Confidence is min(1.0, N / MinSize).
 
 % Helper: calculate what ratio of window was spent in a category
 category_time_ratio(Category, Tags, Ratio) :-

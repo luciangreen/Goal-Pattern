@@ -19,6 +19,19 @@
 :- use_module(log).
 
 % ============================================================================
+% Constants
+% ============================================================================
+
+% Timeline confidence: minutes in a week (7 days * 24 hours * 60 minutes)
+timeline_week_minutes(10080).
+
+% Work item confidence: threshold for reliable sample
+reliable_work_item_count(50).
+
+% Minimum absolute correlation to trigger avoidance suggestion
+min_avoidance_correlation(0.3).
+
+% ============================================================================
 % Pattern Analysis
 % ============================================================================
 
@@ -60,8 +73,10 @@ calculate_overall_confidence(Timeline, WorkItems, Confidence) :-
     length(WorkItems, WorkItemCount),
     
     % Confidence increases with more data
-    TimelineConfidence is min(1.0, TimelineLength / 10080),  % 1 week of minutes
-    WorkConfidence is min(1.0, WorkItemCount / 50),           % 50 work items
+    timeline_week_minutes(WeekMinutes),
+    reliable_work_item_count(ReliableItems),
+    TimelineConfidence is min(1.0, TimelineLength / WeekMinutes),
+    WorkConfidence is min(1.0, WorkItemCount / ReliableItems),
     
     % Overall confidence is geometric mean
     Confidence is sqrt(TimelineConfidence * WorkConfidence).
@@ -140,10 +155,11 @@ take_n(N, [H|T], [H|Rest]) :-
 % pattern_avoidance_suggestions(Insights, MinCorrelation, Suggestions)
 pattern_avoidance_suggestions(insights(Correlations, _, _), MinCorrelation, Suggestions) :-
     % Find strongly negative correlations
+    min_avoidance_correlation(MinAbsCorr),
     findall(suggestion(Tag, R, Confidence, Reason),
             (member(correlation(Tag, R, Confidence), Correlations),
              R < MinCorrelation,
-             abs(R) > 0.3,  % Only suggest if correlation is strong enough
+             abs(R) > MinAbsCorr,  % Only suggest if correlation is strong enough
              avoidance_reason(Tag, R, Reason)),
             Suggestions).
 
