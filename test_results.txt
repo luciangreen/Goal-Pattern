@@ -81,19 +81,24 @@ Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:29:
 Warning:     test preferences:validate_goal_mode: Test succeeded with choicepoint
 [122/258] preferences:in_work_day .............. **FAILED (0.000 sec)
 ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:48:
-ERROR:     test preferences:in_work_day: received error: date_time_stamp/2: Type error: `integer' expected, found `-' (an atom)
-[2026-01-01 15:04:05] [INFO] Loading user preferences...
-[2026-01-01 15:04:05] [WARN] Invalid preference in config: goal_mode = adaptive
+ERROR:     test preferences:in_work_day: 
+ERROR: wrong_answer(false)
+ERROR: 
+[2026-01-01 15:24:18] [INFO] Loading user preferences...
+[2026-01-01 15:24:18] [WARN] Invalid preference in config: goal_mode = adaptive
 
-[132/258] planner:score_time_slot .............. **FAILED (0.000 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:153:
-ERROR:     test planner:score_time_slot: received error: date_time_stamp/2: Type error: `integer' expected, found `-' (an atom)
 [133/258] planner:estimate_fatigue_morning ..... **FAILED (0.000 sec)
 ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:166:
-ERROR:     test planner:estimate_fatigue_morning: received error: date_time_stamp/2: Type error: `integer' expected, found `-' (an atom)
+ERROR:     test planner:estimate_fatigue_morning: 
+ERROR: wrong answer (compared using <)
+ERROR:     Expected: 0.5
+ERROR:     Got:      0.8
 [134/258] planner:estimate_fatigue_evening ..... **FAILED (0.000 sec)
 ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:176:
-ERROR:     test planner:estimate_fatigue_evening: received error: date_time_stamp/2: Type error: `integer' expected, found `-' (an atom)
+ERROR:     test planner:estimate_fatigue_evening: 
+ERROR: wrong answer (compared using >)
+ERROR:     Expected: 0.5
+ERROR:     Got:      0.1
 [137/258] planner:suggest_w..blocks_with_backlog ..
 Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:209:
 Warning:     test planner:suggest_work_blocks_with_backlog: Test succeeded with choicepoint
@@ -205,35 +210,5 @@ Warning:     test review_task_creation:create_review_task_word_count: Test succe
 [236/258] review_completion..lete_review_success ..
 Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:251:
 Warning:     test review_completion:complete_review_success: Test succeeded with choicepoint
-[247/258] automate:validate_allowed_extension .. **FAILED (0.014 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:72:
-ERROR:     test automate:validate_allowed_extension: assertion
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:72:
-ERROR:     test automate:validate_allowed_extension: assertion at line 91 failed
-	Assertion: false=true
-
-[254/258] automate:file2phil_dry_run ........... **FAILED (0.001 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:213:
-ERROR:     test automate:file2phil_dry_run: failed
-[2026-01-01 15:04:05] [INFO] Cleared all automation events
-[2026-01-01 15:04:05] [INFO] Starting file2phil automation...
-[2026-01-01 15:04:05] [ERROR] File extension not allowed
-[2026-01-01 15:04:05] [INFO] Cleared all automation events
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:213:
-ERROR:     test automate:file2phil_dry_run: assertion at line 241 failed
-	Assertion: failed=success
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:213:
-ERROR:     test automate:file2phil_dry_run: assertion at line 242 failed
-	Assertion: length([],1)
-
-[258/258] automate:should_recommend_file2phil .. **FAILED (0.001 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:320:
-ERROR:     test automate:should_recommend_file2phil: assertion
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:320:
-ERROR:     test automate:should_recommend_file2phil: assertion at line 341 failed
-	Assertion: false=true
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:320:
-ERROR:     test automate:should_recommend_file2phil: assertion at line 342 failed
-	Assertion: atom(_217638)
-
-ERROR: 7 tests failed
+[258/258] automate:should_recommend_file2phil .... passed (0.001 sec)
+ERROR: 3 tests failed
