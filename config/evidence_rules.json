@@ -39,28 +39,28 @@
   "schedule_change_patterns": [
     {
       "name": "cancelled_event",
-      "pattern": "(?i)(seminar|meeting|session|appointment).*?cancel(led)?",
+      "pattern": "(?i)(?:seminar|meeting|session|appointment).*?cancel(?:led)?",
       "type": "cancellation",
       "confidence": 0.95,
       "description": "Detects event cancellations"
     },
     {
       "name": "rescheduled_event",
-      "pattern": "(?i)(seminar|meeting|session|appointment).*?rescheduled?",
+      "pattern": "(?i)(?:seminar|meeting|session|appointment).*?rescheduled?",
       "type": "reschedule",
       "confidence": 0.9,
       "description": "Detects event rescheduling"
     },
     {
       "name": "moved_event",
-      "pattern": "(?i)(seminar|meeting|session|appointment).*?moved?\\s+to",
+      "pattern": "(?i)(?:seminar|meeting|session|appointment).*?moved?\\s+to",
       "type": "reschedule",
       "confidence": 0.9,
       "description": "Detects 'moved X to Y' statements"
     },
     {
       "name": "new_event",
-      "pattern": "(?i)(scheduled|booked|arranged).*?(seminar|meeting|session|appointment)",
+      "pattern": "(?i)(?:scheduled|booked|arranged).*?(?:seminar|meeting|session|appointment)",
       "type": "addition",
       "confidence": 0.85,
       "description": "Detects new event scheduling"

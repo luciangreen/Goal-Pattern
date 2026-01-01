@@ -158,7 +158,8 @@ build_file2phil_command(FilePath, F2PConfig, Options, Command, FinalArgs) :-
     ),
     
     % Get command
-    get_dict(command, F2PConfig, Command),
+    get_dict(command, F2PConfig, CommandRaw),
+    (atom(CommandRaw) -> Command = CommandRaw ; atom_string(Command, CommandRaw)),
     
     % Get args template
     get_dict(args_template, F2PConfig, ArgsTemplate),
@@ -197,14 +198,23 @@ substitute_atom(Arg, _, _, Arg).  % No substitution needed
 % Helper to replace a placeholder in a string
 replace_placeholder(Input, Placeholder, Replacement, Output) :-
     atom_string(Replacement, ReplacementStr),
-    split_string(Input, Placeholder, "", Parts),
-    (Parts = [Input] ->
-        % No placeholder found
-        Output = Input
+    atom_string(Placeholder, PlaceholderStr),
+    % Find the placeholder in the input string
+    (sub_string(Input, Before, Length, After, PlaceholderStr) ->
+        % Found it - split and rebuild
+        sub_string(Input, 0, Before, _, BeforeStr),
+        AfterStart is Before + Length,
+        sub_string(Input, AfterStart, After, 0, AfterStr),
+        % Recursively replace in the after part
+        replace_placeholder(AfterStr, Placeholder, Replacement, AfterReplaced),
+        % Combine: before + replacement + after
+        atomics_to_string([BeforeStr, ReplacementStr, AfterReplaced], Output)
     ;
-        % Placeholder found, join with replacement
-        atomics_to_string(Parts, ReplacementStr, Output)
-    ).
+        % Not found - return input as-is
+        Output = Input
+    ),
+    !.
+replace_placeholder(Input, _, _, Input).  % Fallback
 
 % Execute file2phil command
 execute_file2phil(FilePath, Command, Args, F2PConfig) :-
@@ -320,7 +330,8 @@ run_repo_task(Repo, TaskSpec) :-
 
 % Build command and arguments for repo task
 build_repo_task_command(Repo, TaskSpec, RTConfig, Command, FinalArgs) :-
-    get_dict(command, RTConfig, Command),
+    get_dict(command, RTConfig, CommandRaw),
+    (atom(CommandRaw) -> Command = CommandRaw ; atom_string(Command, CommandRaw)),
     get_dict(args_template, RTConfig, ArgsTemplate),
     
     % Replace placeholders

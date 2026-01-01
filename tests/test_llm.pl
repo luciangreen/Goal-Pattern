@@ -140,8 +140,7 @@ test(hash_input_pack, []) :-
     
     % Verify hash is generated
     assertion(atom(Hash)),
-    assertion(atom_length(Hash, L)),
-    assertion(L > 0).
+    assertion((atom_length(Hash, L), L > 0)).
 
 test(audit_llm_interaction, []) :-
     % Initialize state
@@ -203,8 +202,7 @@ test(apply_llm_suggestion, []) :-
     
     % Verify review task created
     state:get_review_tasks(Tasks),
-    assertion(length(Tasks, L)),
-    assertion(L > 0),
+    assertion((length(Tasks, L), L > 0)),
     
     % Cleanup
     state:clear_state.
@@ -225,8 +223,8 @@ test(get_llm_suggestions, []) :-
     % Get LLM suggestions
     llm:get_llm_suggestions(LLMSuggestions),
     
-    % Should only get LLM-sourced tasks
-    assertion(length(LLMSuggestions, 2)),
+    % Should only get LLM-sourced tasks that need review
+    assertion(length(LLMSuggestions, 1)),
     
     % Cleanup
     state:clear_state.

@@ -6,8 +6,7 @@
     check_safety_margin_met/1,
     complete_review/2,
     get_review_status/2,
-    calculate_required_extra_work/2,
-    apply_safety_margin/2
+    calculate_required_extra_work/2
 ]).
 
 :- use_module(library(apply)).
@@ -82,11 +81,6 @@ calculate_required_extra_work(BaseCount, RequiredExtra) :-
     RequiredExtra is ceiling(BaseCount * 0.1),
     !.
 
-% Apply safety margin (wrapper for model:apply_safety_margin/2)
-% apply_safety_margin(+Count, -AdjustedCount)
-apply_safety_margin(Count, AdjustedCount) :-
-    model:apply_safety_margin(Count, AdjustedCount).
-
 % Check if safety margin requirement has been met for a task
 % check_safety_margin_met(+TaskID)
 check_safety_margin_met(TaskID) :-
@@ -116,7 +110,7 @@ verify_work(TaskID, VerificationData) :-
     
     % Check if safety margin now met
     get_dict(required_extra_work, Task, Required),
-    SafetyMarginMet = (NewVerified >= Required),
+    (NewVerified >= Required -> SafetyMarginMet = true ; SafetyMarginMet = false),
     
     % Determine new status
     (SafetyMarginMet = true ->

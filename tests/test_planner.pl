@@ -46,13 +46,15 @@ test(load_preferences, [true]) :-
     preferences:load_preferences.
 
 test(in_work_day, [true(InWorkDay)]) :-
+    % Ensure preferences are loaded
+    preferences:load_preferences,
     % Create a timestamp for 10 AM today
     get_time(Now),
     stamp_date_time(Now, DateTime, local),
     date_time_value(year, DateTime, Year),
     date_time_value(month, DateTime, Month),
     date_time_value(day, DateTime, Day),
-    date_time_stamp(date(Year, Month, Day, 10, 0, 0, 0, -, -), TestTime),
+    date_time_stamp(date(Year, Month, Day, 10, 0, 0, -, -, -), TestTime),
     
     (preferences:in_work_day(TestTime) -> InWorkDay = true ; InWorkDay = false).
 
@@ -156,7 +158,7 @@ test(score_time_slot, [true(Score > 0)]) :-
     date_time_value(year, DateTime, Year),
     date_time_value(month, DateTime, Month),
     date_time_value(day, DateTime, Day),
-    date_time_stamp(date(Year, Month, Day, 10, 0, 0, 0, -, -), SlotStart),
+    date_time_stamp(date(Year, Month, Day, 10, 0, 0, -, -, -), SlotStart),
     SlotEnd is SlotStart + 3600,  % 1 hour slot
     
     planner:score_time_slot(SlotStart, SlotEnd, _, Score).
@@ -167,7 +169,7 @@ test(estimate_fatigue_morning, [true(Fatigue < 0.5)]) :-
     date_time_value(year, DateTime, Year),
     date_time_value(month, DateTime, Month),
     date_time_value(day, DateTime, Day),
-    date_time_stamp(date(Year, Month, Day, 9, 0, 0, 0, -, -), MorningTime),
+    date_time_stamp(date(Year, Month, Day, 9, 0, 0, -, -, -), MorningTime),
     
     planner:estimate_fatigue_at_time(MorningTime, Fatigue).
 
@@ -177,7 +179,7 @@ test(estimate_fatigue_evening, [true(Fatigue > 0.5)]) :-
     date_time_value(year, DateTime, Year),
     date_time_value(month, DateTime, Month),
     date_time_value(day, DateTime, Day),
-    date_time_stamp(date(Year, Month, Day, 19, 0, 0, 0, -, -), EveningTime),
+    date_time_stamp(date(Year, Month, Day, 19, 0, 0, -, -, -), EveningTime),
     
     planner:estimate_fatigue_at_time(EveningTime, Fatigue).
 
