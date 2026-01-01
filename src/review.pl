@@ -110,7 +110,7 @@ verify_work(TaskID, VerificationData) :-
     
     % Check if safety margin now met
     get_dict(required_extra_work, Task, Required),
-    SafetyMarginMet = (NewVerified >= Required),
+    (NewVerified >= Required -> SafetyMarginMet = true ; SafetyMarginMet = false),
     
     % Determine new status
     (SafetyMarginMet = true ->
