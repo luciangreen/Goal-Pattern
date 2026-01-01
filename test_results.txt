@@ -1,203 +1,34 @@
-Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/run_tests.pl:20:
+Lucians-MacBook-Air-2025:Goal-Pattern lg3$ swipl -q -s tests/run_tests.pl -g run_tests
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/run_tests.pl:20:
 Warning:    Local definition of user:run_tests/0 overrides weak import from plunit
-......
-........
-..........
-.....
-........
-....
-.................
-....
-....[2026-01-01 04:40:53] [INFO] Tick #1 at 1767242453.8729308
-[2026-01-01 04:40:53] [INFO] Scanning source: all
-[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 1
-Tick #1 completed
-[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Tick #1 at 1767242453.8736367
-[2026-01-01 04:40:53] [INFO] Scanning source: all
-[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 1
-Tick #1 completed
-[2026-01-01 04:40:53] [INFO] Tick #2 at 1767242453.8736942
-[2026-01-01 04:40:53] [INFO] Scanning source: all
-[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 2
-Tick #2 completed
-[2026-01-01 04:40:53] [INFO] Tick #3 at 1767242453.873766
-[2026-01-01 04:40:53] [INFO] Scanning source: all
-[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 3
-Tick #3 completed
-[2026-01-01 04:40:53] [INFO] Tick #4 at 1767242453.8738132
-[2026-01-01 04:40:53] [INFO] Scanning source: all
-[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 4
-Tick #4 completed
-[2026-01-01 04:40:53] [INFO] Tick #5 at 1767242453.8738565
-[2026-01-01 04:40:53] [INFO] Periodic state save completed
-[2026-01-01 04:40:53] [INFO] Scanning source: all
-[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 5
-Tick #5 completed
-[2026-01-01 04:40:53] [INFO] Log closing
-.
-[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/test_alg.pl (2 clauses, status: draft)
-[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] New philosophy found: /tmp/test_disk_scan/philosophies/test_phil.txt (11 words, status: draft)
-[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/delta_test.pl (1 clauses, status: draft)
-[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/delta_test2.pl (1 clauses, status: draft)
-[2026-01-01 04:40:53] [INFO] Algorithm updated: /tmp/test_disk_scan/algorithms/delta_test2.pl (delta: 2, total: 3, status: draft)
-[2026-01-01 04:40:53] [INFO] Log closing
-.[2026-01-01 04:40:53] [INFO] scan_directory called with: _14528{path: /tmp/test_disk_scan/algorithms,type:algorithms}
-[2026-01-01 04:40:53] [INFO]   path extracted: /tmp/test_disk_scan/algorithms
-[2026-01-01 04:40:53] [INFO]   type extracted: algorithms
-[2026-01-01 04:40:53] [INFO] Scanning algorithms directory: /tmp/test_disk_scan/algorithms
-[2026-01-01 04:40:53] [INFO]   calling scan_directory_recursive(/tmp/test_disk_scan/algorithms, algorithms)
-[2026-01-01 04:40:53] [INFO] Processing: /tmp/test_disk_scan/algorithms/file1.pl (type=algorithms)
-[2026-01-01 04:40:53] [INFO]   -> is scannable file
-[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/file1.pl (1 clauses, status: draft)
-[2026-01-01 04:40:53] [INFO] Processing: /tmp/test_disk_scan/algorithms/file2.pl (type=algorithms)
-[2026-01-01 04:40:53] [INFO]   -> is scannable file
-[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/file2.pl (1 clauses, status: draft)
-[2026-01-01 04:40:53] [INFO]   scan_directory_recursive completed
-[2026-01-01 04:40:53] [INFO] Log closing
-.
-.........
-.......
-......
-Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/test_progress.pl:177:
-	PL-Unit: Test feasibility_forecast_with_backlog: Test succeeded with choicepoint
+[110/258] productivity:feas..recast_with_backlog ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:177:
+Warning:     test productivity:feasibility_forecast_with_backlog: Test succeeded with choicepoint
+[122/258] preferences:in_work_day .............. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:48:
+ERROR:     test preferences:in_work_day: 
+ERROR: wrong_answer(false)
+ERROR: 
+[2026-01-01 15:46:35] [INFO] Loading user preferences...
+[2026-01-01 15:46:35] [WARN] Invalid preference in config: goal_mode = adaptive
 
-=== Weekly Progress Report: Week 1 ===
-
-Week 1 Progress:
-  Algorithms: 0 / 0 (0.0%)
-  [No target set]
-  Philosophies: 0 / 0 (0.0%)
-  [No target set]
-
-.
-=== Weekly Progress Report: Week 1 ===
-
-Week 1 Progress:
-  Algorithms: 0 / 0 (0.0%)
-  [No target set]
-  Philosophies: 0 / 0 (0.0%)
-  [No target set]
-
-.
-=== Backlog Report: Week -3 to Week 1 ===
-
-Backlog from Week -3 to Week 1:
-  Algorithms backlog: 0 units
-  Philosophies backlog: 0 units
-
---- Catch-up Feasibility (next 4 weeks) ---
-Algorithms: Feasible - can catch up by week 1 (confidence: 100.0%)
-  - Predicted achievable units: 552
-  - Estimated productivity: 10.00 units/hour
-Philosophies: Feasible - can catch up by week 1 (confidence: 100.0%)
-  - Predicted achievable units: 38
-  - Estimated productivity: 0.70 units/hour
-
-.
-..[2026-01-01 04:40:54] [INFO] Preference set: goal_mode = strict
-.....[2026-01-01 04:40:54] [INFO] Loading user preferences...
-[2026-01-01 04:40:54] [WARN] Invalid preference in config: goal_mode = adaptive
-.[2026-01-01 04:40:54] [INFO] Loading user preferences...
-[2026-01-01 04:40:54] [WARN] Invalid preference in config: goal_mode = adaptive
-.
-[2026-01-01 04:40:54] [INFO] Reminder scheduled: custom at 1767246054.004297 (test_reminder_1)
-.[2026-01-01 04:40:54] [WARN] Cannot schedule reminder in the past: test_past
-..[2026-01-01 04:40:54] [INFO] Reminder scheduled: custom at 1767249654.0046022 (test_cancel)
-[2026-01-01 04:40:54] [INFO] Reminder cancelled: test_cancel
-....
-........[2026-01-01 04:40:54] [INFO] Generated day plan with 0 work blocks
-.
-[2026-01-01 04:40:54] [INFO] Loading user preferences...
-[2026-01-01 04:40:54] [WARN] Invalid preference in config: goal_mode = adaptive
-[2026-01-01 04:40:54] [INFO] Generated day plan with 0 work blocks
-.[2026-01-01 04:40:54] [INFO] Added user block: user_block_1767242454.0061169
-.
-[2026-01-01 04:40:54] [INFO] Log closing
-Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/test_gmail.pl:25:
-	PL-Unit: Test parse_gmail_json_valid: Test succeeded with choicepoint
-[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/test_gmail.pl:110:
-	PL-Unit: Test extract_schedule_changes_rescheduled: Test succeeded with choicepoint
-[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Log closing
-.[2026-01-01 04:40:54] [INFO] Received 2 emails from Gmail
-[2026-01-01 04:40:54] [INFO] Stored work evidence: 15 algorithm (completion)
-[2026-01-01 04:40:54] [INFO] Stored work evidence: 1 philosophy (submission)
-[2026-01-01 04:40:54] [INFO] Log closing
-.
-.........
-........................
-................
-...
-...
-...
-.[2026-01-01 04:40:54] [INFO] LLM audit: analyze via gemini/gemini-2.0-flash-exp
-.
-.[2026-01-01 04:40:54] [INFO] Created review task review_work1_1767242454.1172707 for work item work1 (requires +10% = 10 extra units)
-[2026-01-01 04:40:54] [INFO] LLM suggestion applied, review task created
-..
-[2026-01-01 04:40:54] [INFO] Created review task review_work1_1767242454.1176126 for work item work1 (requires +10% = 10 extra units)
-.[2026-01-01 04:40:54] [INFO] Created review task review_work2_1767242454.117782 for work item work2 (requires +10% = 50 extra units)
-.
-.......
-[2026-01-01 04:40:54] [INFO] Verified 5 extra units for task task1 (total: 5/10, margin met: false)
-.[2026-01-01 04:40:54] [INFO] Verified 10 extra units for task task2 (total: 10/10, margin met: true)
-.[2026-01-01 04:40:54] [INFO] Verified 7 extra units for task task3 (total: 10/10, margin met: true)
-.
-[2026-01-01 04:40:54] [INFO] Completed review task1: work item work1 promoted to complete with count 160
-.[2026-01-01 04:40:54] [ERROR] Cannot complete review task2: safety margin not met. Need 5 more units.
-.
-...
-....[2026-01-01 04:40:54] [ERROR] Command type nonexistent_command_xyz is not allowlisted or enabled
-.[2026-01-01 04:40:54] [ERROR] Command type repo_task is not allowlisted or enabled
-.....[2026-01-01 04:40:54] [INFO] Cleared all automation events
-[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_test_type_1767242454.1226323 (success)
-[2026-01-01 04:40:54] [INFO] Cleared all automation events
-.[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_test1_1767242454.1229541 (success)
-[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_test2_1767242454.123213 (failed)
-[2026-01-01 04:40:54] [INFO] Cleared all automation events
-..[2026-01-01 04:40:54] [INFO] Cleared all automation events
-[2026-01-01 04:40:54] [INFO] Starting file2phil automation...
-[2026-01-01 04:40:54] [INFO] DRY RUN: Would execute: swipl [-q,-s,file2phil.pl,-g,main(/tmp/swipl_test_4610_3.pl),-t,halt]
-[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_file2phil_1767242454.1300344 (dry_run)
-[2026-01-01 04:40:54] [INFO] File2phil dry-run completed
-[2026-01-01 04:40:54] [INFO] Cleared all automation events
-.[2026-01-01 04:40:54] [INFO] Cleared all automation events
-[2026-01-01 04:40:54] [INFO] Starting repo task automation (stub)...
-[2026-01-01 04:40:54] [ERROR] Command type repo_task is not allowlisted or enabled
-[2026-01-01 04:40:54] [WARN] repo_task command is not enabled - this is a stub implementation
-[2026-01-01 04:40:54] [INFO] Cleared all automation events
-....
+[133/258] planner:estimate_fatigue_morning ..... **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:166:
+ERROR:     test planner:estimate_fatigue_morning: 
+ERROR: wrong answer (compared using <)
+ERROR:     Expected: 0.5
+ERROR:     Got:      0.8
+[134/258] planner:estimate_fatigue_evening ..... **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:176:
+ERROR:     test planner:estimate_fatigue_evening: 
+ERROR: wrong answer (compared using >)
+ERROR:     Expected: 0.5
+ERROR:     Got:      0.1
+[141/258] gmail:parse_gmail_json_valid ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:25:
+Warning:     test gmail:parse_gmail_json_valid: Test succeeded with choicepoint
+[150/258] gmail:extract_sch..changes_rescheduled ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:110:
+Warning:     test gmail:extract_schedule_changes_rescheduled: Test succeeded with choicepoint
+[258/258] automate:should_recommend_file2phil .... passed (0.000 sec)
+ERROR: 3 tests failed
