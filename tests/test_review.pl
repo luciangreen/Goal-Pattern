@@ -85,7 +85,7 @@ test(calculate_required_extra_work_small, []) :-
 
 test(apply_safety_margin, []) :-
     review:apply_safety_margin(100, Adjusted),
-    assertion(Adjusted = 110.0).
+    assertion(Adjusted =:= 110.0).
 
 test(check_safety_margin_not_met, []) :-
     state:init_state,
