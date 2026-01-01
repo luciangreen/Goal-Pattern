@@ -6,7 +6,9 @@
     is_dry_run_mode/0,
     get_automation_events/1,
     clear_automation_events/0,
-    validate_command/1
+    validate_command/1,
+    validate_file_extension/1,
+    should_recommend_file2phil/2
 ]).
 
 :- use_module(library(process)).
