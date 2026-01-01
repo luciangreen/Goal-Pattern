@@ -91,7 +91,7 @@ event_to_time_range(schedule_event(_, Start, End, _, _, _, _, _), range(Start, E
 % Find gaps between occupied ranges
 find_gaps(Start, End, [], [range(Start, End)]) :- !.
 
-find_gaps(Start, End, [range(First, _)|_], []) :-
+find_gaps(Start, _End, [range(First, _)|_], []) :-
     First =< Start,
     !.
 
