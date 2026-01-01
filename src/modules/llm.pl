@@ -162,7 +162,7 @@ generate_prompts(Workflow, Text, Context, _Config, SystemPrompt, UserPrompt) :-
 % Call external LLM helper script
 call_llm_helper(InputPack, Response) :-
     config:get_config([llm, helper_script], HelperScript),
-    config:get_config([llm, provider], Provider, 'gemini'),
+    (config:get_config([llm, provider], Provider) -> true ; Provider = 'gemini'),
     
     % Write input pack to temporary JSON file
     tmp_file_stream(text, TmpFile, Stream),
@@ -314,7 +314,7 @@ audit_llm_interaction(Operation, InputPack, Response, Suggestions) :-
     get_time(Timestamp),
     
     % Generate prompt hash (not storing full prompt unless opted-in)
-    config:get_config([llm, store_full_prompts], StoreFullPrompts, false),
+    (config:get_config([llm, store_full_prompts], StoreFullPrompts) -> true ; StoreFullPrompts = false),
     (StoreFullPrompts = true ->
         PromptData = InputPack
     ;
@@ -324,7 +324,7 @@ audit_llm_interaction(Operation, InputPack, Response, Suggestions) :-
     
     % Get model info
     config:get_config([llm, provider], Provider),
-    config:get_config([llm, model], Model, 'default'),
+    (config:get_config([llm, model], Model) -> true ; Model = 'default'),
     
     % Count suggestions
     length(Suggestions, SuggestionCount),
