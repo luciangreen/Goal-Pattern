@@ -77,7 +77,7 @@ work_item_productivity(Type, Items, Units, Hours) :-
 
 % Calculate available work time in a week (in minutes)
 % Considers schedule events and time blocks
-available_work_time(Week, _Type, AvailableMinutes) :-
+available_work_time(Week, _, AvailableMinutes) :-
     progress:week_range(Week, StartStamp, EndStamp),
     
     % Get all schedule events in this week
@@ -128,7 +128,7 @@ forecast_achievable_units(Type, FromWeek, ToWeek, AchievableUnits) :-
     estimate_productivity(Type, productivity(Type, UnitsPerHour, _)),
     
     % Calculate total available minutes across weeks
-    _NumWeeks is ToWeek - FromWeek + 1,
+    _ is ToWeek - FromWeek + 1,
     findall(Minutes,
             (between(FromWeek, ToWeek, Week),
              available_work_time(Week, Type, Minutes)),

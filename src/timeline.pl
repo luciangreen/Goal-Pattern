@@ -37,7 +37,7 @@ build_timeline_minutes(StartMinute, EndMinute, Events, Timeline) :-
             Timeline).
 
 % Get data for a specific minute
-minute_data(Minute, _Events, timeline_minute(Timestamp, Categories, Tags, MaxConfidence)) :-
+minute_data(Minute, _, timeline_minute(Timestamp, Categories, Tags, MaxConfidence)) :-
     Timestamp is Minute * 60,
     % Find all events that overlap this minute
     findall(Event, 
@@ -156,7 +156,7 @@ work_outcome_window(Timeline, WorkItems, window(StartMin, EndMin, ItemID, Contex
     EndMin is floor(EndStamp / 60),
     
     % Extract context tags from this window
-    get_minute_categories(StartStamp, EndStamp, Timeline, _Categories),
+    get_minute_categories(StartStamp, EndStamp, Timeline, _),
     findall(Tag,
             (between(StartMin, EndMin, Minute),
              get_context_tags_at_minute(Minute, Timeline, Tags),

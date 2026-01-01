@@ -117,8 +117,8 @@ build_input_pack(Text, Context, Workflow, InputPack) :-
 
 % Generate system and user prompts for workflow
 generate_prompts('draft_then_user_check', Text, Context, Config, SystemPrompt, UserPrompt) :-
-    get_dict(instructions, Config, Instructions, 
-             "Generate a draft completion. User will grammar-check and paraphrase."),
+    (get_dict(instructions, Config, Instructions) -> true ; 
+     Instructions = "Generate a draft completion. User will grammar-check and paraphrase."),
     format(string(SystemPrompt), 
            "You are an assistant helping with ~w. ~w", 
            [Context.type, Instructions]),
@@ -127,8 +127,8 @@ generate_prompts('draft_then_user_check', Text, Context, Config, SystemPrompt, U
            [Text, Context.current_count]).
 
 generate_prompts('outline_only', Text, Context, Config, SystemPrompt, UserPrompt) :-
-    get_dict(instructions, Config, Instructions, 
-             "Generate only an outline, not full text."),
+    (get_dict(instructions, Config, Instructions) -> true ; 
+     Instructions = "Generate only an outline, not full text."),
     format(string(SystemPrompt), 
            "You are an assistant helping with ~w. ~w", 
            [Context.type, Instructions]),
@@ -137,8 +137,8 @@ generate_prompts('outline_only', Text, Context, Config, SystemPrompt, UserPrompt
            [Text]).
 
 generate_prompts('complete_with_checklist', Text, Context, Config, SystemPrompt, UserPrompt) :-
-    get_dict(instructions, Config, Instructions, 
-             "Generate complete text but include a verification checklist."),
+    (get_dict(instructions, Config, Instructions) -> true ; 
+     Instructions = "Generate complete text but include a verification checklist."),
     format(string(SystemPrompt), 
            "You are an assistant helping with ~w. ~w", 
            [Context.type, Instructions]),
@@ -348,7 +348,7 @@ audit_llm_interaction(Operation, InputPack, Response, Suggestions) :-
     !.
 
 % Store audit log
-audit_llm_call(Operation, Provider, Model, _PromptData, AuditRecord) :-
+audit_llm_call(Operation, Provider, Model, _, AuditRecord) :-
     % Add to state audit log
     state:add_llm_audit_record(AuditRecord),
     

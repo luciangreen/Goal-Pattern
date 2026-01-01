@@ -21,7 +21,7 @@ current_week(Week) :-
     get_time(Timestamp),
     stamp_date_time(Timestamp, DateTime, 'UTC'),
     date_time_value(date, DateTime, Date),
-    day_of_the_week(Date, _DayNum),
+    day_of_the_week(Date, _),
     date_time_value(year, DateTime, Year),
     date_time_value(month, DateTime, Month),
     date_time_value(day, DateTime, Day),

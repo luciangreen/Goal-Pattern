@@ -26,7 +26,7 @@ test(analyze_patterns_empty, [true]) :-
     Insights = insights(Corrs, _, _),
     Corrs = [].
 
-test(analyze_patterns_with_data, [true(Insights = insights(_Corrs, _, _))]) :-
+test(analyze_patterns_with_data, [true(Insights = insights(_, _, _))]) :-
     % Clean state
     state:clear_state,
     state:init_state,
