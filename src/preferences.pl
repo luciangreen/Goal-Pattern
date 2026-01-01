@@ -5,7 +5,9 @@
     load_preferences/0,
     save_preferences/0,
     default_preference/2,
-    validate_preference/2
+    validate_preference/2,
+    in_quiet_hours/1,
+    in_work_day/1
 ]).
 
 :- use_module(config).
