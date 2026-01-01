@@ -4,26 +4,11 @@ Warning:    Local definition of user:run_tests/0 overrides weak import from plun
 [110/258] productivity:feas..recast_with_backlog ..
 Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:177:
 Warning:     test productivity:feasibility_forecast_with_backlog: Test succeeded with choicepoint
-[122/258] preferences:in_work_day .............. **FAILED (0.000 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:48:
-ERROR:     test preferences:in_work_day: 
-ERROR: wrong_answer(false)
-ERROR: 
+[122/258] preferences:in_work_day ................ passed (0.000 sec)
 [2026-01-01 15:46:35] [INFO] Loading user preferences...
-[2026-01-01 15:46:35] [WARN] Invalid preference in config: goal_mode = adaptive
 
-[133/258] planner:estimate_fatigue_morning ..... **FAILED (0.000 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:166:
-ERROR:     test planner:estimate_fatigue_morning: 
-ERROR: wrong answer (compared using <)
-ERROR:     Expected: 0.5
-ERROR:     Got:      0.8
-[134/258] planner:estimate_fatigue_evening ..... **FAILED (0.000 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:176:
-ERROR:     test planner:estimate_fatigue_evening: 
-ERROR: wrong answer (compared using >)
-ERROR:     Expected: 0.5
-ERROR:     Got:      0.1
+[133/258] planner:estimate_fatigue_morning ....... passed (0.000 sec)
+[134/258] planner:estimate_fatigue_evening ....... passed (0.000 sec)
 [141/258] gmail:parse_gmail_json_valid ..
 Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:25:
 Warning:     test gmail:parse_gmail_json_valid: Test succeeded with choicepoint
@@ -31,4 +16,4 @@ Warning:     test gmail:parse_gmail_json_valid: Test succeeded with choicepoint
 Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:110:
 Warning:     test gmail:extract_schedule_changes_rescheduled: Test succeeded with choicepoint
 [258/258] automate:should_recommend_file2phil .... passed (0.000 sec)
-ERROR: 3 tests failed
+All 258 tests passed
