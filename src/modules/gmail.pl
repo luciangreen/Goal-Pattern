@@ -230,7 +230,8 @@ normalize_work_type(TypeStr, NormalizedType) :-
         (atom(MappedType) -> NormalizedType = MappedType ; atom_string(NormalizedType, MappedType))
     ;
         NormalizedType = unknown
-    ).
+    ),
+    !.
 
 % ============================================================================
 % Evidence Storage
@@ -324,7 +325,8 @@ load_evidence_rules(_{
     work_type_mapping: _{},
     extraction_settings: _{min_confidence: 0.7}
 }) :-
-    log_warn('Could not load evidence rules, using defaults').
+    log_warn('Could not load evidence rules, using defaults'),
+    !.
 
 % Find existing evidence by email ID
 find_existing_evidence(EmailID) :-
