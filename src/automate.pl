@@ -8,7 +8,14 @@
     clear_automation_events/0,
     validate_command/1,
     validate_file_extension/1,
-    should_recommend_file2phil/2
+    should_recommend_file2phil/2,
+    load_automation_config/1,
+    substitute_placeholders/4,
+    substitute_atom/4,
+    record_automation_event/6,
+    truncate_string/3,
+    build_file2phil_command/5,
+    build_repo_task_command/5
 ]).
 
 :- use_module(library(process)).
@@ -52,7 +59,7 @@ load_automation_config(Config) :-
     atom_concat(BaseDir, '/automation_allowlist.json', AutomationConfigPath),
     (exists_file(AutomationConfigPath) ->
         open(AutomationConfigPath, read, Stream),
-        json_read_dict(Stream, Config),
+        json_read_dict(Stream, Config, [value_string_as(atom)]),
         close(Stream)
     ; 
         log:log_error('Automation config file not found'),
