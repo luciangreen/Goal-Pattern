@@ -17,6 +17,8 @@
 :- use_module(log).
 :- use_module(state).
 
+:- discontiguous execute_file2phil/4.
+
 % ============================================================================
 % Dynamic state for automation events
 % ============================================================================
@@ -263,7 +265,7 @@ execute_file2phil_process(FilePath, Command, Args) :-
     !.
 
 % Catch other exceptions during execution
-execute_file2phil(FilePath, Command, Args, _) :-
+execute_file2phil(_FilePath, Command, Args, _) :-
     catch(
         fail,
         Error,
@@ -289,7 +291,7 @@ run_repo_task(Repo, TaskSpec) :-
     (validate_command(repo_task) ->
         true
     ;
-        log:log_warning('repo_task command is not enabled - this is a stub implementation'),
+        log:log_warn('repo_task command is not enabled - this is a stub implementation'),
         fail
     ),
     
@@ -309,7 +311,7 @@ run_repo_task(Repo, TaskSpec) :-
         log:log_info('Repo task dry-run completed')
     ;
         % In live mode, still treat as stub
-        log:log_warning('Repo task execution is not yet implemented'),
+        log:log_warn('Repo task execution is not yet implemented'),
         format(atom(StubMsg), 'STUB: Would execute repo task on ~w: ~w', [Repo, TaskSpec]),
         log:log_info(StubMsg),
         record_automation_event(repo_task, Command, Args, stub, StubMsg, ''),

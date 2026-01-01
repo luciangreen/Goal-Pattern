@@ -71,7 +71,7 @@ llm_suggest_completions(WorkItemID, Options, Suggestions) :-
     ; Text = ""),
     
     % Build input pack
-    get_dict(workflow, Options, Workflow, 'draft_then_user_check'),
+    (get_dict(workflow, Options, Workflow) -> true ; Workflow = 'draft_then_user_check'),
     build_input_pack(Text, Context, Workflow, InputPack),
     
     % Call LLM helper
@@ -162,7 +162,7 @@ generate_prompts(Workflow, Text, Context, _Config, SystemPrompt, UserPrompt) :-
 % Call external LLM helper script
 call_llm_helper(InputPack, Response) :-
     config:get_config([llm, helper_script], HelperScript),
-    config:get_config([llm, provider], Provider, 'gemini'),
+    (config:get_config([llm, provider], Provider) -> true ; Provider = 'gemini'),
     
     % Write input pack to temporary JSON file
     tmp_file_stream(text, TmpFile, Stream),
@@ -210,7 +210,7 @@ call_llm_helper(InputPack, Response) :-
 % parse_llm_response(+Response, -Suggestions)
 parse_llm_response(Response, Suggestions) :-
     get_dict(suggestions, Response, SuggestionsList),
-    get_dict(confidence, Response, OverallConfidence, 0.7),
+    (get_dict(confidence, Response, OverallConfidence) -> true ; OverallConfidence = 0.7),
     
     % Process each suggestion
     maplist(parse_single_suggestion(OverallConfidence), SuggestionsList, Suggestions),
@@ -219,11 +219,11 @@ parse_llm_response(Response, Suggestions) :-
 % Parse a single suggestion
 parse_single_suggestion(DefaultConfidence, SuggDict, Suggestion) :-
     get_dict(text, SuggDict, Text),
-    get_dict(type, SuggDict, Type, 'completion'),
-    get_dict(confidence, SuggDict, Confidence, DefaultConfidence),
-    get_dict(citations, SuggDict, Citations, []),
-    get_dict(word_count, SuggDict, WordCount, 0),
-    get_dict(clause_count, SuggDict, ClauseCount, 0),
+    (get_dict(type, SuggDict, Type) -> true ; Type = 'completion'),
+    (get_dict(confidence, SuggDict, Confidence) -> true ; Confidence = DefaultConfidence),
+    (get_dict(citations, SuggDict, Citations) -> true ; Citations = []),
+    (get_dict(word_count, SuggDict, WordCount) -> true ; WordCount = 0),
+    (get_dict(clause_count, SuggDict, ClauseCount) -> true ; ClauseCount = 0),
     
     Suggestion = _{
         text: Text,
@@ -314,7 +314,7 @@ audit_llm_interaction(Operation, InputPack, Response, Suggestions) :-
     get_time(Timestamp),
     
     % Generate prompt hash (not storing full prompt unless opted-in)
-    config:get_config([llm, store_full_prompts], StoreFullPrompts, false),
+    (config:get_config([llm, store_full_prompts], StoreFullPrompts) -> true ; StoreFullPrompts = false),
     (StoreFullPrompts = true ->
         PromptData = InputPack
     ;
@@ -324,7 +324,7 @@ audit_llm_interaction(Operation, InputPack, Response, Suggestions) :-
     
     % Get model info
     config:get_config([llm, provider], Provider),
-    config:get_config([llm, model], Model, 'default'),
+    (config:get_config([llm, model], Model) -> true ; Model = 'default'),
     
     % Count suggestions
     length(Suggestions, SuggestionCount),
@@ -348,7 +348,7 @@ audit_llm_interaction(Operation, InputPack, Response, Suggestions) :-
     !.
 
 % Store audit log
-audit_llm_call(Operation, Provider, Model, PromptData, AuditRecord) :-
+audit_llm_call(Operation, Provider, Model, _PromptData, AuditRecord) :-
     % Add to state audit log
     state:add_llm_audit_record(AuditRecord),
     
