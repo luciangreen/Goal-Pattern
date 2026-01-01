@@ -95,7 +95,8 @@ top_positive_predictors(insights(Correlations, _, _), N, TopPredictors) :-
     sort_correlations_desc(PositiveCorrs, SortedCorrs),
     
     % Take top N
-    take_n(N, SortedCorrs, TopPredictors).
+    take_n(N, SortedCorrs, TopPredictors),
+    !.
 
 % Check if correlation is positive
 is_positive_correlation(correlation(_, R, _)) :-
@@ -111,7 +112,8 @@ top_negative_predictors(insights(Correlations, _, _), N, TopPredictors) :-
     sort_correlations_by_abs_desc(NegativeCorrs, SortedCorrs),
     
     % Take top N
-    take_n(N, SortedCorrs, TopPredictors).
+    take_n(N, SortedCorrs, TopPredictors),
+    !.
 
 % Check if correlation is negative
 is_negative_correlation(correlation(_, R, _)) :-
@@ -193,7 +195,8 @@ generate_insights_report(Insights, Report) :-
         positive_predictors(TopPositive),
         negative_predictors(TopNegative),
         avoidance_suggestions(Suggestions)
-    ).
+    ),
+    !.
 
 % ============================================================================
 % Formatting

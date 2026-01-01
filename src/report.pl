@@ -65,7 +65,8 @@ report_backlog(FromWeek, ToWeek) :-
     format('Philosophies: ', []),
     print_feasibility(philosophy, PhilsFeasibility),
     
-    format('~n').
+    format('~n'),
+    !.
 
 % ============================================================================
 % Printing Helpers

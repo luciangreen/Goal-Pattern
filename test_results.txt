@@ -1,214 +1,203 @@
-Lucians-MacBook-Air-2025:Goal-Pattern lg3$ swipl -q -s tests/run_tests.pl -g run_tests
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/run_tests.pl:20:
+Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/run_tests.pl:20:
 Warning:    Local definition of user:run_tests/0 overrides weak import from plunit
-[1/258] model_goal:create_goal_algorithms ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:13:
-Warning:     test model_goal:create_goal_algorithms: Test succeeded with choicepoint
-[3/258] model_goal:validate_goal_success ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:19:
-Warning:     test model_goal:validate_goal_success: Test succeeded with choicepoint
-[7/258] model_work_item:c..work_item_algorithm ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:41:
-Warning:     test model_work_item:create_work_item_algorithm: Test succeeded with choicepoint
-[8/258] model_work_item:c..ork_item_philosophy ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:47:
-Warning:     test model_work_item:create_work_item_philosophy: Test succeeded with choicepoint
-[9/258] model_work_item:v..e_work_item_success ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:53:
-Warning:     test model_work_item:validate_work_item_success: Test succeeded with choicepoint
-[12/258] model_work_item:u..te_work_item_status ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:71:
-Warning:     test model_work_item:update_work_item_status: Test succeeded with choicepoint
-[13/258] model_work_item:w..em_is_complete_true ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:78:
-Warning:     test model_work_item:work_item_is_complete_true: Test succeeded with choicepoint
-[15/258] model_status_tran..on_draft_to_partial ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:98:
-Warning:     test model_status_transitions:valid_transition_draft_to_partial: Test succeeded with choicepoint
-[25/258] model_schedule_ev..eate_schedule_event ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:136:
-Warning:     test model_schedule_event:create_schedule_event: Test succeeded with choicepoint
-[26/258] model_schedule_ev..edule_event_success ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:142:
-Warning:     test model_schedule_event:validate_schedule_event_success: Test succeeded with choicepoint
-[29/258] model_schedule_ev.._with_multiple_tags ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:160:
-Warning:     test model_schedule_event:schedule_event_with_multiple_tags: Test succeeded with choicepoint
-[30/258] model_time_block:..ate_time_block_work ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:175:
-Warning:     test model_time_block:create_time_block_work: Test succeeded with choicepoint
-[31/258] model_time_block:..ate_time_block_rest ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:181:
-Warning:     test model_time_block:create_time_block_rest: Test succeeded with choicepoint
-[32/258] model_time_block:..ate_time_block_play ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:187:
-Warning:     test model_time_block:create_time_block_play: Test succeeded with choicepoint
-[34/258] model_time_block:.._time_block_success ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:199:
-Warning:     test model_time_block:validate_time_block_success: Test succeeded with choicepoint
-[59/258] model_serializati..alize_goal_to_state ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:313:
-Warning:     test model_serialization:serialize_goal_to_state: Test succeeded with choicepoint
-[60/258] model_serializati.._work_item_to_state ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:322:
-Warning:     test model_serialization:serialize_work_item_to_state: Test succeeded with choicepoint
-[61/258] model_serializati..dule_event_to_state ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:333:
-Warning:     test model_serialization:serialize_schedule_event_to_state: Test succeeded with choicepoint
-[62/258] model_serializati..e_multiple_entities ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:344:
-Warning:     test model_serialization:serialize_multiple_entities: Test succeeded with choicepoint
-[100/258] progress:weekly_progress_with_goals ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:35:
-Warning:     test progress:weekly_progress_with_goals: Test succeeded with choicepoint
-[101/258] progress:weekly_p..with_completed_work ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:50:
-Warning:     test progress:weekly_progress_with_completed_work: Test succeeded with choicepoint
-[102/258] progress:count_completed_work ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:75:
-Warning:     test progress:count_completed_work: Test succeeded with choicepoint
-[103/258] progress:backlog_computation ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:99:
-Warning:     test progress:backlog_computation: Test succeeded with choicepoint
-[110/258] productivity:feas..recast_with_backlog ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:177:
-Warning:     test productivity:feasibility_forecast_with_backlog: Test succeeded with choicepoint
-[113/258] report_output:report_backlog_runs ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:225:
-Warning:     test report_output:report_backlog_runs: Test succeeded with choicepoint
-[117/258] preferences:validate_goal_mode ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:29:
-Warning:     test preferences:validate_goal_mode: Test succeeded with choicepoint
-[122/258] preferences:in_work_day .............. **FAILED (0.000 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:48:
-ERROR:     test preferences:in_work_day: 
-ERROR: wrong_answer(false)
-ERROR: 
-[2026-01-01 15:24:18] [INFO] Loading user preferences...
-[2026-01-01 15:24:18] [WARN] Invalid preference in config: goal_mode = adaptive
+......
+........
+..........
+.....
+........
+....
+.................
+....
+....[2026-01-01 04:40:53] [INFO] Tick #1 at 1767242453.8729308
+[2026-01-01 04:40:53] [INFO] Scanning source: all
+[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 1
+Tick #1 completed
+[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Tick #1 at 1767242453.8736367
+[2026-01-01 04:40:53] [INFO] Scanning source: all
+[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 1
+Tick #1 completed
+[2026-01-01 04:40:53] [INFO] Tick #2 at 1767242453.8736942
+[2026-01-01 04:40:53] [INFO] Scanning source: all
+[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 2
+Tick #2 completed
+[2026-01-01 04:40:53] [INFO] Tick #3 at 1767242453.873766
+[2026-01-01 04:40:53] [INFO] Scanning source: all
+[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 3
+Tick #3 completed
+[2026-01-01 04:40:53] [INFO] Tick #4 at 1767242453.8738132
+[2026-01-01 04:40:53] [INFO] Scanning source: all
+[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 4
+Tick #4 completed
+[2026-01-01 04:40:53] [INFO] Tick #5 at 1767242453.8738565
+[2026-01-01 04:40:53] [INFO] Periodic state save completed
+[2026-01-01 04:40:53] [INFO] Scanning source: all
+[2026-01-01 04:40:53] [INFO] Generating recommendations for state: 5
+Tick #5 completed
+[2026-01-01 04:40:53] [INFO] Log closing
+.
+[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/test_alg.pl (2 clauses, status: draft)
+[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] New philosophy found: /tmp/test_disk_scan/philosophies/test_phil.txt (11 words, status: draft)
+[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/delta_test.pl (1 clauses, status: draft)
+[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/delta_test2.pl (1 clauses, status: draft)
+[2026-01-01 04:40:53] [INFO] Algorithm updated: /tmp/test_disk_scan/algorithms/delta_test2.pl (delta: 2, total: 3, status: draft)
+[2026-01-01 04:40:53] [INFO] Log closing
+.[2026-01-01 04:40:53] [INFO] scan_directory called with: _14528{path: /tmp/test_disk_scan/algorithms,type:algorithms}
+[2026-01-01 04:40:53] [INFO]   path extracted: /tmp/test_disk_scan/algorithms
+[2026-01-01 04:40:53] [INFO]   type extracted: algorithms
+[2026-01-01 04:40:53] [INFO] Scanning algorithms directory: /tmp/test_disk_scan/algorithms
+[2026-01-01 04:40:53] [INFO]   calling scan_directory_recursive(/tmp/test_disk_scan/algorithms, algorithms)
+[2026-01-01 04:40:53] [INFO] Processing: /tmp/test_disk_scan/algorithms/file1.pl (type=algorithms)
+[2026-01-01 04:40:53] [INFO]   -> is scannable file
+[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/file1.pl (1 clauses, status: draft)
+[2026-01-01 04:40:53] [INFO] Processing: /tmp/test_disk_scan/algorithms/file2.pl (type=algorithms)
+[2026-01-01 04:40:53] [INFO]   -> is scannable file
+[2026-01-01 04:40:53] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/file2.pl (1 clauses, status: draft)
+[2026-01-01 04:40:53] [INFO]   scan_directory_recursive completed
+[2026-01-01 04:40:53] [INFO] Log closing
+.
+.........
+.......
+......
+Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/test_progress.pl:177:
+	PL-Unit: Test feasibility_forecast_with_backlog: Test succeeded with choicepoint
 
-[133/258] planner:estimate_fatigue_morning ..... **FAILED (0.000 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:166:
-ERROR:     test planner:estimate_fatigue_morning: 
-ERROR: wrong answer (compared using <)
-ERROR:     Expected: 0.5
-ERROR:     Got:      0.8
-[134/258] planner:estimate_fatigue_evening ..... **FAILED (0.000 sec)
-ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:176:
-ERROR:     test planner:estimate_fatigue_evening: 
-ERROR: wrong answer (compared using >)
-ERROR:     Expected: 0.5
-ERROR:     Got:      0.1
-[137/258] planner:suggest_w..blocks_with_backlog ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:209:
-Warning:     test planner:suggest_work_blocks_with_backlog: Test succeeded with choicepoint
-[138/258] planner:plan_today ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:216:
-Warning:     test planner:plan_today: Test succeeded with choicepoint
-[139/258] planner_integrati..l_planning_workflow ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:234:
-Warning:     test planner_integration:full_planning_workflow: Test succeeded with choicepoint
-[140/258] planner_integrati..e_editing_add_block ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:251:
-Warning:     test planner_integration:schedule_editing_add_block: Test succeeded with choicepoint
-[141/258] gmail:parse_gmail_json_valid ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:25:
-Warning:     test gmail:parse_gmail_json_valid: Test succeeded with choicepoint
-[144/258] gmail:extract_wor..ompleted_algorithms ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:49:
-Warning:     test gmail:extract_work_evidence_completed_algorithms: Test succeeded with choicepoint
-[145/258] gmail:extract_wor..nce_submitted_essay ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:61:
-Warning:     test gmail:extract_work_evidence_submitted_essay: Test succeeded with choicepoint
-[146/258] gmail:extract_wor..e_multiple_patterns ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:72:
-Warning:     test gmail:extract_work_evidence_multiple_patterns: Test succeeded with choicepoint
-[147/258] gmail:extract_wor..dence_wrote_clauses ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:79:
-Warning:     test gmail:extract_work_evidence_wrote_clauses: Test succeeded with choicepoint
-[148/258] gmail:extract_work_evidence_no_match ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:90:
-Warning:     test gmail:extract_work_evidence_no_match: Test succeeded with choicepoint
-[149/258] gmail:extract_sch..e_changes_cancelled ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:100:
-Warning:     test gmail:extract_schedule_changes_cancelled: Test succeeded with choicepoint
-[150/258] gmail:extract_sch..changes_rescheduled ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:110:
-Warning:     test gmail:extract_schedule_changes_rescheduled: Test succeeded with choicepoint
-[151/258] gmail:extract_sch..e_changes_new_event ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:119:
-Warning:     test gmail:extract_schedule_changes_new_event: Test succeeded with choicepoint
-[162/258] timeline:build_ti..e_with_single_event ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:28:
-Warning:     test timeline:build_timeline_with_single_event: Test succeeded with choicepoint
-[163/258] timeline:event_overlaps_minute ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:46:
-Warning:     test timeline:event_overlaps_minute: Test succeeded with choicepoint
-[165/258] timeline:category_from_tag_mapping ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:76:
-Warning:     test timeline:category_from_tag_mapping: Test succeeded with choicepoint
-[166/258] timeline:event_to_minutes ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:82:
-Warning:     test timeline:event_to_minutes: Test succeeded with choicepoint
-[168/258] timeline:work_out..with_completed_item ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:108:
-Warning:     test timeline:work_outcome_window_with_completed_item: Test succeeded with choicepoint
-[169/258] timeline:get_minute_categories ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:136:
-Warning:     test timeline:get_minute_categories: Test succeeded with choicepoint
-[170/258] stats:mean_empty ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_stats.pl:15:
-Warning:     test stats:mean_empty: Test succeeded with choicepoint
-[188/258] stats:lag_correlation_zero_lag ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_stats.pl:101:
-Warning:     test stats:lag_correlation_zero_lag: Test succeeded with choicepoint
-[189/258] stats:lag_correlation_positive_lag ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_stats.pl:106:
-Warning:     test stats:lag_correlation_positive_lag: Test succeeded with choicepoint
-[195/258] insights:analyze_patterns_with_data ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:29:
-Warning:     test insights:analyze_patterns_with_data: Test succeeded with choicepoint
-[196/258] insights:top_positive_predictors_empty ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:58:
-Warning:     test insights:top_positive_predictors_empty: Test succeeded with choicepoint
-[197/258] insights:top_posi..redictors_filtering ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:63:
-Warning:     test insights:top_positive_predictors_filtering: Test succeeded with choicepoint
-[198/258] insights:top_positive_predictors_limit ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:74:
-Warning:     test insights:top_positive_predictors_limit: Test succeeded with choicepoint
-[199/258] insights:top_nega..redictors_filtering ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:84:
-Warning:     test insights:top_negative_predictors_filtering: Test succeeded with choicepoint
-[200/258] insights:top_nega..ctors_sorted_by_abs ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:95:
-Warning:     test insights:top_negative_predictors_sorted_by_abs: Test succeeded with choicepoint
-[203/258] insights:generate_insights_report ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:134:
-Warning:     test insights:generate_insights_report: Test succeeded with choicepoint
-[204/258] insights:generate..ts_report_structure ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:151:
-Warning:     test insights:generate_insights_report_structure: Test succeeded with choicepoint
-[216/258] llm_workflow_rule..aft_then_user_check ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:106:
-Warning:     test llm_workflow_rules:workflow_draft_then_user_check: Test succeeded with choicepoint
-[217/258] llm_workflow_rule..rkflow_outline_only ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:115:
-Warning:     test llm_workflow_rules:workflow_outline_only: Test succeeded with choicepoint
-[218/258] llm_workflow_rule..lete_with_checklist ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:124:
-Warning:     test llm_workflow_rules:workflow_complete_with_checklist: Test succeeded with choicepoint
-[222/258] llm_suggestion_ma..pply_llm_suggestion ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:185:
-Warning:     test llm_suggestion_management:apply_llm_suggestion: Test succeeded with choicepoint
-[224/258] review_task_creat..e_review_task_basic ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:13:
-Warning:     test review_task_creation:create_review_task_basic: Test succeeded with choicepoint
-[225/258] review_task_creat..iew_task_word_count ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:46:
-Warning:     test review_task_creation:create_review_task_word_count: Test succeeded with choicepoint
-[236/258] review_completion..lete_review_success ..
-Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:251:
-Warning:     test review_completion:complete_review_success: Test succeeded with choicepoint
-[258/258] automate:should_recommend_file2phil .... passed (0.001 sec)
-ERROR: 3 tests failed
+=== Weekly Progress Report: Week 1 ===
+
+Week 1 Progress:
+  Algorithms: 0 / 0 (0.0%)
+  [No target set]
+  Philosophies: 0 / 0 (0.0%)
+  [No target set]
+
+.
+=== Weekly Progress Report: Week 1 ===
+
+Week 1 Progress:
+  Algorithms: 0 / 0 (0.0%)
+  [No target set]
+  Philosophies: 0 / 0 (0.0%)
+  [No target set]
+
+.
+=== Backlog Report: Week -3 to Week 1 ===
+
+Backlog from Week -3 to Week 1:
+  Algorithms backlog: 0 units
+  Philosophies backlog: 0 units
+
+--- Catch-up Feasibility (next 4 weeks) ---
+Algorithms: Feasible - can catch up by week 1 (confidence: 100.0%)
+  - Predicted achievable units: 552
+  - Estimated productivity: 10.00 units/hour
+Philosophies: Feasible - can catch up by week 1 (confidence: 100.0%)
+  - Predicted achievable units: 38
+  - Estimated productivity: 0.70 units/hour
+
+.
+..[2026-01-01 04:40:54] [INFO] Preference set: goal_mode = strict
+.....[2026-01-01 04:40:54] [INFO] Loading user preferences...
+[2026-01-01 04:40:54] [WARN] Invalid preference in config: goal_mode = adaptive
+.[2026-01-01 04:40:54] [INFO] Loading user preferences...
+[2026-01-01 04:40:54] [WARN] Invalid preference in config: goal_mode = adaptive
+.
+[2026-01-01 04:40:54] [INFO] Reminder scheduled: custom at 1767246054.004297 (test_reminder_1)
+.[2026-01-01 04:40:54] [WARN] Cannot schedule reminder in the past: test_past
+..[2026-01-01 04:40:54] [INFO] Reminder scheduled: custom at 1767249654.0046022 (test_cancel)
+[2026-01-01 04:40:54] [INFO] Reminder cancelled: test_cancel
+....
+........[2026-01-01 04:40:54] [INFO] Generated day plan with 0 work blocks
+.
+[2026-01-01 04:40:54] [INFO] Loading user preferences...
+[2026-01-01 04:40:54] [WARN] Invalid preference in config: goal_mode = adaptive
+[2026-01-01 04:40:54] [INFO] Generated day plan with 0 work blocks
+.[2026-01-01 04:40:54] [INFO] Added user block: user_block_1767242454.0061169
+.
+[2026-01-01 04:40:54] [INFO] Log closing
+Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/test_gmail.pl:25:
+	PL-Unit: Test parse_gmail_json_valid: Test succeeded with choicepoint
+[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+Warning: /home/runner/work/Goal-Pattern/Goal-Pattern/tests/test_gmail.pl:110:
+	PL-Unit: Test extract_schedule_changes_rescheduled: Test succeeded with choicepoint
+[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Log closing
+.[2026-01-01 04:40:54] [INFO] Received 2 emails from Gmail
+[2026-01-01 04:40:54] [INFO] Stored work evidence: 15 algorithm (completion)
+[2026-01-01 04:40:54] [INFO] Stored work evidence: 1 philosophy (submission)
+[2026-01-01 04:40:54] [INFO] Log closing
+.
+.........
+........................
+................
+...
+...
+...
+.[2026-01-01 04:40:54] [INFO] LLM audit: analyze via gemini/gemini-2.0-flash-exp
+.
+.[2026-01-01 04:40:54] [INFO] Created review task review_work1_1767242454.1172707 for work item work1 (requires +10% = 10 extra units)
+[2026-01-01 04:40:54] [INFO] LLM suggestion applied, review task created
+..
+[2026-01-01 04:40:54] [INFO] Created review task review_work1_1767242454.1176126 for work item work1 (requires +10% = 10 extra units)
+.[2026-01-01 04:40:54] [INFO] Created review task review_work2_1767242454.117782 for work item work2 (requires +10% = 50 extra units)
+.
+.......
+[2026-01-01 04:40:54] [INFO] Verified 5 extra units for task task1 (total: 5/10, margin met: false)
+.[2026-01-01 04:40:54] [INFO] Verified 10 extra units for task task2 (total: 10/10, margin met: true)
+.[2026-01-01 04:40:54] [INFO] Verified 7 extra units for task task3 (total: 10/10, margin met: true)
+.
+[2026-01-01 04:40:54] [INFO] Completed review task1: work item work1 promoted to complete with count 160
+.[2026-01-01 04:40:54] [ERROR] Cannot complete review task2: safety margin not met. Need 5 more units.
+.
+...
+....[2026-01-01 04:40:54] [ERROR] Command type nonexistent_command_xyz is not allowlisted or enabled
+.[2026-01-01 04:40:54] [ERROR] Command type repo_task is not allowlisted or enabled
+.....[2026-01-01 04:40:54] [INFO] Cleared all automation events
+[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_test_type_1767242454.1226323 (success)
+[2026-01-01 04:40:54] [INFO] Cleared all automation events
+.[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_test1_1767242454.1229541 (success)
+[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_test2_1767242454.123213 (failed)
+[2026-01-01 04:40:54] [INFO] Cleared all automation events
+..[2026-01-01 04:40:54] [INFO] Cleared all automation events
+[2026-01-01 04:40:54] [INFO] Starting file2phil automation...
+[2026-01-01 04:40:54] [INFO] DRY RUN: Would execute: swipl [-q,-s,file2phil.pl,-g,main(/tmp/swipl_test_4610_3.pl),-t,halt]
+[2026-01-01 04:40:54] [INFO] Recorded automation event: auto_file2phil_1767242454.1300344 (dry_run)
+[2026-01-01 04:40:54] [INFO] File2phil dry-run completed
+[2026-01-01 04:40:54] [INFO] Cleared all automation events
+.[2026-01-01 04:40:54] [INFO] Cleared all automation events
+[2026-01-01 04:40:54] [INFO] Starting repo task automation (stub)...
+[2026-01-01 04:40:54] [ERROR] Command type repo_task is not allowlisted or enabled
+[2026-01-01 04:40:54] [WARN] repo_task command is not enabled - this is a stub implementation
+[2026-01-01 04:40:54] [INFO] Cleared all automation events
+....

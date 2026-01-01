@@ -1,0 +1,162 @@
+[2026-01-01 04:29:56] [INFO] Tick #1 at 1767241796.910937
+[2026-01-01 04:29:56] [INFO] Scanning source: all
+[2026-01-01 04:29:56] [INFO] Generating recommendations for state: 1
+Tick #1 completed
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Tick #1 at 1767241796.9116848
+[2026-01-01 04:29:56] [INFO] Scanning source: all
+[2026-01-01 04:29:56] [INFO] Generating recommendations for state: 1
+Tick #1 completed
+[2026-01-01 04:29:56] [INFO] Tick #2 at 1767241796.9117708
+[2026-01-01 04:29:56] [INFO] Scanning source: all
+[2026-01-01 04:29:56] [INFO] Generating recommendations for state: 2
+Tick #2 completed
+[2026-01-01 04:29:56] [INFO] Tick #3 at 1767241796.9118237
+[2026-01-01 04:29:56] [INFO] Scanning source: all
+[2026-01-01 04:29:56] [INFO] Generating recommendations for state: 3
+Tick #3 completed
+[2026-01-01 04:29:56] [INFO] Tick #4 at 1767241796.9118743
+[2026-01-01 04:29:56] [INFO] Scanning source: all
+[2026-01-01 04:29:56] [INFO] Generating recommendations for state: 4
+Tick #4 completed
+[2026-01-01 04:29:56] [INFO] Tick #5 at 1767241796.9119248
+[2026-01-01 04:29:56] [INFO] Periodic state save completed
+[2026-01-01 04:29:56] [INFO] Scanning source: all
+[2026-01-01 04:29:56] [INFO] Generating recommendations for state: 5
+Tick #5 completed
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/test_alg.pl (2 clauses, status: draft)
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] New philosophy found: /tmp/test_disk_scan/philosophies/test_phil.txt (11 words, status: draft)
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/delta_test.pl (1 clauses, status: draft)
+[2026-01-01 04:29:56] [INFO] Log closing
+[2026-01-01 04:29:56] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/delta_test2.pl (1 clauses, status: draft)
+[2026-01-01 04:29:57] [INFO] Algorithm updated: /tmp/test_disk_scan/algorithms/delta_test2.pl (delta: 2, total: 3, status: draft)
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] scan_directory called with: _18248{path: /tmp/test_disk_scan/algorithms,type:algorithms}
+[2026-01-01 04:29:57] [INFO]   path extracted: /tmp/test_disk_scan/algorithms
+[2026-01-01 04:29:57] [INFO]   type extracted: algorithms
+[2026-01-01 04:29:57] [INFO] Scanning algorithms directory: /tmp/test_disk_scan/algorithms
+[2026-01-01 04:29:57] [INFO]   calling scan_directory_recursive(/tmp/test_disk_scan/algorithms, algorithms)
+[2026-01-01 04:29:57] [INFO] Processing: /tmp/test_disk_scan/algorithms/file1.pl (type=algorithms)
+[2026-01-01 04:29:57] [INFO]   -> is scannable file
+[2026-01-01 04:29:57] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/file1.pl (1 clauses, status: draft)
+[2026-01-01 04:29:57] [INFO] Processing: /tmp/test_disk_scan/algorithms/file2.pl (type=algorithms)
+[2026-01-01 04:29:57] [INFO]   -> is scannable file
+[2026-01-01 04:29:57] [INFO] New algorithm found: /tmp/test_disk_scan/algorithms/file2.pl (1 clauses, status: draft)
+[2026-01-01 04:29:57] [INFO]   scan_directory_recursive completed
+[2026-01-01 04:29:57] [INFO] Log closing
+
+=== Weekly Progress Report: Week 1 ===
+
+Week 1 Progress:
+  Algorithms: 0 / 0 (0.0%)
+  [No target set]
+  Philosophies: 0 / 0 (0.0%)
+  [No target set]
+
+
+=== Weekly Progress Report: Week 1 ===
+
+Week 1 Progress:
+  Algorithms: 0 / 0 (0.0%)
+  [No target set]
+  Philosophies: 0 / 0 (0.0%)
+  [No target set]
+
+
+=== Backlog Report: Week -3 to Week 1 ===
+
+Backlog from Week -3 to Week 1:
+  Algorithms backlog: 0 units
+  Philosophies backlog: 0 units
+
+--- Catch-up Feasibility (next 4 weeks) ---
+Algorithms: Feasible - can catch up by week 1 (confidence: 100.0%)
+  - Predicted achievable units: 552
+  - Estimated productivity: 10.00 units/hour
+Philosophies: Feasible - can catch up by week 1 (confidence: 100.0%)
+  - Predicted achievable units: 38
+  - Estimated productivity: 0.70 units/hour
+
+[2026-01-01 04:29:57] [INFO] Preference set: goal_mode = strict
+[2026-01-01 04:29:57] [INFO] Loading user preferences...
+[2026-01-01 04:29:57] [WARN] Invalid preference in config: goal_mode = adaptive
+[2026-01-01 04:29:57] [INFO] Loading user preferences...
+[2026-01-01 04:29:57] [WARN] Invalid preference in config: goal_mode = adaptive
+[2026-01-01 04:29:57] [INFO] Reminder scheduled: custom at 1767245397.044077 (test_reminder_1)
+[2026-01-01 04:29:57] [WARN] Cannot schedule reminder in the past: test_past
+[2026-01-01 04:29:57] [INFO] Reminder scheduled: custom at 1767248997.0444787 (test_cancel)
+[2026-01-01 04:29:57] [INFO] Reminder cancelled: test_cancel
+[2026-01-01 04:29:57] [INFO] Generated day plan with 0 work blocks
+[2026-01-01 04:29:57] [INFO] Loading user preferences...
+[2026-01-01 04:29:57] [WARN] Invalid preference in config: goal_mode = adaptive
+[2026-01-01 04:29:57] [INFO] Generated day plan with 0 work blocks
+[2026-01-01 04:29:57] [INFO] Added user block: user_block_1767241797.0467029
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] Received 2 emails from Gmail
+[2026-01-01 04:29:57] [INFO] Stored work evidence: 15 algorithm (completion)
+[2026-01-01 04:29:57] [INFO] Stored work evidence: 1 philosophy (submission)
+[2026-01-01 04:29:57] [INFO] Log closing
+[2026-01-01 04:29:57] [INFO] LLM audit: analyze via gemini/gemini-2.0-flash-exp
+[2026-01-01 04:29:57] [INFO] Created review task review_work1_1767241797.1596427 for work item work1 (requires +10% = 10 extra units)
+[2026-01-01 04:29:57] [INFO] LLM suggestion applied, review task created
+[2026-01-01 04:29:57] [INFO] Created review task review_work1_1767241797.1600652 for work item work1 (requires +10% = 10 extra units)
+[2026-01-01 04:29:57] [INFO] Created review task review_work2_1767241797.1602774 for work item work2 (requires +10% = 50 extra units)
+[2026-01-01 04:29:57] [INFO] Verified 5 extra units for task task1 (total: 5/10, margin met: false)
+[2026-01-01 04:29:57] [INFO] Verified 10 extra units for task task2 (total: 10/10, margin met: true)
+[2026-01-01 04:29:57] [INFO] Verified 7 extra units for task task3 (total: 10/10, margin met: true)
+[2026-01-01 04:29:57] [INFO] Completed review task1: work item work1 promoted to complete with count 160
+[2026-01-01 04:29:57] [ERROR] Cannot complete review task2: safety margin not met. Need 5 more units.
+[2026-01-01 04:29:57] [ERROR] Command type nonexistent_command_xyz is not allowlisted or enabled
+[2026-01-01 04:29:57] [ERROR] Command type repo_task is not allowlisted or enabled
+[2026-01-01 04:29:57] [INFO] Cleared all automation events
+[2026-01-01 04:29:57] [INFO] Recorded automation event: auto_test_type_1767241797.1660101 (success)
+[2026-01-01 04:29:57] [INFO] Cleared all automation events
+[2026-01-01 04:29:57] [INFO] Recorded automation event: auto_test1_1767241797.1663308 (success)
+[2026-01-01 04:29:57] [INFO] Recorded automation event: auto_test2_1767241797.1665237 (failed)
+[2026-01-01 04:29:57] [INFO] Cleared all automation events
+[2026-01-01 04:29:57] [INFO] Cleared all automation events
+[2026-01-01 04:29:57] [INFO] Starting file2phil automation...
+[2026-01-01 04:29:57] [INFO] DRY RUN: Would execute: swipl [-q,-s,file2phil.pl,-g,main(/tmp/swipl_test_4221_3.pl),-t,halt]
+[2026-01-01 04:29:57] [INFO] Recorded automation event: auto_file2phil_1767241797.173351 (dry_run)
+[2026-01-01 04:29:57] [INFO] File2phil dry-run completed
+[2026-01-01 04:29:57] [INFO] Cleared all automation events
+[2026-01-01 04:29:57] [INFO] Cleared all automation events
+[2026-01-01 04:29:57] [INFO] Starting repo task automation (stub)...
+[2026-01-01 04:29:57] [ERROR] Command type repo_task is not allowlisted or enabled
+[2026-01-01 04:29:57] [WARN] repo_task command is not enabled - this is a stub implementation
+[2026-01-01 04:29:57] [INFO] Cleared all automation events

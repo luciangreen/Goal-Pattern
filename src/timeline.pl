@@ -80,15 +80,15 @@ extract_categories(Events, Categories) :-
     list_to_set(AllCategories, Categories).
 
 % Map tags to categories
-category_from_tag(travel, travel).
-category_from_tag(sauna, rest).
-category_from_tag(friend_house, play).
-category_from_tag(home, work).
-category_from_tag(seminar, work).
-category_from_tag(work, work).
-category_from_tag(rest, rest).
-category_from_tag(play, play).
-category_from_tag(_, other).
+category_from_tag(travel, travel) :- !.
+category_from_tag(sauna, rest) :- !.
+category_from_tag(friend_house, play) :- !.
+category_from_tag(home, work) :- !.
+category_from_tag(seminar, work) :- !.
+category_from_tag(work, work) :- !.
+category_from_tag(rest, rest) :- !.
+category_from_tag(play, play) :- !.
+category_from_tag(_, other) :- !.
 
 % Extract all tags from events
 extract_tags(Events, UniqueTags) :-

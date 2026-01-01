@@ -31,11 +31,12 @@ estimate_productivity(Type, productivity(Type, UnitsPerHour, Confidence)) :-
         % Default estimates if no historical data
         default_productivity(Type, UnitsPerHour),
         Confidence = 0.3  % Low confidence without data
-    ).
+    ),
+    !.
 
 % Default productivity estimates (units per hour)
-default_productivity(algorithm, 10.0).  % 10 clauses per hour
-default_productivity(philosophy, 0.7).  % 0.7 essays per hour (~80 min per essay)
+default_productivity(algorithm, 10.0) :- !.  % 10 clauses per hour
+default_productivity(philosophy, 0.7) :- !.  % 0.7 essays per hour (~80 min per essay)
 
 % Calculate historical productivity from work items
 historical_productivity(Type, TotalUnits, TotalHours) :-
@@ -155,7 +156,7 @@ feasibility_forecast(Type, CurrentBacklog, FutureWeeks, Feasibility) :-
     
     % Get ongoing weekly targets
     state:get_goals(Goals),
-    (member(goal(_, Type, WeeklyTarget, week, _, _), Goals) -> true ; WeeklyTarget = 0),
+    (once(member(goal(_, Type, WeeklyTarget, week, _, _), Goals)) -> true ; WeeklyTarget = 0),
     
     % Calculate total needed: backlog + ongoing targets
     OngoingTarget is WeeklyTarget * FutureWeeks,
@@ -181,4 +182,5 @@ feasibility_forecast(Type, CurrentBacklog, FutureWeeks, Feasibility) :-
     ;
         % No backlog, automatically feasible
         Feasibility = feasible(CurrentWeek, 1.0)
-    ).
+    ),
+    !.
