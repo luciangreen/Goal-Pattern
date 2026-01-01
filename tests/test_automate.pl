@@ -165,7 +165,7 @@ test(record_automation_event) :-
     
     % Verify event was recorded
     assertion(length(Events, 1)),
-    Events = [event(_ID, _, Type, _, Status, _, _)],
+    Events = [event(_, _, Type, _, Status, _, _)],
     assertion(Type = test_type),
     assertion(Status = success),
     
@@ -257,13 +257,13 @@ test(repo_task_dry_run) :-
         % Try to run repo task in dry-run mode
         % This should succeed in dry-run mode even though it's a stub
         (automate:run_repo_task('test-repo', 'test-task') ->
-            _Result = success
+            _ = success
         ;
-            _Result = failed
+            _ = failed
         ),
         
         % Check events
-        automate:get_automation_events(_Events),
+        automate:get_automation_events(_),
         
         % Cleanup
         automate:clear_automation_events,

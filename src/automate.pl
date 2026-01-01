@@ -265,7 +265,7 @@ execute_file2phil_process(FilePath, Command, Args) :-
     !.
 
 % Catch other exceptions during execution
-execute_file2phil(_FilePath, Command, Args, _) :-
+execute_file2phil(_, Command, Args, _) :-
     catch(
         fail,
         Error,

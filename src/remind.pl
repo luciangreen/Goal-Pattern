@@ -69,7 +69,7 @@ schedule_reminder(ID, Timestamp, Type, _) :-
 
 % Trigger a reminder (send notification)
 trigger_reminder(ID) :-
-    scheduled_reminder(ID, _Timestamp, Type, Context),
+    scheduled_reminder(ID, _, Type, Context),
     
     % Check if notifications are enabled
     preferences:get_preference(notifications_enabled, true),

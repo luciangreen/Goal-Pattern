@@ -348,7 +348,7 @@ audit_llm_interaction(Operation, InputPack, Response, Suggestions) :-
     !.
 
 % Store audit log
-audit_llm_call(Operation, Provider, Model, _PromptData, AuditRecord) :-
+audit_llm_call(Operation, Provider, Model, _, AuditRecord) :-
     % Add to state audit log
     state:add_llm_audit_record(AuditRecord),
     
