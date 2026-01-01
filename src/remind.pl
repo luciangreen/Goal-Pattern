@@ -69,7 +69,7 @@ schedule_reminder(ID, Timestamp, Type, _) :-
 
 % Trigger a reminder (send notification)
 trigger_reminder(ID) :-
-    scheduled_reminder(ID, Timestamp, Type, Context),
+    scheduled_reminder(ID, _Timestamp, Type, Context),
     
     % Check if notifications are enabled
     preferences:get_preference(notifications_enabled, true),
@@ -108,9 +108,9 @@ trigger_reminder(ID) :-
 
 % Send notification to user (Terminal output initially)
 send_notification(work_block, Context) :-
-    get_dict(block_type, Context, BlockType, work),
-    get_dict(duration, Context, Duration, unknown),
-    get_dict(reason, Context, Reason, 'Time to work'),
+    (get_dict(block_type, Context, BlockType) -> true ; BlockType = work),
+    (get_dict(duration, Context, Duration) -> true ; Duration = unknown),
+    (get_dict(reason, Context, Reason) -> true ; Reason = 'Time to work'),
     
     format('~n=== REMINDER: Work Block ===~n', []),
     format('Type: ~w~n', [BlockType]),
@@ -119,14 +119,14 @@ send_notification(work_block, Context) :-
     format('===========================~n~n', []).
 
 send_notification(break, Context) :-
-    get_dict(reason, Context, Reason, 'Take a break'),
+    (get_dict(reason, Context, Reason) -> true ; Reason = 'Take a break'),
     
     format('~n=== REMINDER: Break Time ===~n', []),
     format('~w~n', [Reason]),
     format('============================~n~n', []).
 
 send_notification(rest, Context) :-
-    get_dict(fatigue_level, Context, Fatigue, unknown),
+    (get_dict(fatigue_level, Context, Fatigue) -> true ; Fatigue = unknown),
     
     format('~n=== REMINDER: Rest Needed ===~n', []),
     format('Fatigue level: ~w~n', [Fatigue]),
@@ -134,7 +134,7 @@ send_notification(rest, Context) :-
     format('=============================~n~n', []).
 
 send_notification(event_prep, Context) :-
-    get_dict(event_title, Context, Title, 'Upcoming event'),
+    (get_dict(event_title, Context, Title) -> true ; Title = 'Upcoming event'),
     get_dict(start_time, Context, StartTime),
     stamp_date_time(StartTime, DateTime, local),
     format_time(string(TimeStr), '%H:%M', DateTime),
@@ -146,14 +146,14 @@ send_notification(event_prep, Context) :-
     format('===================================~n~n', []).
 
 send_notification(event_start, Context) :-
-    get_dict(event_title, Context, Title, 'Event'),
+    (get_dict(event_title, Context, Title) -> true ; Title = 'Event'),
     
     format('~n=== REMINDER: Event Starting ===~n', []),
     format('Event: ~w~n', [Title]),
     format('================================~n~n', []).
 
 send_notification(custom, Context) :-
-    get_dict(message, Context, Message, 'Reminder'),
+    (get_dict(message, Context, Message) -> true ; Message = 'Reminder'),
     
     format('~n=== REMINDER ===~n', []),
     format('~w~n', [Message]),

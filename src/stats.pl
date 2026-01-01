@@ -239,7 +239,7 @@ category_work_correlation(Category, Timeline, WorkItems, correlation(Category, R
     
     % Calculate time spent in category per window
     findall(TimeRatio,
-            (member(window(StartMin, EndMin, _, Tags), Windows),
+            (member(window(_StartMin, _EndMin, _, Tags), Windows),
              category_time_ratio(Category, Tags, TimeRatio)),
             CategoryTimes),
     

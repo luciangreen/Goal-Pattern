@@ -30,7 +30,7 @@ plan_day(Date, plan(Date, WorkBlocks, Fatigue, Reasons)) :-
     
     % Get existing schedule events for the day
     state:get_schedule_events(AllEvents),
-    filter_events_in_range(AllEvents, DayStart, DayEnd, DayEvents),
+    filter_events_in_range(AllEvents, DayStart, DayEnd, _DayEvents),
     
     % Calculate current backlog and goals
     progress:current_week(Week),
@@ -91,7 +91,7 @@ event_to_time_range(schedule_event(_, Start, End, _, _, _, _, _), range(Start, E
 % Find gaps between occupied ranges
 find_gaps(Start, End, [], [range(Start, End)]) :- !.
 
-find_gaps(Start, End, [range(First, _)|_], []) :-
+find_gaps(Start, End, [range(First, _End)|_], []) :-
     First =< Start,
     !.
 
@@ -152,7 +152,7 @@ allocate_work_blocks(_, AlgoNeeded, PhilNeeded, []) :-
     PhilNeeded =< 0,
     !.
 
-allocate_work_blocks([slot(Start, End, Duration, Score)|RestSlots], 
+allocate_work_blocks([slot(Start, _End, Duration, Score)|RestSlots], 
                      AlgoNeeded, PhilNeeded, 
                      [WorkBlock|RestBlocks]) :-
     % Decide work type based on need
@@ -270,10 +270,10 @@ estimate_fatigue_at_time(Timestamp, Fatigue) :-
 edit_schedule(add_block, Block, UpdatedSchedule) :-
     % Add a user-defined time block
     model:validate_time_block(Block),
-    state:get_schedule_events(Events),
+    state:get_schedule_events(_Events),
     
     % Create a schedule event from the block
-    time_block(Start, End, Category, Fatigue, Recovery, Confidence) = Block,
+    time_block(Start, End, Category, _Fatigue, _Recovery, Confidence) = Block,
     
     % Generate unique ID
     get_time(Now),
@@ -327,7 +327,7 @@ event_has_id(ID, schedule_event(ID, _, _, _, _, _, _, _)).
 % ============================================================================
 
 % Generate human-readable reasons for plan
-generate_plan_reasons(WorkBlocks, Progress, Backlog, Fatigue, Reasons) :-
+generate_plan_reasons(WorkBlocks, Progress, _Backlog, Fatigue, Reasons) :-
     length(WorkBlocks, BlockCount),
     
     % Extract backlog info

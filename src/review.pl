@@ -3,7 +3,6 @@
     create_review_task/2,
     get_tasks_needing_review/1,
     verify_work/2,
-    apply_safety_margin/2,
     check_safety_margin_met/1,
     complete_review/2,
     get_review_status/2,
@@ -27,8 +26,8 @@ create_review_task(WorkItemID, Suggestion) :-
     format(atom(TaskID), 'review_~w_~w', [WorkItemID, Timestamp]),
     
     % Extract counts from suggestion
-    get_dict(word_count, Suggestion, WordCount, 0),
-    get_dict(clause_count, Suggestion, ClauseCount, 0),
+    (get_dict(word_count, Suggestion, WordCount) -> true ; WordCount = 0),
+    (get_dict(clause_count, Suggestion, ClauseCount) -> true ; ClauseCount = 0),
     BaseCount is max(WordCount, ClauseCount),
     
     % Calculate required extra work (10% safety margin)
@@ -36,8 +35,8 @@ create_review_task(WorkItemID, Suggestion) :-
     
     % Create task structure
     get_dict(text, Suggestion, Text),
-    get_dict(confidence, Suggestion, Confidence, 0.7),
-    get_dict(workflow_step, Suggestion, WorkflowStep, 'general_review'),
+    (get_dict(confidence, Suggestion, Confidence) -> true ; Confidence = 0.7),
+    (get_dict(workflow_step, Suggestion, WorkflowStep) -> true ; WorkflowStep = 'general_review'),
     
     Task = _{
         task_id: TaskID,
@@ -82,11 +81,6 @@ calculate_required_extra_work(BaseCount, RequiredExtra) :-
     RequiredExtra is ceiling(BaseCount * 0.1),
     !.
 
-% Apply safety margin to count
-% apply_safety_margin(+Count, -AdjustedCount)
-apply_safety_margin(Count, AdjustedCount) :-
-    model:apply_safety_margin(Count, AdjustedCount).
-
 % Check if safety margin requirement has been met for a task
 % check_safety_margin_met(+TaskID)
 check_safety_margin_met(TaskID) :-
@@ -107,8 +101,8 @@ verify_work(TaskID, VerificationData) :-
     
     % Extract verification details
     get_dict(extra_work_count, VerificationData, ExtraWorkCount),
-    get_dict(verification_notes, VerificationData, Notes, "User verified"),
-    get_dict(verifier, VerificationData, Verifier, 'user'),
+    (get_dict(verification_notes, VerificationData, Notes) -> true ; Notes = "User verified"),
+    (get_dict(verifier, VerificationData, Verifier) -> true ; Verifier = 'user'),
     
     % Update verified extra work
     get_dict(verified_extra_work, Task, CurrentVerified),
@@ -179,7 +173,7 @@ complete_review(TaskID, CompletionData) :-
                     Tags, Confidence, UpdatedWorkItem),
     
     % Add completion metadata
-    get_dict(completion_notes, CompletionData, CompletionNotes, "Review completed with safety margin"),
+    (get_dict(completion_notes, CompletionData, CompletionNotes) -> true ; CompletionNotes = "Review completed with safety margin"),
     
     % Update work item in state
     state:update_work_item(ID, UpdatedWorkItem),

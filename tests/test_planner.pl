@@ -85,7 +85,7 @@ test(get_due_reminders, [true(is_list(DueReminders))]) :-
     get_time(Now),
     
     % Schedule a reminder that should be due
-    DueTime is Now - 60,  % Would be due if it could be scheduled
+    _DueTime is Now - 60,  % Would be due if it could be scheduled
     
     % Get due reminders
     remind:get_due_reminders(Now, DueReminders).
