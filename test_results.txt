@@ -1,0 +1,445 @@
+Lucians-MacBook-Air-2025:Goal-Pattern lg3$ swipl -q -s tests/run_tests.pl -g run_tests
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/progress.pl:20:
+Warning:    Singleton variables: [DayNum]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/productivity.pl:80:
+Warning:    Singleton variables: [Type]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/productivity.pl:126:
+Warning:    Singleton variables: [NumWeeks]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/planner.pl:27:
+Warning:    Singleton variables: [DayEvents]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/planner.pl:94:
+Warning:    Singleton variables: [End]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/planner.pl:155:
+Warning:    Singleton variables: [End]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/planner.pl:270:
+Warning:    Singleton variables: [Events,Fatigue,Recovery]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/planner.pl:330:
+Warning:    Singleton variables: [Backlog]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/remind.pl:71:
+Warning:    Singleton variables: [Timestamp]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:84:
+Warning:    Singleton variables: [DueTime]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/timeline.pl:40:
+Warning:    Singleton variables: [Events]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/timeline.pl:141:
+Warning:    Singleton variables: [Categories]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/stats.pl:236:
+Warning:    Singleton variables: [StartMin,EndMin]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:29:
+Warning:    Singleton variables: [Corrs]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/review.pl:87:
+Warning:    Local definition of review:apply_safety_margin/2 overrides weak import from model
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/modules/llm.pl:20:
+ERROR:    import/1: No permission to import review:apply_safety_margin/2 into llm (already imported from model)
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/modules/llm.pl:351:
+Warning:    Singleton variables: [PromptData]
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:4:
+ERROR:    import/1: No permission to import review:apply_safety_margin/2 into user (already imported from model)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:3:
+ERROR:    import/1: No permission to import review:apply_safety_margin/2 into user (already imported from model)
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/automate.pl:266:
+Warning:    Singleton variables: [FilePath]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/automate.pl:266:
+Warning:    Clauses of automate:execute_file2phil/4 are not together in the source-file
+Warning:    Earlier definition at /Users/lg3/Dropbox/GitHub/Goal-Pattern/src/automate.pl:208
+Warning:    Current predicate: automate:execute_file2phil_process/3
+Warning:    Use :- discontiguous automate:execute_file2phil/4. to suppress this message
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:149:
+Warning:    Singleton variables: [ID]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:251:
+Warning:    Singleton variables: [Events]
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:251:
+Warning:    Singleton variable in branch: Result
+Warning:    Singleton variable in branch: Events
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/run_tests.pl:20:
+Warning:    Local definition of user:run_tests/0 overrides weak import from plunit
+[1/258] model_goal:create_goal_algorithms ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:13:
+Warning:     test model_goal:create_goal_algorithms: Test succeeded with choicepoint
+[3/258] model_goal:validate_goal_success ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:19:
+Warning:     test model_goal:validate_goal_success: Test succeeded with choicepoint
+[7/258] model_work_item:c..work_item_algorithm ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:41:
+Warning:     test model_work_item:create_work_item_algorithm: Test succeeded with choicepoint
+[8/258] model_work_item:c..ork_item_philosophy ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:47:
+Warning:     test model_work_item:create_work_item_philosophy: Test succeeded with choicepoint
+[9/258] model_work_item:v..e_work_item_success ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:53:
+Warning:     test model_work_item:validate_work_item_success: Test succeeded with choicepoint
+[12/258] model_work_item:u..te_work_item_status ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:71:
+Warning:     test model_work_item:update_work_item_status: Test succeeded with choicepoint
+[13/258] model_work_item:w..em_is_complete_true ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:78:
+Warning:     test model_work_item:work_item_is_complete_true: Test succeeded with choicepoint
+[15/258] model_status_tran..on_draft_to_partial ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:98:
+Warning:     test model_status_transitions:valid_transition_draft_to_partial: Test succeeded with choicepoint
+[25/258] model_schedule_ev..eate_schedule_event ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:136:
+Warning:     test model_schedule_event:create_schedule_event: Test succeeded with choicepoint
+[26/258] model_schedule_ev..edule_event_success ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:142:
+Warning:     test model_schedule_event:validate_schedule_event_success: Test succeeded with choicepoint
+[29/258] model_schedule_ev.._with_multiple_tags ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:160:
+Warning:     test model_schedule_event:schedule_event_with_multiple_tags: Test succeeded with choicepoint
+[30/258] model_time_block:..ate_time_block_work ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:175:
+Warning:     test model_time_block:create_time_block_work: Test succeeded with choicepoint
+[31/258] model_time_block:..ate_time_block_rest ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:181:
+Warning:     test model_time_block:create_time_block_rest: Test succeeded with choicepoint
+[32/258] model_time_block:..ate_time_block_play ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:187:
+Warning:     test model_time_block:create_time_block_play: Test succeeded with choicepoint
+[34/258] model_time_block:.._time_block_success ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:199:
+Warning:     test model_time_block:validate_time_block_success: Test succeeded with choicepoint
+[59/258] model_serializati..alize_goal_to_state ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:313:
+Warning:     test model_serialization:serialize_goal_to_state: Test succeeded with choicepoint
+[60/258] model_serializati.._work_item_to_state ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:322:
+Warning:     test model_serialization:serialize_work_item_to_state: Test succeeded with choicepoint
+[61/258] model_serializati..dule_event_to_state ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:333:
+Warning:     test model_serialization:serialize_schedule_event_to_state: Test succeeded with choicepoint
+[62/258] model_serializati..e_multiple_entities ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_model.pl:344:
+Warning:     test model_serialization:serialize_multiple_entities: Test succeeded with choicepoint
+[100/258] progress:weekly_progress_with_goals ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:35:
+Warning:     test progress:weekly_progress_with_goals: Test succeeded with choicepoint
+[101/258] progress:weekly_p..with_completed_work ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:50:
+Warning:     test progress:weekly_progress_with_completed_work: Test succeeded with choicepoint
+[102/258] progress:count_completed_work ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:75:
+Warning:     test progress:count_completed_work: Test succeeded with choicepoint
+[103/258] progress:backlog_computation ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:99:
+Warning:     test progress:backlog_computation: Test succeeded with choicepoint
+[110/258] productivity:feas..recast_with_backlog ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:177:
+Warning:     test productivity:feasibility_forecast_with_backlog: Test succeeded with choicepoint
+[113/258] report_output:report_backlog_runs ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_progress.pl:225:
+Warning:     test report_output:report_backlog_runs: Test succeeded with choicepoint
+[117/258] preferences:validate_goal_mode ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:29:
+Warning:     test preferences:validate_goal_mode: Test succeeded with choicepoint
+[122/258] preferences:in_work_day .............. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:48:
+ERROR:     test preferences:in_work_day: 
+ERROR: wrong_answer(false)
+[133/258] planner:estimate_fatigue_morning ..... **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:164:
+ERROR:     test planner:estimate_fatigue_morning: 
+ERROR: wrong answer (compared using <)
+ERROR:     Expected: 0.5
+ERROR:     Got:      0.8
+[134/258] planner:estimate_fatigue_evening ..... **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:174:
+ERROR:     test planner:estimate_fatigue_evening: 
+ERROR: wrong answer (compared using >)
+ERROR:     Expected: 0.5
+ERROR:     Got:      0.1
+[137/258] planner:suggest_w..blocks_with_backlog ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:207:
+Warning:     test planner:suggest_work_blocks_with_backlog: Test succeeded with choicepoint
+[138/258] planner:plan_today ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:214:
+Warning:     test planner:plan_today: Test succeeded with choicepoint
+[139/258] planner_integrati..l_planning_workflow ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:232:
+Warning:     test planner_integration:full_planning_workflow: Test succeeded with choicepoint
+[140/258] planner_integrati..e_editing_add_block ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_planner.pl:249:
+Warning:     test planner_integration:schedule_editing_add_block: Test succeeded with choicepoint
+[141/258] gmail:parse_gmail_json_valid ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:25:
+Warning:     test gmail:parse_gmail_json_valid: Test succeeded with choicepoint
+[144/258] gmail:extract_wor..ompleted_algorithms ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:49:
+Warning:     test gmail:extract_work_evidence_completed_algorithms: Test succeeded with choicepoint
+[145/258] gmail:extract_wor..nce_submitted_essay ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:61:
+Warning:     test gmail:extract_work_evidence_submitted_essay: Test succeeded with choicepoint
+[146/258] gmail:extract_wor..e_multiple_patterns ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:72:
+Warning:     test gmail:extract_work_evidence_multiple_patterns: Test succeeded with choicepoint
+[147/258] gmail:extract_wor..dence_wrote_clauses ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:79:
+Warning:     test gmail:extract_work_evidence_wrote_clauses: Test succeeded with choicepoint
+[148/258] gmail:extract_work_evidence_no_match ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:90:
+Warning:     test gmail:extract_work_evidence_no_match: Test succeeded with choicepoint
+[149/258] gmail:extract_sch..e_changes_cancelled .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:100:
+ERROR:     test gmail:extract_schedule_changes_cancelled: failed
+[2026-01-01 12:19:37] [INFO] Log closing
+
+[150/258] gmail:extract_sch..changes_rescheduled .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:110:
+ERROR:     test gmail:extract_schedule_changes_rescheduled: failed
+[2026-01-01 12:19:37] [INFO] Log closing
+
+[151/258] gmail:extract_sch..e_changes_new_event .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_gmail.pl:119:
+ERROR:     test gmail:extract_schedule_changes_new_event: failed
+[2026-01-01 12:19:37] [INFO] Log closing
+
+[162/258] timeline:build_ti..e_with_single_event ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:28:
+Warning:     test timeline:build_timeline_with_single_event: Test succeeded with choicepoint
+[163/258] timeline:event_overlaps_minute ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:46:
+Warning:     test timeline:event_overlaps_minute: Test succeeded with choicepoint
+[165/258] timeline:category_from_tag_mapping ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:76:
+Warning:     test timeline:category_from_tag_mapping: Test succeeded with choicepoint
+[166/258] timeline:event_to_minutes ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:82:
+Warning:     test timeline:event_to_minutes: Test succeeded with choicepoint
+[168/258] timeline:work_out..with_completed_item ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:108:
+Warning:     test timeline:work_outcome_window_with_completed_item: Test succeeded with choicepoint
+[169/258] timeline:get_minute_categories ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_timeline.pl:136:
+Warning:     test timeline:get_minute_categories: Test succeeded with choicepoint
+[170/258] stats:mean_empty ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_stats.pl:15:
+Warning:     test stats:mean_empty: Test succeeded with choicepoint
+[188/258] stats:lag_correlation_zero_lag ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_stats.pl:101:
+Warning:     test stats:lag_correlation_zero_lag: Test succeeded with choicepoint
+[189/258] stats:lag_correlation_positive_lag ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_stats.pl:106:
+Warning:     test stats:lag_correlation_positive_lag: Test succeeded with choicepoint
+[195/258] insights:analyze_patterns_with_data ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:29:
+Warning:     test insights:analyze_patterns_with_data: Test succeeded with choicepoint
+[196/258] insights:top_positive_predictors_empty ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:58:
+Warning:     test insights:top_positive_predictors_empty: Test succeeded with choicepoint
+[197/258] insights:top_posi..redictors_filtering ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:63:
+Warning:     test insights:top_positive_predictors_filtering: Test succeeded with choicepoint
+[198/258] insights:top_positive_predictors_limit ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:74:
+Warning:     test insights:top_positive_predictors_limit: Test succeeded with choicepoint
+[199/258] insights:top_nega..redictors_filtering ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:84:
+Warning:     test insights:top_negative_predictors_filtering: Test succeeded with choicepoint
+[200/258] insights:top_nega..ctors_sorted_by_abs ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:95:
+Warning:     test insights:top_negative_predictors_sorted_by_abs: Test succeeded with choicepoint
+[203/258] insights:generate_insights_report ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:134:
+Warning:     test insights:generate_insights_report: Test succeeded with choicepoint
+[204/258] insights:generate..ts_report_structure ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_insights.pl:151:
+Warning:     test insights:generate_insights_report_structure: Test succeeded with choicepoint
+[210/258] llm_input_pack:bu..pack_draft_workflow .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:15:
+ERROR:     test llm_input_pack:build_input_pack_draft_workflow: received error: llm:generate_prompts/6: Unknown procedure: llm:get_dict/4
+  However, there are definitions for:
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[211/258] llm_input_pack:bu..ck_outline_workflow .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:28:
+ERROR:     test llm_input_pack:build_input_pack_outline_workflow: received error: llm:generate_prompts/6: Unknown procedure: llm:get_dict/4
+  However, there are definitions for:
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[212/258] llm_input_pack:bu.._checklist_workflow .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:39:
+ERROR:     test llm_input_pack:build_input_pack_checklist_workflow: received error: llm:generate_prompts/6: Unknown procedure: llm:get_dict/4
+  However, there are definitions for:
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[213/258] llm_response_pars.._llm_response_basic .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:54:
+ERROR:     test llm_response_parsing:parse_llm_response_basic: received error: llm:parse_llm_response/2: Unknown procedure: llm:get_dict/4
+  However, there are definitions for:
+        llm:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[214/258] llm_response_pars..m_response_multiple .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:72:
+ERROR:     test llm_response_parsing:parse_llm_response_multiple: received error: llm:parse_llm_response/2: Unknown procedure: llm:get_dict/4
+  However, there are definitions for:
+        llm:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[215/258] llm_response_pars..onse_default_values .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:87:
+ERROR:     test llm_response_parsing:parse_llm_response_default_values: received error: llm:parse_llm_response/2: Unknown procedure: llm:get_dict/4
+  However, there are definitions for:
+        llm:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[216/258] llm_workflow_rule..aft_then_user_check ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:106:
+Warning:     test llm_workflow_rules:workflow_draft_then_user_check: Test succeeded with choicepoint
+[217/258] llm_workflow_rule..rkflow_outline_only ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:115:
+Warning:     test llm_workflow_rules:workflow_outline_only: Test succeeded with choicepoint
+[218/258] llm_workflow_rule..lete_with_checklist ..
+Warning: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:124:
+Warning:     test llm_workflow_rules:workflow_complete_with_checklist: Test succeeded with choicepoint
+[219/258] llm_audit:hash_input_pack ............ **FAILED (0.019 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:137:
+ERROR:     test llm_audit:hash_input_pack: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:137:
+ERROR:     test llm_audit:hash_input_pack: assertion at /opt/homebrew/Cellar/swi-prolog/9.2.9/lib/swipl/boot/init.pl:685 raised ">/2: Arguments are not sufficiently instantiated"
+	Assertion: _6786>0
+
+[220/258] llm_audit:audit_llm_interaction ...... **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:146:
+ERROR:     test llm_audit:audit_llm_interaction: received error: llm:audit_llm_interaction/4: Unknown procedure: config:get_config/3
+  However, there are definitions for:
+        config:get_config/2
+        get_config/2
+[222/258] llm_suggestion_ma..pply_llm_suggestion .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:186:
+ERROR:     test llm_suggestion_management:apply_llm_suggestion: received error: review:create_review_task/2: Unknown procedure: review:get_dict/4
+  However, there are definitions for:
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[223/258] llm_suggestion_ma..get_llm_suggestions .. **FAILED (0.002 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:212:
+ERROR:     test llm_suggestion_management:get_llm_suggestions: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_llm.pl:212:
+ERROR:     test llm_suggestion_management:get_llm_suggestions: assertion at line 229 failed
+	Assertion: length([_30246{source:llm,status:needs_review,task_id:task1}],2)
+
+[224/258] review_task_creat..e_review_task_basic .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:13:
+ERROR:     test review_task_creation:create_review_task_basic: received error: review:create_review_task/2: Unknown procedure: review:get_dict/4
+  However, there are definitions for:
+        review:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[225/258] review_task_creat..iew_task_word_count .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:46:
+ERROR:     test review_task_creation:create_review_task_word_count: received error: review:create_review_task/2: Unknown procedure: review:get_dict/4
+  However, there are definitions for:
+        review:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[229/258] safety_margin_cal..apply_safety_margin .. **FAILED (0.001 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:86:
+ERROR:     test safety_margin_calculation:apply_safety_margin: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:86:
+ERROR:     test safety_margin_calculation:apply_safety_margin: assertion at /opt/homebrew/Cellar/swi-prolog/9.2.9/lib/swipl/boot/init.pl:685 failed
+	Assertion: 110.00000000000001=110.0
+
+[233/258] verification_work..verify_work_partial .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:154:
+ERROR:     test verification_workflow:verify_work_partial: received error: review:verify_work/2: Unknown procedure: review:get_dict/4
+  However, there are definitions for:
+        review:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[234/258] verification_work..erify_work_complete .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:186:
+ERROR:     test verification_workflow:verify_work_complete: received error: review:verify_work/2: Unknown procedure: review:get_dict/4
+  However, there are definitions for:
+        review:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[235/258] verification_work..fy_work_incremental .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:218:
+ERROR:     test verification_workflow:verify_work_incremental: received error: review:verify_work/2: Unknown procedure: review:get_dict/4
+  However, there are definitions for:
+        review:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[236/258] review_completion..lete_review_success .. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_review.pl:251:
+ERROR:     test review_completion:complete_review_success: received error: review:complete_review/2: Unknown procedure: review:get_dict/4
+  However, there are definitions for:
+        review:get_dict/3
+        get_dict/3
+        get_dict/5
+        get_dict/3
+[247/258] automate:validate_allowed_extension .. **FAILED (0.001 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:72:
+ERROR:     test automate:validate_allowed_extension: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:72:
+ERROR:     test automate:validate_allowed_extension: assertion at line 91 failed
+	Assertion: false=true
+
+[249/258] automate:substitute_placeholders ..... **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:120:
+ERROR:     test automate:substitute_placeholders: failed
+[250/258] automate:substitute_atom ............. **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:134:
+ERROR:     test automate:substitute_atom: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:134:
+ERROR:     test automate:substitute_atom: assertion at line 142 failed
+	Assertion: 'test.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pltest.pltest.pltest.pltest.pl2test.pltest.pltest.pltest.pl.test.pltest.pl'='file2phil.pl'
+
+[254/258] automate:file2phil_dry_run ........... **FAILED (0.002 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:213:
+ERROR:     test automate:file2phil_dry_run: failed
+[2026-01-01 12:19:39] [INFO] Cleared all automation events
+[2026-01-01 12:19:39] [INFO] Starting file2phil automation...
+[2026-01-01 12:19:39] [ERROR] File extension not allowed
+[2026-01-01 12:19:39] [INFO] Cleared all automation events
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:213:
+ERROR:     test automate:file2phil_dry_run: assertion at line 241 failed
+	Assertion: failed=success
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:213:
+ERROR:     test automate:file2phil_dry_run: assertion at line 242 failed
+	Assertion: length([],1)
+
+[255/258] automate:repo_task_dry_run ........... **FAILED (0.000 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:251:
+ERROR:     test automate:repo_task_dry_run: received error: automate:run_repo_task/2: Unknown procedure: log:log_warning/1
+[2026-01-01 12:19:39] [INFO] Cleared all automation events
+[2026-01-01 12:19:39] [INFO] Starting repo task automation (stub)...
+[2026-01-01 12:19:39] [ERROR] Command type repo_task is not allowlisted or enabled
+
+[256/258] automate:build_file2phil_command ..... **FAILED (0.001 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:284:
+ERROR:     test automate:build_file2phil_command: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:284:
+ERROR:     test automate:build_file2phil_command: assertion at line 296 failed
+	Assertion: atom("swipl")
+
+[257/258] automate:build_repo_task_command ..... **FAILED (0.001 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:300:
+ERROR:     test automate:build_repo_task_command: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:300:
+ERROR:     test automate:build_repo_task_command: assertion at line 312 failed
+	Assertion: atom("gh")
+
+[258/258] automate:should_recommend_file2phil .. **FAILED (0.001 sec)
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:320:
+ERROR:     test automate:should_recommend_file2phil: assertion
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:320:
+ERROR:     test automate:should_recommend_file2phil: assertion at line 341 failed
+	Assertion: false=true
+ERROR: /Users/lg3/Dropbox/GitHub/Goal-Pattern/tests/test_automate.pl:320:
+ERROR:     test automate:should_recommend_file2phil: assertion at line 342 failed
+	Assertion: atom(_232394)
+
+ERROR: 31 tests failed
+Lucians-MacBook-Air-2025:Goal-Pattern lg3$ 

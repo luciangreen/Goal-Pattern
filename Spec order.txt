@@ -1,0 +1,6 @@
+Implement Spec 10 from Requirements.txt
+
+and check that commits from two agent tasks are compatible.
+
+01 → 02 → 03 → 04 → 06 → 08, then add 05/07/09/10.
+v
