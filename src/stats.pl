@@ -31,12 +31,13 @@ min_expected_frequency(0.001).
 % ============================================================================
 
 % Calculate mean of a list
-mean([], 0.0).
+mean([], 0.0) :- !.
 mean(List, Mean) :-
     List \= [],
     sum_list(List, Sum),
     length(List, N),
-    Mean is Sum / N.
+    Mean is Sum / N,
+    !.
 
 % Calculate standard deviation
 stddev(List, StdDev) :-
@@ -173,7 +174,8 @@ lag_correlation(TagSequence, WorkSequence, LagHours, Correlation) :-
     take(LaggedLength, WorkSequence, TruncatedWork),
     
     % Calculate correlation
-    pearson_correlation(ShiftedTags, TruncatedWork, Correlation).
+    pearson_correlation(ShiftedTags, TruncatedWork, Correlation),
+    !.
 
 % Helper: drop first N elements
 drop(0, List, List).

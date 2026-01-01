@@ -243,19 +243,23 @@ parse_single_suggestion(DefaultConfidence, SuggDict, Suggestion) :-
 % Apply workflow-specific rules to suggestions
 apply_workflow_rules('draft_then_user_check', Suggestions, _WorkItem, ProcessedSuggestions) :-
     % Mark all as needing user grammar check and paraphrase
-    maplist(mark_needs_user_grammar_check, Suggestions, ProcessedSuggestions).
+    maplist(mark_needs_user_grammar_check, Suggestions, ProcessedSuggestions),
+    !.
 
 apply_workflow_rules('outline_only', Suggestions, _WorkItem, ProcessedSuggestions) :-
     % Outlines need expansion by user
-    maplist(mark_needs_expansion, Suggestions, ProcessedSuggestions).
+    maplist(mark_needs_expansion, Suggestions, ProcessedSuggestions),
+    !.
 
 apply_workflow_rules('complete_with_checklist', Suggestions, _WorkItem, ProcessedSuggestions) :-
     % Add checklist requirement
-    maplist(mark_needs_checklist_completion, Suggestions, ProcessedSuggestions).
+    maplist(mark_needs_checklist_completion, Suggestions, ProcessedSuggestions),
+    !.
 
 % Default: mark as needing review
 apply_workflow_rules(_Workflow, Suggestions, _WorkItem, ProcessedSuggestions) :-
-    maplist(mark_needs_review, Suggestions, ProcessedSuggestions).
+    maplist(mark_needs_review, Suggestions, ProcessedSuggestions),
+    !.
 
 % Mark suggestion as needing user grammar check
 mark_needs_user_grammar_check(Suggestion, Marked) :-

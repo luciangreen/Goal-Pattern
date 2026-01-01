@@ -155,7 +155,7 @@ feasibility_forecast(Type, CurrentBacklog, FutureWeeks, Feasibility) :-
     
     % Get ongoing weekly targets
     state:get_goals(Goals),
-    (member(goal(_, Type, WeeklyTarget, week, _, _), Goals) -> true ; WeeklyTarget = 0),
+    (once(member(goal(_, Type, WeeklyTarget, week, _, _), Goals)) -> true ; WeeklyTarget = 0),
     
     % Calculate total needed: backlog + ongoing targets
     OngoingTarget is WeeklyTarget * FutureWeeks,
@@ -181,4 +181,5 @@ feasibility_forecast(Type, CurrentBacklog, FutureWeeks, Feasibility) :-
     ;
         % No backlog, automatically feasible
         Feasibility = feasible(CurrentWeek, 1.0)
-    ).
+    ),
+    !.

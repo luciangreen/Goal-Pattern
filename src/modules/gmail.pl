@@ -101,9 +101,11 @@ parse_and_process_gmail_json(JSONString) :-
     !.
 
 parse_gmail_json(JSONString, Emails) :-
-    atom_string(JSONAtom, JSONString),
-    atom_json_dict(JSONAtom, Data, []),
-    get_dict(emails, Data, Emails).
+    once((
+        atom_string(JSONAtom, JSONString),
+        atom_json_dict(JSONAtom, Data, []),
+        get_dict(emails, Data, Emails)
+    )).
 
 % Process list of Gmail messages
 process_gmail_messages([]).
@@ -153,7 +155,8 @@ extract_work_evidence(Subject, Snippet, Evidence) :-
     
     % Apply work completion patterns
     get_dict(work_completion_patterns, Rules, Patterns),
-    apply_evidence_rules(FullText, Patterns, Evidence).
+    apply_evidence_rules(FullText, Patterns, Evidence),
+    !.
 
 % Extract schedule change evidence from email text
 extract_schedule_changes(Subject, Snippet, Changes) :-
@@ -165,10 +168,11 @@ extract_schedule_changes(Subject, Snippet, Changes) :-
     
     % Apply schedule change patterns
     get_dict(schedule_change_patterns, Rules, Patterns),
-    apply_evidence_rules(FullText, Patterns, Changes).
+    apply_evidence_rules(FullText, Patterns, Changes),
+    !.
 
 % Apply evidence rules to text
-apply_evidence_rules(_Text, [], []).
+apply_evidence_rules(_Text, [], []) :- !.
 apply_evidence_rules(Text, [Pattern|Rest], Evidence) :-
     get_dict(pattern, Pattern, RegexPattern),
     get_dict(name, Pattern, NameRaw),
@@ -211,7 +215,8 @@ apply_evidence_rules(Text, [Pattern|Rest], Evidence) :-
         Evidence = [NewEvidence|RestEvidence]
     ;
         apply_evidence_rules(Text, Rest, Evidence)
-    ).
+    ),
+    !.
 
 % Normalize work type from matched text
 normalize_work_type(TypeStr, NormalizedType) :-

@@ -45,7 +45,8 @@ create_goal(ID, Type, TargetCount, TimeWindow, Strictness, Metadata,
     TargetCount >= 0,
     atom(TimeWindow),
     member(Strictness, [strict, adaptive]),
-    is_dict(Metadata).
+    is_dict(Metadata),
+    !.
 
 validate_goal(goal(ID, Type, TargetCount, TimeWindow, Strictness, Metadata)) :-
     atom(ID),
@@ -82,7 +83,8 @@ create_work_item(ID, Type, Origin, Status, Count, Timestamps, Tags, Confidence,
     is_list(Tags),
     number(Confidence),
     Confidence >= 0.0,
-    Confidence =< 1.0.
+    Confidence =< 1.0,
+    !.
 
 validate_work_item(work_item(ID, Type, Origin, Status, Count, Timestamps, Tags, Confidence)) :-
     atom(ID),
@@ -103,17 +105,18 @@ update_work_item_status(work_item(ID, Type, Origin, OldStatus, Count, Timestamps
                         work_item(ID, Type, Origin, NewStatus, Count, NewTimestamps, Tags, Confidence)) :-
     valid_status_transition(OldStatus, NewStatus),
     get_time(CurrentTime),
-    put_dict(last_status_change, Timestamps, CurrentTime, NewTimestamps).
+    put_dict(last_status_change, Timestamps, CurrentTime, NewTimestamps),
+    !.
 
 % ============================================================================
 % Status Transitions
 % ============================================================================
 
 % Valid status transitions
-valid_status_transition(draft, partial).
-valid_status_transition(draft, complete).
-valid_status_transition(partial, complete).
-valid_status_transition(complete, submitted).
+valid_status_transition(draft, partial) :- !.
+valid_status_transition(draft, complete) :- !.
+valid_status_transition(partial, complete) :- !.
+valid_status_transition(complete, submitted) :- !.
 
 % Get next logical status
 next_status(draft, partial).
@@ -122,7 +125,8 @@ next_status(complete, submitted).
 
 % Check if work item is complete (excludes items that need safety margin)
 work_item_is_complete(work_item(_, _, _, Status, _, _, _, _)) :-
-    member(Status, [complete, submitted]).
+    member(Status, [complete, submitted]),
+    !.
 
 % ============================================================================
 % Schedule Event Management
@@ -148,7 +152,8 @@ create_schedule_event(ID, Start, End, Title, Location, Tags, Source, AttendanceC
     member(Source, [ics, gmail, manual, bridge]),
     number(AttendanceConfidence),
     AttendanceConfidence >= 0.0,
-    AttendanceConfidence =< 1.0.
+    AttendanceConfidence =< 1.0,
+    !.
 
 validate_schedule_event(schedule_event(ID, Start, End, Title, Location, Tags, Source, AttendanceConfidence)) :-
     atom(ID),
@@ -189,7 +194,8 @@ create_time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence,
     RecoveryCost =< 1.0,
     number(Confidence),
     Confidence >= 0.0,
-    Confidence =< 1.0.
+    Confidence =< 1.0,
+    !.
 
 validate_time_block(time_block(Start, End, Category, FatigueCost, RecoveryCost, Confidence)) :-
     number(Start),

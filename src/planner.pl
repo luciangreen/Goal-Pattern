@@ -136,7 +136,8 @@ suggest_work_blocks(AvailableSlots, Progress, WorkBlocks) :-
     extract_backlog_needs(Progress, AlgoNeeded, PhilNeeded),
     
     % Allocate work blocks to slots
-    allocate_work_blocks(SortedSlots, AlgoNeeded, PhilNeeded, WorkBlocks).
+    allocate_work_blocks(SortedSlots, AlgoNeeded, PhilNeeded, WorkBlocks),
+    !.
 
 % Extract backlog needs from progress
 extract_backlog_needs(weekly_progress(_, algorithms(Done, Target), philosophies(PhilDone, PhilTarget)), 

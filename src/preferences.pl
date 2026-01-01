@@ -103,77 +103,94 @@ set_preference(Key, Value) :-
 
 % Validate preference values
 validate_preference(goal_mode, Mode) :-
-    member(Mode, [strict, adaptive]).
+    member(Mode, [strict, adaptive]),
+    !.
 
 validate_preference(quiet_hours_start, Hour) :-
     integer(Hour),
     Hour >= 0,
-    Hour =< 23.
+    Hour =< 23,
+    !.
 
 validate_preference(quiet_hours_end, Hour) :-
     integer(Hour),
     Hour >= 0,
-    Hour =< 23.
+    Hour =< 23,
+    !.
 
 validate_preference(minimum_rest_minutes, Minutes) :-
     integer(Minutes),
-    Minutes >= 0.
+    Minutes >= 0,
+    !.
 
 validate_preference(maximum_work_streak_minutes, Minutes) :-
     integer(Minutes),
-    Minutes > 0.
+    Minutes > 0,
+    !.
 
 validate_preference(minimum_sleep_hours, Hours) :-
     number(Hours),
     Hours >= 0,
-    Hours =< 24.
+    Hours =< 24,
+    !.
 
 validate_preference(work_day_start, Hour) :-
     integer(Hour),
     Hour >= 0,
-    Hour =< 23.
+    Hour =< 23,
+    !.
 
 validate_preference(work_day_end, Hour) :-
     integer(Hour),
     Hour >= 0,
-    Hour =< 23.
+    Hour =< 23,
+    !.
 
 validate_preference(fatigue_threshold, Threshold) :-
     number(Threshold),
     Threshold >= 0.0,
-    Threshold =< 1.0.
+    Threshold =< 1.0,
+    !.
 
 validate_preference(recovery_rate, Rate) :-
     number(Rate),
-    Rate >= 0.0.
+    Rate >= 0.0,
+    !.
 
 validate_preference(enjoyment_weight, Weight) :-
     number(Weight),
     Weight >= 0.0,
-    Weight =< 1.0.
+    Weight =< 1.0,
+    !.
 
 validate_preference(travel_prep_buffer_minutes, Minutes) :-
     integer(Minutes),
-    Minutes >= 0.
+    Minutes >= 0,
+    !.
 
 validate_preference(post_travel_recovery_minutes, Minutes) :-
     integer(Minutes),
-    Minutes >= 0.
+    Minutes >= 0,
+    !.
 
 validate_preference(notifications_enabled, Value) :-
-    member(Value, [true, false]).
+    member(Value, [true, false]),
+    !.
 
 validate_preference(notification_lead_minutes, Minutes) :-
     integer(Minutes),
-    Minutes >= 0.
+    Minutes >= 0,
+    !.
 
 validate_preference(work_block_min_duration, Minutes) :-
     integer(Minutes),
-    Minutes > 0.
+    Minutes > 0,
+    !.
 
 validate_preference(work_block_preferred_duration, Minutes) :-
     integer(Minutes),
-    Minutes > 0.
+    Minutes > 0,
+    !.
 
 % ============================================================================
 % Persistence
